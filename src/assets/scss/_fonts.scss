@@ -1,0 +1,12 @@
+$font-family: 'Graphik';
+
+@font-face {
+  src: url("../fonts/GraphikMedium.otf");
+  font-family: $font-family;
+  font-weight: 500;
+}
+@font-face {
+  src: url("../fonts/GraphikBold.otf");
+  font-family: $font-family;
+  font-weight: 600;
+}

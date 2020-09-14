@@ -1,0 +1,74 @@
+.theme--dark {
+  .login-content {
+    background: $blueviolet;
+  }
+}
+
+.theme--light {
+  .login-content,
+  .v-app-bar.v-toolbar.v-sheet{
+    background: #fff;
+  }
+}
+
+.login {
+  &-logo {
+    margin-bottom: 15px;
+
+    img {
+      height: 80px;
+    }
+  }
+
+  &-wrap {
+    display: flex;
+  }
+
+  &-form-wrap {
+    flex-grow: 1;
+    padding: 80px;
+  }
+
+  &-content {
+    text-align: center;
+    width: 45%;
+    max-width: 550px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  &-bg {
+    flex-grow: 1;
+    background: url("../images/login-bg.png") center center ;
+    background-size: contain;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .login {
+    &-form-wrap {
+      padding: 20px;
+    }
+
+    &-content {
+      width: 50%;
+    }
+  }
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+  .login {
+    &-content {
+      width: 100%;
+      max-width: none;
+    }
+
+    &-bg {
+      display: none;
+    }
+  }
+}
