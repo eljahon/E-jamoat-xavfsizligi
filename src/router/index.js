@@ -1,57 +1,20 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import TokenService from "@/utils/TokenService";
-import MainLayout from "@/layouts/MainLayout";
+import Router from 'vue-router'
+import { constantRouterMap } from '@/config/router.config'
 
-Vue.use(VueRouter)
+// hack router push callback
+const originalPush = Router.prototype.push
+Router.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
 
-  const routes = [
-      {
-          path: '/auth',
-          component: () => import('../layouts/AuthorizationLayout'),
-          children: [
-              {
-                  path: '/login',
-                  name: 'login',
-                  meta: {
-                      public: true,
-                      onlyWhenLoggedOut: true
-                  },
-                  component: () => import('../views/auth/login')
-              }
-          ]
-      },
-      {
-          path: '',
-          component: MainLayout,
-          children: [
-              {
-                  path: '',
-                  name: 'dashboard',
-                  component: () => import('../views/cabinet/dashboard.vue')
-              }
-          ]
-      }
-  ]
+Vue.use(Router)
 
-const router = new VueRouter({
+export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  },
+  routes: constantRouterMap
 })
-
-
-router.beforeEach((to, from, next) => {
-    const isAuthenticated = !!TokenService.getToken()
-    if (to.name !== 'login' && !isAuthenticated) {
-        next({name: 'login'})
-    } else {
-        if(to.name === 'login' && isAuthenticated) {
-            next({name: 'dashboard'})
-        } else {
-            next()
-        }
-    }
-});
-
-export default router

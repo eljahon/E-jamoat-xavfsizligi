@@ -1,18 +1,143 @@
 <!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="https://images.vexels.com/media/users/3/133800/isolated/preview/5c446a6451f319ed403621e852e08990-olive-branch-hand-drawn-cartoon-icon-21-by-vexels.png">
+<!--  <link rel="icon" href="<%= BASE_URL %>mfd.png">-->
+  <link href='https://fonts.googleapis.com/css?family=Allerta Stencil' rel='stylesheet'>
+  <title>Zaytun</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    ::-webkit-scrollbar{
+      width:5px;
+      height:5px;
+    }
+    ::-webkit-scrollbar-track{
+      background: #f6f6f6;
+      border-radius:2px;
+    }
+    ::-webkit-scrollbar-thumb{
+      background: #cdcdcd;
+      border-radius:2px;
+    }
+    ::-webkit-scrollbar-thumb:hover{
+      background: #d72323;
+    }
+    ::-webkit-scrollbar-corner {
+      background: #d72323;
+    }
+    .first-loading-wrp {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #d72323;
+      height: 100%
+    }
+
+    .first-loading-wrp h1 {
+      font-family: "Allerta Stencil";
+      color: #ffffff;
+      font-size: 64px;
+      margin-bottom: 150px;
+    }
+    .fancy-spinner {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-pack: center;
+              justify-content: center;
+      -webkit-box-align: center;
+              align-items: center;
+      width: 10rem;
+      height: 10rem;
+      margin-bottom: 100px;
+    }
+    .fancy-spinner div {
+      position: absolute;
+      width: 6rem;
+      height: 6rem;
+      border-radius: 50%;
+    }
+    .fancy-spinner div.ring {
+      border-width: 0.5rem;
+      border-style: solid;
+      border-color: transparent;
+      -webkit-animation: 2s fancy infinite alternate;
+              animation: 2s fancy infinite alternate;
+    }
+    .fancy-spinner div.ring:nth-child(1) {
+      border-left-color: #ffffff;
+      border-right-color: #ffffff;
+    }
+    .fancy-spinner div.ring:nth-child(2) {
+      border-top-color: #ffffff;
+      border-bottom-color: #ffffff;
+      -webkit-animation-delay: 1s;
+              animation-delay: 1s;
+    }
+    .fancy-spinner div.dot {
+      width: 1rem;
+      height: 1rem;
+      background: #ffffff;
+    }
+
+    @-webkit-keyframes fancy {
+      to {
+        -webkit-transform: rotate(360deg) scale(0.5);
+                transform: rotate(360deg) scale(0.5);
+      }
+    }
+
+    @keyframes fancy {
+      to {
+        -webkit-transform: rotate(360deg) scale(0.5);
+                transform: rotate(360deg) scale(0.5);
+      }
+    }
+    .footertitle {
+      font-family: "Allerta Stencil";
+      font-size: 18px;
+      color: #ffffff;
+    }
+  </style>
+  <!-- require cdn assets css -->
+  <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.css) { %>
+  <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" />
+  <% } %>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but vue-antd-pro doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <div id="app">
+    <div class="first-loading-wrp">
+      <h1>Zaytun</h1>
+      <div class="fancy-spinner">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="dot"></div>
+      </div>
+      <!-- <div class="loading-wrp">
+        <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+
+      </div> -->
+      <div class="footertitle"> &copy; Mukhiddinov</div>
+    </div>
+  </div>
+  <!-- require cdn assets js -->
+  <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+  <script type="text/javascript" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+  <% } %>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>
