@@ -7,6 +7,7 @@ import category from './modules/category'
 import product from './modules/product'
 import order from './modules/order'
 import attrs from '@/store/modules/attrs'
+import courier from './modules/courier'
 
 // default router permission control
 import permission from './modules/permission'
@@ -21,6 +22,7 @@ export default new Vuex.Store({
   modules: {
     app,
     attrs,
+    courier,
     user,
     category,
     product,

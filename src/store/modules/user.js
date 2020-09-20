@@ -38,7 +38,7 @@ const user = {
           login(userInfo).then(response => {
           const result = response
           const token = response.mainResult.data.access_token
-          storage.set(ACCESS_TOKEN, token, response.mainResult.data.expires_in)
+          storage.set(ACCESS_TOKEN, token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', token)
           resolve(result)
         }).catch(error => {

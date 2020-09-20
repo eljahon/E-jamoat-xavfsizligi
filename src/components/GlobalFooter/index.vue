@@ -6,7 +6,7 @@
       <a href="https://www.github.com/sendya/" target="_blank">@Sendya</a> -->
     </template>
     <template v-slot:copyright>
-      <a href="https://blog.mukhiddinov.uz/" target="_blank">© Mukhiddinov. Все права защищены.  </a>
+      <a href="http://zaytun.herokuapp.com/" target="_blank">© Inspired Artisans. Все права защищены.  </a>
     </template>
   </global-footer>
 </template>

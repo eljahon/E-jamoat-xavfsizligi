@@ -9,7 +9,7 @@
           </a>
         </div>
         <div class="desc">
-          @ Mukhiddinov
+          @ Inspired Artisans
         </div>
       </div>
 
@@ -17,7 +17,7 @@
 
       <div class="footer">
         <div class="copyright">
-          Copyright &copy; 2020
+          Inspired Artisans  Copyright &copy; 2020
         </div>
       </div>
     </div>

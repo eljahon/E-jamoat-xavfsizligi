@@ -59,6 +59,23 @@ export const asyncRouterMap = [
           }
         ]
       },
+      // couriers
+      {
+        path: '/courier',
+        name: 'courier',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/courier/list',
+        meta: { title: 'Couriers', icon: 'car', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/courier/list',
+            name: 'CourierList',
+            component: () => import('@/views/couriers/CourierList'),
+            meta: { title: 'Courier List', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
       // category
       {
         path: '/category/list',
