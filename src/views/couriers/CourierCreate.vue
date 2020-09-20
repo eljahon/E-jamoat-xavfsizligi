@@ -1,35 +1,13 @@
 <template>
-  <a-modal width="800px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_category') : $t('edit_category')">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Couriers' : $t('edit_category')">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
-      <a-tabs v-if="editable" type="card" v-model="activeKey">
-        <a-tab-pane key="1">
-          <span slot="tab">
-            <flag iso="ru" />
-            Русский
-          </span>
-        <FormModel ref="ruUpdate" :edit="true"/>
-        </a-tab-pane>
-        <a-tab-pane key="2">
-          <span slot="tab">
-            <flag iso="uz" />
-            O'zbekcha
-          </span>
-          <FormModel ref="uzUpdate" :edit="true"/>
-        </a-tab-pane>
-        <a-tab-pane key="3">
-          <span slot="tab">
-            <flag iso="us" />
-            English
-          </span>
-          <FormModel ref="enUpdate" :edit="true"/>
-        </a-tab-pane>
-      </a-tabs>
     <!-- FORM -->
-      <FormModel v-if="!editable" ref="categoryCreate" :edit="false"/>
+    <FormModel v-if="!editable" ref="courierCreate"/>
+    <FormModel v-if="editable" ref="courierEdit"/>
   </a-modal>
 </template>
 <script>
@@ -64,7 +42,6 @@ export default {
       activeKey: '1',
       loading: false,
       visible: false,
-      langs: ['ru', 'uz', 'en'],
       editableData: [],
       boolUpdateLoad: {}
     }
@@ -78,35 +55,25 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['postCategory', 'getAllCategory', 'updateCategory', 'getCategoryBySlug']),
+    ...mapActions(['postCouriers', 'getAllCouriers', 'updateCourier', 'getCategoryBySlug']),
     hide() {
       this.visible = false
       this.clear()
-
     },
-    show() {
+    show(data) {
       if (this.editable) {
-        this.editableData = []
-        // debugger
-        if (!this.editableData.includes('1')) {
-          this.editableData.push('1')
-          this.getCategoryBySlug({
-            slug: this.slug,
-            lang: 'ru'
-          }).then(res => {
-            this.visible = true
-            setTimeout(() => {
-              this.$refs.ruUpdate.item = res.vendor_category
-              this.$refs.ruUpdate.form.name = res.vendor_category.name
-              this.$refs.ruUpdate.form.order = res.vendor_category.order
-            }, 150)
-          }).catch(err => {
-            this.$notification.error({
-              message: 'Error Request or Response',
-              description: err.message,
-            })
-          })
-        } else this.visible = true
+        console.log(data)
+        setTimeout(() => {
+          this.$refs.courierEdit.id = data.id
+          this.$refs.courierEdit.form = { ...data }
+          this.$refs.courierEdit.form.phone = '+' + data.phone
+          this.$refs.courierEdit.form.id = undefined
+          // this.$refs.courierEdit.form.car_number = data.car_number
+          // this.$refs.courierEdit.form.car_type = data.car_type
+          // this.$refs.courierEdit.form.car_model = data.car_model
+          // this.$refs.courierEdit.form.status = data.status
+        }, 0)
+        this.visible = true
       }
       if (!this.editable) {
         this.visible = true
@@ -152,33 +119,29 @@ export default {
     },
     clear() {
       if (this.editable) {
-        this.activeKey = '1'
-        this.editableData = []
-        if (this.$refs.ruUpdate) this.$refs.ruUpdate.resetForm()
-        if (this.$refs.uzUpdate) this.$refs.uzUpdate.resetForm()
-        if (this.$refs.enUpdate) this.$refs.enUpdate.resetForm()
-      } else this.$refs.categoryCreate.resetForm()
+        this.$refs.courierEdit.resetForm()
+      } else {
+        this.$refs.courierCreate.resetForm()
+      }
     },
     saveDate  () {
-      this.$refs.categoryCreate.validateForm().then(res => {
+      this.$refs.courierCreate.validateForm().then(res => {
         console.log(res)
-        if (res.valid) {
-          this.loading = true
-          this.postCategory(res.data).then(res => {
+        this.loading = true
+        this.postCouriers(res.data).then(res => {
+            this.getAllCouriers()
             console.log(res)
-            this.getAllCategory(this.params)
             this.hide()
           })
           .catch(error => {
-            this.$notification.error({
-              message: 'Error Request or Response',
-              description: error.message,
+              this.$notification.error({
+                message: 'Error Request or Response',
+                description: error.message,
+              })
             })
-          })
           .finally(() => {
-            this.loading = false
-          })
-        }
+              this.loading = false
+            })
       }).catch(error => {
         console.log(error, 'ERRROORRRRRRRRRRRR')
       })
@@ -207,30 +170,50 @@ export default {
       })
     },
     updateData () {
-      this.$refs.ruUpdate.validateForm().then(resRU => {
-        this.activeKey = '2'
-        setTimeout(() => {
-          this.$refs.uzUpdate.validateForm().then(resUZ => {
-            this.activeKey = '3'
-            setTimeout(() => {
-              this.$refs.enUpdate.validateForm().then(resEN => {
-                this.loading = true
-                this.updateFiles(resRU.id, 'ru', resRU.data)
-                this.updateFiles(resUZ.id, 'uz', resUZ.data)
-                this.updateFiles(resEN.id, 'en', resEN.data).then(res => {
-                  if (this.boolUpdateLoad.uz || this.boolUpdateLoad.ru || this.boolUpdateLoad.uz) {
-                    this.loading = false
-                    this.getAllCategory(this.params)
-                    this.hide()
-                  } else this.loading = false
-                })
-              }).catch(error => {
-                this.activeKey = '3'
-              })
-            }, 1000)
-          }).catch(error => { this.activeKey = '2' })
-        }, 1000)
-      }).catch(error => { this.activeKey = '1' })
+      this.$refs.courierEdit.validateForm().then(res => {
+        console.log(res)
+        this.loading = true
+        this.updateCourier({
+          id: res.id,
+          data: res.data
+        }).then(res => {
+          this.getAllCouriers()
+          this.hide()
+          console.log(res)
+        }).catch(error => {
+          this.$notification.error({
+            message: 'Error Request or Response',
+            description: error.message,
+          })
+        })
+          .finally(() => {
+            this.loading = false
+          })
+      })
+      // this.$refs.ruUpdate.validateForm().then(resRU => {
+      //   this.activeKey = '2'
+      //   setTimeout(() => {
+      //     this.$refs.uzUpdate.validateForm().then(resUZ => {
+      //       this.activeKey = '3'
+      //       setTimeout(() => {
+      //         this.$refs.enUpdate.validateForm().then(resEN => {
+      //           this.loading = true
+      //           this.updateFiles(resRU.id, 'ru', resRU.data)
+      //           this.updateFiles(resUZ.id, 'uz', resUZ.data)
+      //           this.updateFiles(resEN.id, 'en', resEN.data).then(res => {
+      //             if (this.boolUpdateLoad.uz || this.boolUpdateLoad.ru || this.boolUpdateLoad.uz) {
+      //               this.loading = false
+      //               this.getAllCategory(this.params)
+      //               this.hide()
+      //             } else this.loading = false
+      //           })
+      //         }).catch(error => {
+      //           this.activeKey = '3'
+      //         })
+      //       }, 1000)
+      //     }).catch(error => { this.activeKey = '2' })
+      //   }, 1000)
+      // }).catch(error => { this.activeKey = '1' })
     }
   },
 }
