@@ -76,6 +76,74 @@ export const asyncRouterMap = [
           }
         ]
       },
+      // brands
+      {
+        path: '/brands',
+        name: 'brands',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/brands/list',
+        meta: { title: 'Brands', icon: 'apple', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/brands/list',
+            name: 'BrandList',
+            component: () => import('@/views/brands/BrandsList'),
+            meta: { title: 'Brand List', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
+      // complait types
+      {
+        path: '/complaitTypes',
+        name: 'complaitTypes',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/complaitTypes/list',
+        meta: { title: 'Complait Types', icon: 'sound', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/complaitTypes/list',
+            name: 'complaitTypesList',
+            component: () => import('@/views/complait_type/ComplaitTypesList'),
+            meta: { title: 'Complait Types List', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
+      // deliveryTypes
+      {
+        path: '/deliveryTypes',
+        name: 'deliveryTypes',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/deliveryTypes/list',
+        meta: { title: 'Delivery Types', icon: 'rocket', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/deliveryTypes/list',
+            name: 'deliveryTypesList',
+            component: () => import('@/views/delivery_type/DeliveryTypeList'),
+            meta: { title: 'Delivery Types List', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
+      // location
+      {
+        path: '/location',
+        name: 'location',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/location/list',
+        meta: { title: 'Location', icon: 'environment', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/location/list',
+            name: 'locationList',
+            component: () => import('@/views/location/LocationList'),
+            meta: { title: 'Location List', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
       // category
       {
         path: '/category/list',

@@ -24,19 +24,21 @@ export default {
   actions: {
     getAllCategory({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        let { pagination, search } = payload
+        // let { pagination, search } = payload
         commit('GET_LOAD_CATEGORY', true)
         // axios
-        axiosInit.get('/vendor-categories', {
-          limit: pagination.pageSize,
-          offset: (pagination.current - 1) * pagination.pageSize,
-          search: search
-        })
+        axiosInit.get('/admin/category'
+        //   {
+        //   limit: pagination.pageSize,
+        //   offset: (pagination.current - 1) * pagination.pageSize,
+        //   search: search
+        // }
+        )
           .then(res => {
             resolve()
-            pagination.total = parseInt(res.count)
-            commit('GET_CATEGORY_PAGINATION', pagination)
-            commit('GET_ALL_CATEGORY', res.vendor_categories)
+            // pagination.total = parseInt(res.count)
+            // commit('GET_CATEGORY_PAGINATION', pagination)
+            commit('GET_ALL_CATEGORY', res.data)
           })
           .catch(error => {
             reject(error)

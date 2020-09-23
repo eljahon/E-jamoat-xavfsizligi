@@ -1,13 +1,13 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Couriers' : $t('edit_category')">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Location' : 'Edit Location'">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
     <!-- FORM -->
-    <FormModel v-if="!editable" ref="courierCreate"/>
-    <FormModel v-if="editable" ref="courierEdit"/>
+    <FormModel v-if="!editable" ref="locationCreate"/>
+    <FormModel v-if="editable" ref="locationEdit"/>
   </a-modal>
 </template>
 <script>
@@ -47,7 +47,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['postCouriers', 'getAllCouriers', 'updateCourier', 'getCategoryBySlug']),
+    ...mapActions(['getAllLocations', 'postLocation', 'updateLocation']),
     hide() {
       this.visible = false
       this.clear()
@@ -55,16 +55,14 @@ export default {
     show(data) {
       if (this.editable) {
         console.log(data)
+        console.log(this.$refs.locationEdit)
         setTimeout(() => {
-          this.$refs.courierEdit.id = data.id
-          this.$refs.courierEdit.form = { ...data }
-          this.$refs.courierEdit.form.phone = '+' + data.phone
-          this.$refs.courierEdit.form.id = undefined
-          // this.$refs.courierEdit.form.car_number = data.car_number
-          // this.$refs.courierEdit.form.car_type = data.car_type
-          // this.$refs.courierEdit.form.car_model = data.car_model
-          // this.$refs.courierEdit.form.status = data.status
-        }, 0)
+          this.$refs.locationEdit.id = data.id
+          this.$refs.locationEdit.form.name_uz = data.name_uz
+          this.$refs.locationEdit.form.name_ru = data.name_ru
+          this.$refs.locationEdit.form.has_delivery = data.has_delivery
+          this.$refs.locationEdit.form.status = data.status
+        }, 10)
         this.visible = true
       }
       if (!this.editable) {
@@ -73,17 +71,17 @@ export default {
     },
     clear() {
       if (this.editable) {
-        this.$refs.courierEdit.resetForm()
+        this.$refs.locationEdit.resetForm()
       } else {
-        this.$refs.courierCreate.resetForm()
+        this.$refs.locationCreate.resetForm()
       }
     },
     saveDate() {
-      this.$refs.courierCreate.validateForm().then(res => {
+      this.$refs.locationCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postCouriers(res.data).then(res => {
-          this.getAllCouriers()
+        this.postLocation(res.data).then(res => {
+          this.getAllLocations(this.params)
           console.log(res)
           this.hide()
         })
@@ -101,14 +99,14 @@ export default {
       })
     },
     updateData() {
-      this.$refs.courierEdit.validateForm().then(res => {
+      this.$refs.locationEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateCourier({
+        this.updateLocation({
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllCouriers()
+          this.getAllLocations(this.params)
           this.hide()
           console.log(res)
         }).catch(error => {
