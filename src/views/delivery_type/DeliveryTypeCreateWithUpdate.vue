@@ -1,13 +1,13 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Couriers' : $t('edit_category')">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Delivery Type' : 'Edit Delivery Type'">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
     <!-- FORM -->
-    <FormModel v-if="!editable" ref="courierCreate"/>
-    <FormModel v-if="editable" ref="courierEdit"/>
+    <FormModel v-if="!editable" ref="deliveryTypeCreate"/>
+    <FormModel v-if="editable" ref="deliveryTypeEdit"/>
   </a-modal>
 </template>
 <script>
@@ -47,7 +47,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['postCouriers', 'getAllCouriers', 'updateCourier', 'getCategoryBySlug']),
+    ...mapActions(['getAllDeliveryTypes', 'postDeliveryTypes', 'updateCourier', 'getCategoryBySlug']),
     hide() {
       this.visible = false
       this.clear()
@@ -73,20 +73,20 @@ export default {
     },
     clear() {
       if (this.editable) {
-        this.$refs.courierEdit.resetForm()
+        this.$refs.deliveryTypeEdit.resetForm()
       } else {
-        this.$refs.courierCreate.resetForm()
+        this.$refs.deliveryTypeCreate.resetForm()
       }
     },
     saveDate() {
-      this.$refs.courierCreate.validateForm().then(res => {
+      this.$refs.deliveryTypeCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postCouriers(res.data).then(res => {
-            this.getAllCouriers()
-            console.log(res)
-            this.hide()
-          })
+        this.postDeliveryTypes(res.data).then(res => {
+          this.getAllDeliveryTypes()
+          console.log(res)
+          this.hide()
+        })
           .catch(error => {
             this.$notification.error({
               message: 'Error Request or Response',
@@ -101,7 +101,7 @@ export default {
       })
     },
     updateData() {
-      this.$refs.courierEdit.validateForm().then(res => {
+      this.$refs.complaitEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
         this.updateCourier({

@@ -2,41 +2,19 @@
   <a-form-model ref="ruleForm" :model="form" :rules="rules">
     <a-row>
       <a-col :span="11">
-        <a-form-model-item ref="name" label="Name UZ" prop="name_uz">
+        <a-form-model-item label="Name UZ" prop="name_uz">
           <a-input v-model="form.name_uz" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item ref="name" label="Name RU" prop="name_ru">
+        <a-form-model-item label="Name RU" prop="name_ru">
           <a-input v-model="form.name_ru" />
         </a-form-model-item>
       </a-col>
     </a-row>
     <a-row>
-      <a-col :span="11">
-        <a-form-model-item label="Description">
-          <a-input v-model="form.description" />
-        </a-form-model-item>
-      </a-col>
-      <a-col :span="11" :offset="1">
-        <a-form-model-item label="Keyword">
-          <a-input v-model="form.keyword" />
-        </a-form-model-item>
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="7">
-        <a-form-model-item label="Status" prop="status">
-            <a-input-number style="width: 100%" :min="0" v-model="form.status" />
-        </a-form-model-item>
-      </a-col>
-      <a-col :span="3" :offset="1">
-        <a-form-model-item label="Popular">
-          <a-switch checked-children="Active" un-checked-children="Deactive" v-model="form.is_popular" />
-        </a-form-model-item>
-      </a-col>
-      <a-col :span="11" :offset="1">
-        <a-form-model-item label="Image" prop="file">
+      <a-col :span="6">
+        <a-form-model-item label="Image" prop="image">
           <a-upload
             :custom-request="uploadImage"
             list-type="picture-card"
@@ -54,6 +32,16 @@
           </a-upload>
         </a-form-model-item>
       </a-col>
+      <a-col :span="5" :offset="1">
+        <a-form-model-item label="Is Popular">
+          <a-switch checked-children="Active" un-checked-children="Deactive" v-model="form.is_popular" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="11" :offset="0">
+        <a-form-model-item label="Status" prop="status">
+          <a-input-number style="width: 100%" :min="0" v-model="form.status" />
+        </a-form-model-item>
+      </a-col>
     </a-row>
   </a-form-model>
 </template>
@@ -64,33 +52,23 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img)
 }
 export default {
-  props: {
-    edit: {
-      type: Boolean,
-      default: () => {
-        return false
-      }
-    }
-  },
   data () {
     return {
+      id: null,
       imageUrl: null,
-      allData: null,
+      loadingImage: false,
       form: {
-        name_ru: '',
         name_uz: '',
+        name_ru: '',
+        image: '',
         is_popular: true,
-        description: '',
-        file: null,
-        keyword: '',
         status: 10
       },
-      item: null,
       rules: {
+        name_uz: [{ required: true, message: 'Name Required', trigger: 'blur' }],
         name_ru: [{ required: true, message: 'Name ru Required', trigger: 'blur' }],
-        name_uz: [{ required: true, message: 'Name uz Required', trigger: 'blur' }],
-        file: [{ required: true, message: 'Image Required', trigger: 'change' }],
-        status: [{ required: true, message: 'Status Required', trigger: 'blur' }]
+        status: [{ required: true, message: 'Status Required', trigger: 'blur' }],
+        image: [{ required: true, message: 'Image Required', trigger: 'blur' }]
       }
     }
   },
@@ -98,17 +76,14 @@ export default {
     validateForm() {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
-          if (valid === true) {
+          if (valid) {
             const data = new FormData()
-            data.append('file', this.form.file)
-            data.append('name_ru', this.form.name_ru)
             data.append('name_uz', this.form.name_uz)
-            // dataPost.append('is_popular', this.form.is_popular)
-            data.append('description', this.form.description)
-            data.append('keyword', this.form.keyword)
+            data.append('name_ru', this.form.name_ru)
+            data.append('image', this.form.image)
             data.append('status', this.form.status)
             resolve({
-              id: this.edit ? this.item.id : undefined,
+              id: this.id ? this.id : undefined,
               data: data
             })
           } else reject(valid)
@@ -116,12 +91,13 @@ export default {
       })
     },
     resetForm () {
+      this.imageUrl = null
       this.$refs.ruleForm.resetFields();
     },
     uploadImage(e) {
       console.log(e)
       this.loadingImage = true
-      this.form.file = e.file
+      this.form.image = e.file
       getBase64(e.file, imageUrl => {
         this.imageUrl = imageUrl
       })

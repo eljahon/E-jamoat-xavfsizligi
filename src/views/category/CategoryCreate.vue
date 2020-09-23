@@ -162,11 +162,10 @@ export default {
     saveDate  () {
       this.$refs.categoryCreate.validateForm().then(res => {
         console.log(res)
-        if (res.valid) {
           this.loading = true
           this.postCategory(res.data).then(res => {
             console.log(res)
-            this.getAllCategory(this.params)
+            this.getAllCategory()
             this.hide()
           })
           .catch(error => {
@@ -178,7 +177,6 @@ export default {
           .finally(() => {
             this.loading = false
           })
-        }
       }).catch(error => {
         console.log(error, 'ERRROORRRRRRRRRRRR')
       })

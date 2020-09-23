@@ -89,53 +89,17 @@ export default {
           title: 'Name',
           dataIndex: 'name',
           scopedSlots: { customRender: 'name' },
-          customCell: (record, inddex) => {
-            return {
-              on: {
-                click: (event) => {
-                  this.enterProduct(record.id)
-                }
-              }
-            }
-          },
         },
         {
           title: 'Slug',
           dataIndex: 'slug',
-          customCell: (record, inddex) => {
-            return {
-              on: {
-                click: (event) => {
-                  this.enterProduct(record.id)
-                }
-              }
-            }
-          },
         },
         {
           title: 'Order',
-          dataIndex: 'order',
-          customCell: (record, inddex) => {
-            return {
-              on: {
-                click: (event) => {
-                  this.enterProduct(record.id)
-                }
-              }
-            }
-          },
+          dataIndex: 'order'
         },
         {
           title: this.$t('status'),
-          customCell: (record, inddex) => {
-            return {
-              on: {
-                click: (event) => {
-                  this.enterProduct(record.id)
-                }
-              }
-            }
-          },
           dataIndex: 'active',
           scopedSlots: { customRender: 'status' },
         },
@@ -228,7 +192,7 @@ export default {
     ...mapGetters(['allCategory', 'loadCategory', 'paginationCategory']),
   },
   mounted() {
-    this.getAllCategory(this.params)
+    this.getAllCategory()
   },
 }
 </script>
