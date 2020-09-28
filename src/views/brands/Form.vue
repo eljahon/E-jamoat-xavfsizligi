@@ -24,7 +24,7 @@
           >
             <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
             <div v-else>
-              <a-icon type="plus" />
+              <a-icon :type="loadingImage ? 'loading' : 'plus'" />
               <div class="ant-upload-text">
                 Image View
               </div>
@@ -97,9 +97,16 @@ export default {
     uploadImage(e) {
       console.log(e)
       this.loadingImage = true
-      this.form.image = e.file
-      getBase64(e.file, imageUrl => {
-        this.imageUrl = imageUrl
+      const image = new FormData()
+      image.append('image', e.file)
+      this.$store.dispatch('uploadData', image).then(res => {
+        getBase64(e.file, imageUrl => {
+          this.imageUrl = imageUrl
+        })
+      })
+      .catch(err => {
+        console.log('FINALLLY')
+        this.loadingImage = false
       })
     },
     beforeUpload(file) {

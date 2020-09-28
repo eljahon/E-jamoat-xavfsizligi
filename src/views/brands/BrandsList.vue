@@ -20,6 +20,9 @@
           <a-tag v-if="item.is_popular" color="green">Popular</a-tag>
           <a-tag v-else color="red">Not Popular</a-tag>
         </template>
+        <template slot="image" slot-scope="item">
+          <img :src="item.logo_url" width="200px" height="150px" :alt="item.name">
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -81,6 +84,10 @@ export default {
           title: 'Status',
           dataIndex: 'is_popular',
           scopedSlots: { customRender: 'status' },
+        },
+        {
+          title: 'Image',
+          scopedSlots: { customRender: 'image' },
         },
         {
           title: this.$t('action'),

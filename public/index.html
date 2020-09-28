@@ -87,18 +87,34 @@
       height: 1rem;
       background: #ffffff;
     }
-
-    @-webkit-keyframes fancy {
-      to {
-        -webkit-transform: rotate(360deg) scale(0.5);
-                transform: rotate(360deg) scale(0.5);
-      }
+    .multi-ripple {
+      width: 5.6rem;
+      height: 5.6rem;
+      margin: 2rem;
+      margin-bottom: 20px;
     }
 
-    @keyframes fancy {
+    .multi-ripple div {
+      position: absolute;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      border: 0.5rem solid #979fd0;
+      animation: 1.5s ripple infinite;
+    }
+
+    .multi-ripple div:nth-child(2) {
+       animation-delay: 0.5s;
+    }
+    @keyframes ripple {
+      from {
+        transform: scale(0);
+        opacity: 1;
+      }
+
       to {
-        -webkit-transform: rotate(360deg) scale(0.5);
-                transform: rotate(360deg) scale(0.5);
+        transform: scale(1);
+        opacity: 0;
       }
     }
     .footertitle {
@@ -120,11 +136,10 @@
   </noscript>
   <div id="app">
     <div class="first-loading-wrp">
-      <h1>ZAYTUN</h1>
-      <div class="fancy-spinner">
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="dot"></div>
+      <h1>Zaytun</h1>
+      <div class="multi-ripple">
+        <div></div>
+        <div></div>
       </div>
       <!-- <div class="loading-wrp">
         <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>

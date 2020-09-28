@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Delivery Type List" style="width: 100%">
+    <a-card title="Vacancy List" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -10,10 +10,11 @@
       </a-row>
       <a-table
         :columns="columns"
-        :data-source="alldeliveryTypes"
-        :loading="loadDeliveryTypes"
+        :data-source="allVacancys"
+        :loading="loadVacancy"
         :rowKey="item => item.id"
         @change="changePagination"
+        :pagination="paginationVacancy"
         bordered
       >
         <template slot="action" slot-scope="item">
@@ -43,17 +44,16 @@
     </a-card>
 
     <!-- MODALS -->
-    <delivery-create ref="createDeliveryType" :editable="false" :params="params"/>
-    <delivery-create ref="editDeliveryType" :editable="true" :params="params"/>
+    <vacancy-create ref="createVacancy" :editable="false" :params="params"/>
+    <vacancy-create ref="editVacancy" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import deliveryTypeCreate from './DeliveryTypeCreateWithUpdate'
+import vacancyCreate from './VacancyCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    'delivery-create': deliveryTypeCreate,
-    // 'category-edit': editItem
+    'vacancy-create': vacancyCreate,
   },
   data() {
     return {
@@ -62,20 +62,20 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name UZ',
-          dataIndex: 'name_uz',
+          title: 'Title UZ',
+          dataIndex: 'title_uz',
         },
         {
-          title: 'Name RU',
-          dataIndex: 'name_ru',
+          title: 'Title RU',
+          dataIndex: 'title_ru',
         },
         {
-          title: 'Price',
-          dataIndex: 'price',
+          title: 'Content UZ',
+          dataIndex: 'content_uz',
         },
         {
-          title: 'Status',
-          dataIndex: 'status',
+          title: 'Content RU',
+          dataIndex: 'content_ru',
         },
         {
           title: this.$t('action'),
@@ -96,34 +96,35 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllDeliveryTypes', 'deleteDeliveryTypes']),
+    ...mapActions(['getAllVacancys', 'getAllLocationsList', 'deleteVacancy']),
     editItem(item) {
-      this.$refs.editDeliveryType.show(item)
+      this.$refs.editVacancy.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllDeliveryTypes(this.params)
+      this.getAllVacancys(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllVacancys(this.params)
     },
     removeItem (item) {
       console.log(item)
-      this.deleteDeliveryTypes(item.id).then(res => {
-        this.getAllDeliveryTypes(this.params)
+      this.deleteVacancy(item.id).then(res => {
+        this.getAllVacancys(this.params)
       })
     },
     addItem () {
-      this.$refs.createDeliveryType.show()
+      this.$refs.createVacancy.show()
     }
   },
   computed: {
-    ...mapGetters(['alldeliveryTypes', 'loadDeliveryTypes', 'paginationDeliveryTypes']),
+    ...mapGetters(['allVacancys', 'loadVacancy', 'paginationVacancy']),
   },
   mounted() {
-    this.getAllDeliveryTypes(this.params)
+    this.getAllVacancys(this.params)
+    this.getAllLocationsList()
   },
 }
 </script>
