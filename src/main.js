@@ -15,7 +15,6 @@ import FlagIcon from 'vue-flag-icon'
 import { FormModel } from 'ant-design-vue'
 import InputTag from 'vue-input-tag'
 import YmapPlugin from 'vue-yandex-maps'
-
 // mock
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
 import './mock'

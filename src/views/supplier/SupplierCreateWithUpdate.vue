@@ -1,13 +1,13 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" :maskClosable="false" @cancel="hide" :title="!editable ? 'Add Brand' : 'Edit Brand'">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Measure' : 'Edit Measure'">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
     <!-- FORM -->
-    <FormModel v-if="!editable" ref="brandCreate"/>
-    <FormModel v-if="editable" ref="brandEdit"/>
+    <FormModel v-if="!editable" ref="measureCreate"/>
+    <FormModel v-if="editable" ref="measureEdit"/>
   </a-modal>
 </template>
 <script>
@@ -39,12 +39,15 @@ export default {
   },
   data() {
     return {
+      activeKey: '1',
       loading: false,
       visible: false,
+      editableData: [],
+      boolUpdateLoad: {}
     }
   },
   methods: {
-    ...mapActions(['postBrand', 'getAllBrands', 'updateCourier', 'getCategoryBySlug']),
+    ...mapActions(['getAllMeasures', 'postMeasure', 'updateMeasure']),
     hide() {
       this.visible = false
       this.clear()
@@ -52,14 +55,14 @@ export default {
     show(data) {
       if (this.editable) {
         console.log(data)
+        console.log(this.$refs.measureEdit)
         setTimeout(() => {
-          this.$refs.brandEdit.id = data.id
-          this.$refs.brandEdit.imageUrl = data.logo_url
-          this.$refs.brandEdit.form = { ...data }
-          this.$refs.brandEdit.form.phone = '+' + data.phone
-          this.$refs.brandEdit.form.id = undefined
-          this.$refs.brandEdit.form.slug = undefined
-        }, 0)
+          this.$refs.measureEdit.id = data.id
+          this.$refs.measureEdit.form.name_uz = data.name_uz
+          this.$refs.measureEdit.form.name_ru = data.name_ru
+          this.$refs.measureEdit.form.symbol = data.symbol
+          this.$refs.measureEdit.form.status = data.status
+        }, 10)
         this.visible = true
       }
       if (!this.editable) {
@@ -68,17 +71,17 @@ export default {
     },
     clear() {
       if (this.editable) {
-        this.$refs.brandEdit.resetForm()
+        this.$refs.measureEdit.resetForm()
       } else {
-        this.$refs.brandCreate.resetForm()
+        this.$refs.measureCreate.resetForm()
       }
     },
-    saveDate  () {
-      this.$refs.brandCreate.validateForm().then(res => {
+    saveDate() {
+      this.$refs.measureCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postBrand(res.data).then(res => {
-          this.getAllBrands(this.params)
+        this.postMeasure(res.data).then(res => {
+          this.getAllMeasures(this.params)
           console.log(res)
           this.hide()
         })
@@ -95,15 +98,15 @@ export default {
         console.log(error, 'ERRROORRRRRRRRRRRR')
       })
     },
-    updateData () {
-      this.$refs.courierEdit.validateForm().then(res => {
+    updateData() {
+      this.$refs.measureEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateCourier({
+        this.updateMeasure({
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllBrands(this.params)
+          this.getAllMeasures(this.params)
           this.hide()
           console.log(res)
         }).catch(error => {
@@ -116,14 +119,18 @@ export default {
             this.loading = false
           })
       })
-    }
-  },
+    },
+  }
 }
 </script>
 <style>
-.imagePreview img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+
+.flag-icon {
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 4px black;
+  margin-right: 2px;
+  transform: translateY(-5px);
 }
 </style>

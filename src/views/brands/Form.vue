@@ -60,7 +60,7 @@ export default {
       form: {
         name_uz: '',
         name_ru: '',
-        image: '',
+        logo: '',
         is_popular: true,
         status: 10
       },
@@ -68,7 +68,7 @@ export default {
         name_uz: [{ required: true, message: 'Name Required', trigger: 'blur' }],
         name_ru: [{ required: true, message: 'Name ru Required', trigger: 'blur' }],
         status: [{ required: true, message: 'Status Required', trigger: 'blur' }],
-        image: [{ required: true, message: 'Image Required', trigger: 'blur' }]
+        logo: [{ required: true, message: 'Image Required', trigger: 'blur' }]
       }
     }
   },
@@ -77,14 +77,9 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            const data = new FormData()
-            data.append('name_uz', this.form.name_uz)
-            data.append('name_ru', this.form.name_ru)
-            data.append('image', this.form.image)
-            data.append('status', this.form.status)
             resolve({
               id: this.id ? this.id : undefined,
-              data: data
+              data: this.form
             })
           } else reject(valid)
         })
@@ -101,6 +96,7 @@ export default {
       image.append('image', e.file)
       this.$store.dispatch('uploadData', image).then(res => {
         getBase64(e.file, imageUrl => {
+          this.form.logo = res.data.path
           this.imageUrl = imageUrl
         })
       })
