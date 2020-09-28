@@ -1,33 +1,33 @@
 import axiosInit from '@/utils/axios_init'
 export default {
   state: {
-    deliveryTypes: [],
-    loadDeliveryTypes: false,
+    measures: [],
+    loadMeasure: false,
     pagination: {}
   },
   getters: {
-    alldeliveryTypes: (state) => state.deliveryTypes,
-    loadDeliveryTypes: (state) => state.loadDeliveryTypes,
-    paginationDeliveryTypes: (state) => state.pagination
+    allMeasures: (state) => state.measures,
+    loadMeasure: (state) => state.loadMeasure,
+    paginationMeasure: (state) => state.pagination
   },
   mutations: {
-    GET_ALL_DELIVERY_TYPES(state, payload) {
-      state.deliveryTypes = payload
+    GET_ALL_MEASURE(state, payload) {
+      state.measures = payload
     },
-    GET_LOAD_DELIVERY_TYPES(state, payload) {
-      state.loadDeliveryTypes = payload
+    GET_LOAD_MEASURE(state, payload) {
+      state.loadMeasure = payload
     },
-    GET_DELIVERY_TYPES_PAGINATION(state, payload) {
+    GET_MEASURE_PAGINATION(state, payload) {
       state.pagination = payload
     }
   },
   actions: {
-    getAllDeliveryTypes({ commit }, payload) {
+    getAllMeasures({ commit }, payload) {
       return new Promise((resolve, reject) => {
         let { pagination } = payload
-        commit('GET_LOAD_DELIVERY_TYPES', true)
+        commit('GET_LOAD_MEASURE', true)
         // axios
-        axiosInit.get('/admin/delivery-type',
+        axiosInit.get('/admin/measure',
           {
             page: pagination.current
           }
@@ -35,21 +35,21 @@ export default {
           .then(res => {
             resolve()
             pagination.total = parseInt(res.links.total)
-            commit('GET_DELIVERY_TYPES_PAGINATION', pagination)
-            commit('GET_ALL_DELIVERY_TYPES', res.data)
+            commit('GET_MEASURE_PAGINATION', pagination)
+            commit('GET_ALL_MEASURE', res.data)
           })
           .catch(error => {
             reject(error)
             this.$message.error(error.message)
           })
           .finally(() => {
-            commit('GET_LOAD_DELIVERY_TYPES', false)
+            commit('GET_LOAD_MEASURE', false)
           })
       })
     },
-    updateDeliveryType({ commit }, payload) {
+    updateMeasure({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.put(`/admin/delivery-type/${payload.id}`, payload.data)
+        axiosInit.put(`/admin/measure/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
             console.log(res)
@@ -60,9 +60,9 @@ export default {
           })
       })
     },
-    deleteDeliveryTypes({ commit }, payload) {
+    deleteMeasure({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/admin/delivery-type/${payload}`)
+        axiosInit.delete(`/admin/measure/${payload}`)
           .then(res => {
             resolve()
             console.log(res)
@@ -73,9 +73,9 @@ export default {
           })
       })
     },
-    postDeliveryTypes({ commit }, payload) {
+    postMeasure({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.post('/admin/delivery-type', payload).then(res => {
+        axiosInit.post('/admin/measure', payload).then(res => {
           resolve(res)
           console.log(res)
         })

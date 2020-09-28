@@ -144,6 +144,40 @@ export const asyncRouterMap = [
           }
         ]
       },
+      // measure
+      {
+        path: '/measure',
+        name: 'measure',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/measure/list',
+        meta: { title: 'Measure', icon: 'paper-clip', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/measure/list',
+            name: 'measureList',
+            component: () => import('@/views/measure/MeasureList'),
+            meta: { title: 'Measure List', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
+      // vacancy
+      {
+        path: '/vacancy',
+        name: 'vacancy',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/vacancy/list',
+        meta: { title: 'Vacancy', icon: 'contacts', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/vacancy/list',
+            name: 'vacancyList',
+            component: () => import('@/views/vacancy/VacancyList'),
+            meta: { title: 'Vacancy List', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
       // category
       {
         path: '/category/list',

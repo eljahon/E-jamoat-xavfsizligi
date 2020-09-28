@@ -1,33 +1,33 @@
 import axiosInit from '@/utils/axios_init'
 export default {
   state: {
-    deliveryTypes: [],
-    loadDeliveryTypes: false,
+    vacancys: [],
+    loadVacancy: false,
     pagination: {}
   },
   getters: {
-    alldeliveryTypes: (state) => state.deliveryTypes,
-    loadDeliveryTypes: (state) => state.loadDeliveryTypes,
-    paginationDeliveryTypes: (state) => state.pagination
+    allVacancys: (state) => state.vacancys,
+    loadVacancy: (state) => state.loadVacancy,
+    paginationVacancy: (state) => state.pagination
   },
   mutations: {
-    GET_ALL_DELIVERY_TYPES(state, payload) {
-      state.deliveryTypes = payload
+    GET_ALL_VACANCY(state, payload) {
+      state.vacancys = payload
     },
-    GET_LOAD_DELIVERY_TYPES(state, payload) {
-      state.loadDeliveryTypes = payload
+    GET_LOAD_VACANCY(state, payload) {
+      state.loadVacancy = payload
     },
-    GET_DELIVERY_TYPES_PAGINATION(state, payload) {
+    GET_VACANCY_PAGINATION(state, payload) {
       state.pagination = payload
     }
   },
   actions: {
-    getAllDeliveryTypes({ commit }, payload) {
+    getAllVacancys({ commit }, payload) {
       return new Promise((resolve, reject) => {
         let { pagination } = payload
-        commit('GET_LOAD_DELIVERY_TYPES', true)
+        commit('GET_LOAD_VACANCY', true)
         // axios
-        axiosInit.get('/admin/delivery-type',
+        axiosInit.get('/admin/vacancy',
           {
             page: pagination.current
           }
@@ -35,21 +35,21 @@ export default {
           .then(res => {
             resolve()
             pagination.total = parseInt(res.links.total)
-            commit('GET_DELIVERY_TYPES_PAGINATION', pagination)
-            commit('GET_ALL_DELIVERY_TYPES', res.data)
+            commit('GET_VACANCY_PAGINATION', pagination)
+            commit('GET_ALL_VACANCY', res.data)
           })
           .catch(error => {
             reject(error)
             this.$message.error(error.message)
           })
           .finally(() => {
-            commit('GET_LOAD_DELIVERY_TYPES', false)
+            commit('GET_LOAD_VACANCY', false)
           })
       })
     },
-    updateDeliveryType({ commit }, payload) {
+    updateVacancy({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.put(`/admin/delivery-type/${payload.id}`, payload.data)
+        axiosInit.put(`/admin/vacancy/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
             console.log(res)
@@ -60,9 +60,9 @@ export default {
           })
       })
     },
-    deleteDeliveryTypes({ commit }, payload) {
+    deleteVacancy({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/admin/delivery-type/${payload}`)
+        axiosInit.delete(`/admin/vacancy/${payload}`)
           .then(res => {
             resolve()
             console.log(res)
@@ -73,9 +73,9 @@ export default {
           })
       })
     },
-    postDeliveryTypes({ commit }, payload) {
+    postVacancy({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.post('/admin/delivery-type', payload).then(res => {
+        axiosInit.post('/admin/vacancy', payload).then(res => {
           resolve(res)
           console.log(res)
         })

@@ -1,13 +1,13 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Delivery Type' : 'Edit Delivery Type'">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Measure' : 'Edit Measure'">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
     <!-- FORM -->
-    <FormModel v-if="!editable" ref="deliveryTypeCreate"/>
-    <FormModel v-if="editable" ref="deliveryTypeEdit"/>
+    <FormModel v-if="!editable" ref="measureCreate"/>
+    <FormModel v-if="editable" ref="measureEdit"/>
   </a-modal>
 </template>
 <script>
@@ -47,7 +47,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllDeliveryTypes', 'postDeliveryTypes', 'updateDeliveryType', 'getCategoryBySlug']),
+    ...mapActions(['getAllMeasures', 'postMeasure', 'updateMeasure']),
     hide() {
       this.visible = false
       this.clear()
@@ -55,11 +55,14 @@ export default {
     show(data) {
       if (this.editable) {
         console.log(data)
+        console.log(this.$refs.measureEdit)
         setTimeout(() => {
-          this.$refs.deliveryTypeEdit.id = data.id
-          this.$refs.deliveryTypeEdit.form = { ...data }
-          this.$refs.deliveryTypeEdit.form.id = undefined
-        }, 0)
+          this.$refs.measureEdit.id = data.id
+          this.$refs.measureEdit.form.name_uz = data.name_uz
+          this.$refs.measureEdit.form.name_ru = data.name_ru
+          this.$refs.measureEdit.form.symbol = data.symbol
+          this.$refs.measureEdit.form.status = data.status
+        }, 10)
         this.visible = true
       }
       if (!this.editable) {
@@ -68,17 +71,17 @@ export default {
     },
     clear() {
       if (this.editable) {
-        this.$refs.deliveryTypeEdit.resetForm()
+        this.$refs.measureEdit.resetForm()
       } else {
-        this.$refs.deliveryTypeCreate.resetForm()
+        this.$refs.measureCreate.resetForm()
       }
     },
     saveDate() {
-      this.$refs.deliveryTypeCreate.validateForm().then(res => {
+      this.$refs.measureCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postDeliveryTypes(res.data).then(res => {
-          this.getAllDeliveryTypes()
+        this.postMeasure(res.data).then(res => {
+          this.getAllMeasures(this.params)
           console.log(res)
           this.hide()
         })
@@ -96,14 +99,14 @@ export default {
       })
     },
     updateData() {
-      this.$refs.deliveryTypeEdit.validateForm().then(res => {
+      this.$refs.measureEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateDeliveryType({
+        this.updateMeasure({
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllDeliveryTypes()
+          this.getAllMeasures(this.params)
           this.hide()
           console.log(res)
         }).catch(error => {
