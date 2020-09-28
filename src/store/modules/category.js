@@ -24,20 +24,18 @@ export default {
   actions: {
     getAllCategory({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        // let { pagination, search } = payload
+        let { pagination } = payload
         commit('GET_LOAD_CATEGORY', true)
         // axios
-        axiosInit.get('/admin/category'
-        //   {
-        //   limit: pagination.pageSize,
-        //   offset: (pagination.current - 1) * pagination.pageSize,
-        //   search: search
-        // }
+        axiosInit.get('/admin/category',
+          {
+          page: pagination.current
+        }
         )
           .then(res => {
             resolve()
-            // pagination.total = parseInt(res.count)
-            // commit('GET_CATEGORY_PAGINATION', pagination)
+            pagination.total = parseInt(res.links.total)
+            commit('GET_CATEGORY_PAGINATION', pagination)
             commit('GET_ALL_CATEGORY', res.data)
           })
           .catch(error => {
@@ -50,11 +48,8 @@ export default {
       })
     },
     updateCategory({ commit }, payload) {
-      if (payload.locker) {
-        payload.data.active = !payload.data.active
-      }
       return new Promise((resolve, reject) => {
-        axiosInit.put(`/vendor-categories/${payload.id}`, payload.data)
+        axiosInit.put(`/admin/category/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
             console.log(res)
@@ -67,7 +62,7 @@ export default {
     },
     deleteCategory({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/vendor-categories/${payload}`)
+        axiosInit.delete(`/admin/category/${payload}`)
           .then(res => {
             resolve()
             console.log(res)

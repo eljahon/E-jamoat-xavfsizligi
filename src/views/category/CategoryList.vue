@@ -17,9 +17,14 @@
         @change="changePagination"
         bordered
       >
-        <template slot="status" slot-scope="is_active">
-          <a-tag v-if="is_active" color="#108ee9">{{ $t('active') }}</a-tag>
-          <a-tag v-else color="#f00">{{ $t('inactive') }}</a-tag>
+        <template slot="status" slot-scope="is_popular">
+          <a-tag @click="cropper" v-if="is_popular" color="green">Popular</a-tag>
+          <a-tag v-else color="red">Not Popular</a-tag>
+        </template>
+        <template slot="image" slot-scope="item">
+          <div class="imagePreview">
+            <img :src="item" :alt="item.name">
+          </div>
         </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
@@ -43,29 +48,12 @@
               ></a-button>
             </a-tooltip>
           </a-popconfirm>
-          <a-popconfirm
-            placement="topRight"
-            slot="extra"
-            :title="item.active ? $t('blockMsg') : $t('unblockMsg')"
-            @confirm="lockCategory(item)"
-            :okText="$t('yes')"
-            :cancelText="$t('no')"
-          >
-            <a-tooltip>
-              <template slot="title">{{ item.active ? $t('blocked') : $t('unblock') }}</template>
-              <a-button
-                style="margin: 0 2px"
-                :type="item.active ? 'danger': 'primary'"
-                :icon="item.active? 'lock' : 'unlock'"
-                ghost
-              ></a-button>
-            </a-tooltip>
-          </a-popconfirm>
         </template>
       </a-table>
     </a-card>
 
     <!-- MODALS -->
+    <cropper ref="imageCrop"></cropper>
     <category-create ref="createCategory" :editable="false" :params="params"/>
     <category-create ref="editCategory" :editable="true" :slug="slug" :params="params"/>
     <!-- <category-edit ref="editCategory" :editable="true" :params="params"/> -->
@@ -73,10 +61,12 @@
 </template>
 <script>
 import CreateCategory from './CategoryCreate'
+import Croppper from '@/components/CropImageUpload/cropper'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
     'category-create': CreateCategory,
+    'cropper': Croppper
     // 'category-edit': EditCategory
   },
   data() {
@@ -86,22 +76,26 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          scopedSlots: { customRender: 'name' },
+          title: 'Name UZ',
+          dataIndex: 'name_uz',
+        },
+        {
+          title: 'Name RU',
+          dataIndex: 'name_ru',
         },
         {
           title: 'Slug',
           dataIndex: 'slug',
         },
         {
-          title: 'Order',
-          dataIndex: 'order'
+          title: 'Popular',
+          dataIndex: 'is_popular',
+          scopedSlots: { customRender: 'status' },
         },
         {
-          title: this.$t('status'),
-          dataIndex: 'active',
-          scopedSlots: { customRender: 'status' },
+          title: 'Image',
+          dataIndex: 'image_url',
+          scopedSlots: { customRender: 'image' },
         },
         {
           title: this.$t('action'),
@@ -114,7 +108,7 @@ export default {
       params: {
         pagination: {
           current: 1,
-          pageSize: 10,
+          pageSize: 15,
           total: null,
         },
         search: '',
@@ -123,11 +117,11 @@ export default {
   },
   methods: {
     ...mapActions(['getAllCategory', 'updateCategory', 'deleteCategory']),
+    cropper () {
+      this.$refs.imageCrop.show()
+    },
     editCategory(item) {
-      this.slug = item.slug
-      setTimeout(() => {
-        this.$refs.editCategory.show()
-      }, 500)
+      this.$refs.editCategory.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
@@ -163,7 +157,7 @@ export default {
     },
     removeCategory (item) {
       console.log(item)
-      this.deleteCategory(item.slug).then(res => {
+      this.deleteCategory(item.id).then(res => {
         this.getAllCategory(this.params)
       })
     },
@@ -192,12 +186,17 @@ export default {
     ...mapGetters(['allCategory', 'loadCategory', 'paginationCategory']),
   },
   mounted() {
-    this.getAllCategory()
+    this.getAllCategory(this.params)
   },
 }
 </script>
 <style>
 .ant-table-row:hover {
   cursor: pointer;
+}
+.imagePreview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
 }
 </style>

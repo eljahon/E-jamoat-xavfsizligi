@@ -27,7 +27,7 @@
     <a-row>
       <a-col :span="7">
         <a-form-model-item label="Status" prop="status">
-            <a-input-number style="width: 100%" :min="0" v-model="form.status" />
+          <a-input-number style="width: 100%" :min="0" v-model="form.status" />
         </a-form-model-item>
       </a-col>
       <a-col :span="3" :offset="1">
@@ -36,34 +36,27 @@
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item label="Image" prop="image">
-          <a-upload
-            :custom-request="uploadImage"
-            list-type="picture-card"
-            class="avatar-uploader"
-            :show-upload-list="false"
-            :before-upload="beforeUpload"
-          >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-            <div v-else>
-              <a-icon :type="loadingImage ? 'loading' : 'plus'" />
-              <div class="ant-upload-text">
-                Image View
-              </div>
+        <a-form-model-item label="Image" prop="file">
+          <div class="upload" @click="uploadImage">
+            <div v-if="imageUrl">
+              <img :src="imageUrl" style="object-fit: cover" alt="avatar" />
             </div>
-          </a-upload>
+            <div v-else class="no-image">
+              <a-icon style="font-size: 32px" :type="loadingImage ? 'loading' : 'plus'" />
+            </div>
+          </div>
         </a-form-model-item>
       </a-col>
     </a-row>
+    <cropper ref="imageUpload" @save="saveImage"></cropper>
   </a-form-model>
 </template>
 <script>
-function getBase64(img, callback) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
+import Cropper from '@/components/CropImageUpload/cropper'
 export default {
+  components: {
+    'cropper': Cropper
+  },
   props: {
     edit: {
       type: Boolean,
@@ -111,19 +104,19 @@ export default {
     resetForm () {
       this.$refs.ruleForm.resetFields();
     },
-    uploadImage(e) {
-      console.log(e)
+    uploadImage() {
+      this.$refs.imageUpload.show()
+    },
+    saveImage (e) {
+      this.$refs.imageUpload.hide()
       this.loadingImage = true
       const image = new FormData()
-      image.append('image', e.file)
+      image.append('image', e.data)
       this.$store.dispatch('uploadData', image).then(res => {
-        getBase64(e.file, imageUrl => {
-          this.form.image = res.data.path
-          this.imageUrl = imageUrl
-        })
+        this.imageUrl = e.url
+        this.form.image = res.data.path
       })
-        .catch(err => {
-          console.log('FINALLLY')
+        .finally(() => {
           this.loadingImage = false
         })
     },
@@ -147,18 +140,35 @@ img, .mask {
   overflow: hidden;
 }
 
-.avatar-uploader > .ant-upload.ant-upload-select-picture-card {
-  width: 150px;
-  height: 150px;
+.upload {
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+  transition: all 0.5s;
 }
-
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
+.upload::after {
+  opacity: 0;
+  transition: opacity .5s;
 }
-
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
+.upload:hover::after {
+  width: 200px;
+  height: 200px;
+  opacity: 1;
+  background-color: rgba(0,0,0, .2);
+  content: '';
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+}
+.upload .no-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position-x: -55px;
+  background-image: url('../../assets/uploadPNG.png');
 }
 </style>

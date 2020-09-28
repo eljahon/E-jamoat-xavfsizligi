@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a-card title="Brand List" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="addBrand">{{ $t('add') }}</a-button>
+    <a-card title="Measures List" style="width: 100%">
+      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
@@ -10,31 +10,22 @@
       </a-row>
       <a-table
         :columns="columns"
-        :data-source="allBrands"
-        :loading="loadBrand"
+        :data-source="allMeasures"
+        :loading="loadMeasure"
         :rowKey="item => item.id"
         @change="changePagination"
         bordered
       >
-        <template slot="status" slot-scope="item">
-          <a-tag v-if="item.is_popular" color="green">Popular</a-tag>
-          <a-tag v-else color="red">Not Popular</a-tag>
-        </template>
-        <template slot="image" slot-scope="item">
-          <div class="imagePreview">
-            <img :src="item.logo_url">
-          </div>
-        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editBrand(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
             slot="extra"
             :title="$t('deleteMsg')"
-            @confirm="removeBrand(item)"
+            @confirm="removeItem(item)"
             :okText="$t('yes')"
             :cancelText="$t('no')"
           >
@@ -52,17 +43,16 @@
     </a-card>
 
     <!-- MODALS -->
-    <brand-create ref="createBrand" :editable="false" :params="params"/>
-    <brand-create ref="editBrand" :editable="true" :params="params"/>
+    <measure-create ref="createMeasure" :editable="false" :params="params"/>
+    <measure-create ref="editMeasure" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import BrandCreate from './BrandCreate'
+import measureCreate from './MeasureCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    'brand-create': BrandCreate,
-    // 'category-edit': editBrand
+    'measure-create': measureCreate,
   },
   data() {
     return {
@@ -71,25 +61,16 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name_ru',
-        },
-        {
-          title: 'Name uz',
+          title: 'Name UZ',
           dataIndex: 'name_uz',
         },
         {
-          title: 'Slug',
-          dataIndex: 'slug',
+          title: 'Name RU',
+          dataIndex: 'name_ru',
         },
         {
-          title: 'Status',
-          dataIndex: 'is_popular',
-          scopedSlots: { customRender: 'status' },
-        },
-        {
-          title: 'Image',
-          scopedSlots: { customRender: 'image' },
+          title: 'Symbol',
+          dataIndex: 'symbol',
         },
         {
           title: this.$t('action'),
@@ -110,34 +91,34 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllBrands', 'deleteBrand']),
-    editBrand(item) {
-      this.$refs.editBrand.show(item)
+    ...mapActions(['getAllMeasures', 'deleteMeasure']),
+    editItem(item) {
+      this.$refs.editMeasure.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllBrands(this.params)
+      this.getAllMeasures(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllMeasures(this.params)
     },
-    removeBrand (item) {
+    removeItem (item) {
       console.log(item)
-      this.deleteBrand(item.id).then(res => {
-        this.getAllBrands(this.params)
+      this.deleteMeasure(item.id).then(res => {
+        this.getAllMeasures(this.params)
       })
     },
-    addBrand () {
-      this.$refs.createBrand.show()
+    addItem () {
+      this.$refs.createMeasure.show()
     }
   },
   computed: {
-    ...mapGetters(['allBrands', 'loadBrand', 'paginationBrand']),
+    ...mapGetters(['allMeasures', 'loadMeasure', 'paginationMeasure']),
   },
   mounted() {
-    this.getAllBrands(this.params)
+    this.getAllMeasures(this.params)
   },
 }
 </script>
