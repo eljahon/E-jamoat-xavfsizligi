@@ -1,13 +1,13 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Supplier' : 'Edit Supplier'">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Complaint Types' : 'Edit Complaint Types'">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
     <!-- FORM -->
-    <FormModel v-if="!editable" ref="supplierCreate"/>
-    <FormModel v-if="editable" ref="supplierEdit"/>
+    <FormModel v-if="!editable" ref="complaintCreate"/>
+    <FormModel v-if="editable" ref="complaintEdit"/>
   </a-modal>
 </template>
 <script>
@@ -39,12 +39,15 @@ export default {
   },
   data() {
     return {
+      activeKey: '1',
       loading: false,
-      visible: false
+      visible: false,
+      editableData: [],
+      boolUpdateLoad: {}
     }
   },
   methods: {
-    ...mapActions(['getAllSuppliers', 'postSupplier', 'updateSupplier']),
+    ...mapActions(['getAllComplaintTypes', 'postComplaintTypes', 'updateComplaintTypes']),
     hide() {
       this.visible = false
       this.clear()
@@ -53,12 +56,15 @@ export default {
       if (this.editable) {
         console.log(data)
         setTimeout(() => {
-          this.$refs.supplierEdit.id = data.id
-          this.$refs.supplierEdit.form = { ...data }
-          this.$refs.supplierEdit.form.phone = '+998' + data.phone
-          this.$refs.supplierEdit.form.id = undefined
-          this.$refs.supplierEdit.form.slug = undefined
-        }, 10)
+          this.$refs.courierEdit.id = data.id
+          this.$refs.courierEdit.form = { ...data }
+          this.$refs.courierEdit.form.phone = '+' + data.phone
+          this.$refs.courierEdit.form.id = undefined
+          // this.$refs.courierEdit.form.car_number = data.car_number
+          // this.$refs.courierEdit.form.car_type = data.car_type
+          // this.$refs.courierEdit.form.car_model = data.car_model
+          // this.$refs.courierEdit.form.status = data.status
+        }, 0)
         this.visible = true
       }
       if (!this.editable) {
@@ -67,17 +73,17 @@ export default {
     },
     clear() {
       if (this.editable) {
-        this.$refs.supplierEdit.resetForm()
+        this.$refs.complaintEdit.resetForm()
       } else {
-        this.$refs.supplierCreate.resetForm()
+        this.$refs.complaintCreate.resetForm()
       }
     },
     saveDate() {
-      this.$refs.supplierCreate.validateForm().then(res => {
+      this.$refs.complaintCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postSupplier(res.data).then(res => {
-          this.getAllSuppliers(this.params)
+        this.postComplaintTypes(res.data).then(res => {
+          this.getAllComplaintTypes(this.params)
           console.log(res)
           this.hide()
         })
@@ -95,16 +101,16 @@ export default {
       })
     },
     updateData() {
-      this.$refs.supplierEdit.validateForm().then(res => {
+      this.$refs.complaintEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateSupplier({
+        this.updateComplaintTypes({
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllSuppliers(this.params)
-          console.log(res)
+          this.getAllComplaintTypes(this.params)
           this.hide()
+          console.log(res)
         }).catch(error => {
           this.$notification.error({
             message: 'Error Request or Response',

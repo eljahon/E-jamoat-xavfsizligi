@@ -1,13 +1,13 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Complait Types' : 'Edit Complait Types'">
+  <a-modal width="800px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Supplier Store' : 'Edit Supplier Store'">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
     <!-- FORM -->
-    <FormModel v-if="!editable" ref="complaitCreate"/>
-    <FormModel v-if="editable" ref="complaitEdit"/>
+    <FormModel v-if="!editable" ref="supplierStoreCreate"/>
+    <FormModel v-if="editable" ref="supplierStoreEdit"/>
   </a-modal>
 </template>
 <script>
@@ -39,15 +39,12 @@ export default {
   },
   data() {
     return {
-      activeKey: '1',
       loading: false,
-      visible: false,
-      editableData: [],
-      boolUpdateLoad: {}
+      visible: false
     }
   },
   methods: {
-    ...mapActions(['getAllComplaitTypes', 'postComplaitTypes', 'updateCourier', 'getCategoryBySlug']),
+    ...mapActions(['getAllSupplierStores', 'postSupplierStore', 'updateSupplierStore']),
     hide() {
       this.visible = false
       this.clear()
@@ -56,15 +53,12 @@ export default {
       if (this.editable) {
         console.log(data)
         setTimeout(() => {
-          this.$refs.courierEdit.id = data.id
-          this.$refs.courierEdit.form = { ...data }
-          this.$refs.courierEdit.form.phone = '+' + data.phone
-          this.$refs.courierEdit.form.id = undefined
-          // this.$refs.courierEdit.form.car_number = data.car_number
-          // this.$refs.courierEdit.form.car_type = data.car_type
-          // this.$refs.courierEdit.form.car_model = data.car_model
-          // this.$refs.courierEdit.form.status = data.status
-        }, 0)
+          this.$refs.supplierStoreEdit.id = data.id
+          this.$refs.supplierStoreEdit.form = { ...data }
+          this.$refs.supplierStoreEdit.form.phone = '+998' + data.phone
+          this.$refs.supplierStoreEdit.form.id = undefined
+          this.$refs.supplierStoreEdit.form.slug = undefined
+        }, 10)
         this.visible = true
       }
       if (!this.editable) {
@@ -73,17 +67,17 @@ export default {
     },
     clear() {
       if (this.editable) {
-        this.$refs.complaitEdit.resetForm()
+        this.$refs.supplierStoreEdit.resetForm()
       } else {
-        this.$refs.complaitCreate.resetForm()
+        this.$refs.supplierStoreCreate.resetForm()
       }
     },
     saveDate() {
-      this.$refs.complaitCreate.validateForm().then(res => {
+      this.$refs.supplierStoreCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postComplaitTypes(res.data).then(res => {
-          this.getAllComplaitTypes()
+        this.postSupplierStore(res.data).then(res => {
+          this.getAllSupplierStores(this.params)
           console.log(res)
           this.hide()
         })
@@ -101,16 +95,16 @@ export default {
       })
     },
     updateData() {
-      this.$refs.complaitEdit.validateForm().then(res => {
+      this.$refs.supplierStoreEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateCourier({
+        this.updateSupplierStore({
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllCouriers()
-          this.hide()
+          this.getAllSupplierStores(this.params)
           console.log(res)
+          this.hide()
         }).catch(error => {
           this.$notification.error({
             message: 'Error Request or Response',

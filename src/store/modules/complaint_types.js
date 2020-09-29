@@ -1,55 +1,55 @@
 import axiosInit from '@/utils/axios_init'
 export default {
   state: {
-    brands: [],
-    loadBrand: false,
+    complaintTypes: [],
+    loadComplaintTypes: false,
     pagination: {}
   },
   getters: {
-    allBrands: (state) => state.brands,
-    loadBrand: (state) => state.loadBrand,
-    paginationBrand: (state) => state.pagination
+    allComplaintTypes: (state) => state.complaintTypes,
+    loadComplaintTypes: (state) => state.loadComplaintTypes,
+    paginationComplaintTypes: (state) => state.pagination
   },
   mutations: {
-    GET_ALL_BRAND(state, payload) {
-      state.brands = payload
+    GET_ALL_COMPLAINT_TYPES(state, payload) {
+      state.complaintTypes = payload
     },
-    GET_LOAD_BRAND(state, payload) {
-      state.loadBrand = payload
+    GET_LOAD_COMPLAINT_TYPES(state, payload) {
+      state.loadcomplaintTypes = payload
     },
-    GET_BRAND_PAGINATION(state, payload) {
+    GET_COMPLAINT_TYPES_PAGINATION(state, payload) {
       state.pagination = payload
     }
   },
   actions: {
-    getAllBrands({ commit }, payload) {
+    getAllComplaintTypes({ commit }, payload) {
       return new Promise((resolve, reject) => {
         let { pagination } = payload
-        commit('GET_LOAD_BRAND', true)
+        commit('GET_LOAD_COMPLAINT_TYPES', true)
         // axios
-        axiosInit.get('/admin/brand',
+        axiosInit.get('/admin/complaint-types',
           {
-            page: pagination.current
+          page: pagination.current
           }
         )
           .then(res => {
             resolve()
             pagination.total = parseInt(res.links.total)
-            commit('GET_BRAND_PAGINATION', pagination)
-            commit('GET_ALL_BRAND', res.data)
+            commit('GET_COMPLAINT_TYPES_PAGINATION', pagination)
+            commit('GET_ALL_COMPLAINT_TYPES', res.data)
           })
           .catch(error => {
             reject(error)
             this.$message.error(error.message)
           })
           .finally(() => {
-            commit('GET_LOAD_BRAND', false)
+            commit('GET_LOAD_COMPLAINT_TYPES', false)
           })
       })
     },
-    updateBrand({ commit }, payload) {
+    updateComplaintTypes({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.put(`/admin/brand/${payload.id}`, payload.data)
+        axiosInit.put(`/admin/complaint-types/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
             console.log(res)
@@ -60,9 +60,9 @@ export default {
           })
       })
     },
-    deleteBrand({ commit }, payload) {
+    deleteComplaintTypes({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/admin/brand/${payload}`)
+        axiosInit.delete(`/admin/complaint-types/${payload}`)
           .then(res => {
             resolve()
             console.log(res)
@@ -73,9 +73,9 @@ export default {
           })
       })
     },
-    postBrand({ commit }, payload) {
+    postComplaintTypes({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.post('/admin/brand', payload).then(res => {
+        axiosInit.post('/admin/complaint-types', payload).then(res => {
           resolve(res)
           console.log(res)
         })

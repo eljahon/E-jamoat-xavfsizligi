@@ -44,7 +44,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['postBrand', 'getAllBrands', 'updateCourier', 'getCategoryBySlug']),
+    ...mapActions(['postBrand', 'getAllBrands', 'updateBrand']),
     hide() {
       this.visible = false
       this.clear()
@@ -56,9 +56,9 @@ export default {
           this.$refs.brandEdit.id = data.id
           this.$refs.brandEdit.imageUrl = data.logo_url
           this.$refs.brandEdit.form = { ...data }
-          this.$refs.brandEdit.form.phone = '+' + data.phone
           this.$refs.brandEdit.form.id = undefined
           this.$refs.brandEdit.form.slug = undefined
+          this.$refs.brandEdit.form.logo_url = undefined
         }, 0)
         this.visible = true
       }
@@ -96,10 +96,10 @@ export default {
       })
     },
     updateData () {
-      this.$refs.courierEdit.validateForm().then(res => {
+      this.$refs.brandEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateCourier({
+        this.updateBrand({
           id: res.id,
           data: res.data
         }).then(res => {

@@ -36,6 +36,7 @@ module.exports = {
     'vue/html-indent': 0,
     "ignoreComments": true,
     "skipBlankLines": true,
+    'no-useless-escape': 0,
     'no-trailing-spaces': 0,
     'no-tabs': 0,
     'handle-callback-err': 0,

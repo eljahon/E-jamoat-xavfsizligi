@@ -1,33 +1,33 @@
 import axiosInit from '@/utils/axios_init'
 export default {
   state: {
-    brands: [],
-    loadBrand: false,
+    supplierStores: [],
+    loadSupplierStore: false,
     pagination: {}
   },
   getters: {
-    allBrands: (state) => state.brands,
-    loadBrand: (state) => state.loadBrand,
-    paginationBrand: (state) => state.pagination
+    allSupplierStores: (state) => state.supplierStores,
+    loadSupplierStore: (state) => state.loadSupplierStore,
+    paginationSupplierStore: (state) => state.pagination
   },
   mutations: {
-    GET_ALL_BRAND(state, payload) {
-      state.brands = payload
+    GET_ALL_SUPPLIER_STORE(state, payload) {
+      state.supplierStores = payload
     },
-    GET_LOAD_BRAND(state, payload) {
-      state.loadBrand = payload
+    GET_LOAD_SUPPLIER_STORE(state, payload) {
+      state.loadSupplierStore = payload
     },
-    GET_BRAND_PAGINATION(state, payload) {
+    GET_SUPPLIER_STORE_PAGINATION(state, payload) {
       state.pagination = payload
     }
   },
   actions: {
-    getAllBrands({ commit }, payload) {
+    getAllSupplierStores({ commit }, payload) {
       return new Promise((resolve, reject) => {
         let { pagination } = payload
-        commit('GET_LOAD_BRAND', true)
+        commit('GET_LOAD_SUPPLIER_STORE', true)
         // axios
-        axiosInit.get('/admin/brand',
+        axiosInit.get('/admin/supplier-store',
           {
             page: pagination.current
           }
@@ -35,21 +35,21 @@ export default {
           .then(res => {
             resolve()
             pagination.total = parseInt(res.links.total)
-            commit('GET_BRAND_PAGINATION', pagination)
-            commit('GET_ALL_BRAND', res.data)
+            commit('GET_SUPPLIER_STORE_PAGINATION', pagination)
+            commit('GET_ALL_SUPPLIER_STORE', res.data)
           })
           .catch(error => {
             reject(error)
             this.$message.error(error.message)
           })
           .finally(() => {
-            commit('GET_LOAD_BRAND', false)
+            commit('GET_LOAD_SUPPLIER_STORE', false)
           })
       })
     },
-    updateBrand({ commit }, payload) {
+    updateSupplierStore({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.put(`/admin/brand/${payload.id}`, payload.data)
+        axiosInit.put(`/admin/supplier-store/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
             console.log(res)
@@ -60,9 +60,9 @@ export default {
           })
       })
     },
-    deleteBrand({ commit }, payload) {
+    deleteSupplierStore({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/admin/brand/${payload}`)
+        axiosInit.delete(`/admin/supplier-store/${payload}`)
           .then(res => {
             resolve()
             console.log(res)
@@ -73,9 +73,9 @@ export default {
           })
       })
     },
-    postBrand({ commit }, payload) {
+    postSupplierStore({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.post('/admin/brand', payload).then(res => {
+        axiosInit.post('/admin/supplier-store', payload).then(res => {
           resolve(res)
           console.log(res)
         })

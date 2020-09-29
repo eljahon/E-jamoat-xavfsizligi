@@ -9,12 +9,14 @@ import order from './modules/order'
 import attrs from '@/store/modules/attrs'
 import courier from './modules/courier'
 import brands from './modules/brands'
-import complaitTypes from './modules/complait_types'
+import complaitTypes from './modules/complaint_types'
 import deliveryType from './modules/delivery_type'
 import location from './modules/location'
 import measure from './modules/measure'
 import vacancy from './modules/vacancy'
 import upload from './modules/upload'
+import supplier from './modules/supplier'
+import supplierStore from './modules/supplierStore'
 
 // default router permission control
 import permission from './modules/permission'
@@ -41,7 +43,9 @@ export default new Vuex.Store({
     permission,
     measure,
     vacancy,
-    upload
+    upload,
+    supplier,
+    supplierStore
   },
   state: {
 
