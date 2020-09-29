@@ -99,6 +99,12 @@ export default {
     },
     changePagination(e) {
       this.params.pagination = e
+      this.$router.push({
+        name: 'locationList',
+        query: {
+          page: e.current
+        }
+      })
       this.getAllLocations(this.params)
     },
     search(value) {
@@ -120,7 +126,24 @@ export default {
     ...mapGetters(['allLocations', 'loadLocation', 'paginationLocation']),
   },
   mounted() {
-    this.getAllLocations(this.params)
+    if (this.$route.query.page) {
+      this.params.pagination.current = parseInt(this.$route.query.page)
+      this.$router.push({
+        name: 'locationList',
+        query: {
+          page: this.params.pagination.current
+        }
+      })
+      this.getAllLocations(this.params)
+    } else {
+      this.$router.replace({
+        name: 'locationList',
+        query: {
+          page: 1
+        }
+      })
+      this.getAllLocations(this.params)
+    }
   },
 }
 </script>

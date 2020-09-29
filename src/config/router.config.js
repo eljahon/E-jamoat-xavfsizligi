@@ -42,23 +42,46 @@ export const asyncRouterMap = [
         //   // }
         // ]
       },
-      // order
+      // category
       {
-        path: '/order',
-        name: 'order',
+        path: '/category/list',
+        name: 'category',
         hideChildrenInMenu: true,
         component: RouteView,
-        redirect: '/order/list',
-        meta: { title: 'order', icon: 'shop', permission: [ 'form' ] },
+        redirect: '/category/list',
+        meta: { title: 'categories', icon: 'form', permission: [ 'form' ] },
         children: [
           {
-            path: '/order/list',
-            name: 'OrderList',
-            component: () => import('@/views/order/orderList'),
-            meta: { title: 'order_list', keepAlive: true, permission: [ 'form' ] }
+            path: '/category/list',
+            name: 'CategoryList',
+            component: () => import('@/views/category/CategoryList'),
+            meta: { title: 'categories', keepAlive: true, permission: [ 'form' ] }
           }
+          // {
+          //   path: '/category/product/:categoryId',
+          //   name: 'CategoryProduct',
+          //   component: () => import('@/views/products/ProductList'),
+          //   meta: { title: 'products', keepAlive: true, permission: [ 'form' ] }
+          // }
         ]
       },
+      // order
+      // {
+      //   path: '/order',
+      //   name: 'order',
+      //   hideChildrenInMenu: true,
+      //   component: RouteView,
+      //   redirect: '/order/list',
+      //   meta: { title: 'order', icon: 'shop', permission: [ 'form' ] },
+      //   children: [
+      //     {
+      //       path: '/order/list',
+      //       name: 'OrderList',
+      //       component: () => import('@/views/order/orderList'),
+      //       meta: { title: 'order_list', keepAlive: true, permission: [ 'form' ] }
+      //     }
+      //   ]
+      // },
       // couriers
       {
         path: '/courier',
@@ -95,18 +118,18 @@ export const asyncRouterMap = [
       },
       // complait types
       {
-        path: '/complaitTypes',
-        name: 'complaitTypes',
+        path: '/complaintTypes',
+        name: 'complaintTypes',
         hideChildrenInMenu: true,
         component: RouteView,
-        redirect: '/complaitTypes/list',
-        meta: { title: 'Complait Types', icon: 'sound', permission: [ 'form' ] },
+        redirect: '/complaintTypes/list',
+        meta: { title: 'Complaint Types', icon: 'sound', permission: [ 'form' ] },
         children: [
           {
-            path: '/complaitTypes/list',
-            name: 'complaitTypesList',
-            component: () => import('@/views/complait_type/ComplaitTypesList'),
-            meta: { title: 'Complait Types List', keepAlive: true, permission: [ 'form' ] }
+            path: '/complaintTypes/list',
+            name: 'complaintTypesList',
+            component: () => import('@/views/complaint_type/ComplaintTypesList'),
+            meta: { title: 'Complaint Types List', keepAlive: true, permission: [ 'form' ] }
           }
         ]
       },
@@ -178,63 +201,81 @@ export const asyncRouterMap = [
           }
         ]
       },
-      // category
+      // supplier
       {
-        path: '/category/list',
-        name: 'category',
-        hideChildrenInMenu: true,
+        path: '/supplier_all',
+        redirect: '/supplier_all/supplier',
         component: RouteView,
-        redirect: '/category/list',
-        meta: { title: 'categories', icon: 'form', permission: [ 'form' ] },
+        meta: { title: 'Supplier', icon: 'scan', permission: ['form'] },
         children: [
           {
-            path: '/category/list',
-            name: 'CategoryList',
-            component: () => import('@/views/category/CategoryList'),
-            meta: { title: 'categories', keepAlive: true, permission: [ 'form' ] }
+            path: '/supplier_all/supplier',
+            name: 'supplier',
+            hideChildrenInMenu: true,
+            component: RouteView,
+            redirect: '/supplier/list',
+            meta: { title: 'Supplier', permission: [ 'form' ] },
+            children: [
+              {
+                path: '/supplier/list',
+                name: 'supplierList',
+                component: () => import('@/views/supplier/SupplierList'),
+                meta: { title: 'Supplier List', keepAlive: true, permission: [ 'form' ] }
+              }
+            ]
           },
           {
-            path: '/category/product/:categoryId',
-            name: 'CategoryProduct',
-            component: () => import('@/views/products/ProductList'),
-            meta: { title: 'products', keepAlive: true, permission: [ 'form' ] }
-          }
+            path: '/supplier_all/supplierStore',
+            name: 'supplierStore',
+            hideChildrenInMenu: true,
+            component: RouteView,
+            redirect: '/supplierStore/list',
+            meta: { title: 'Supplier Store', permission: [ 'form' ] },
+            children: [
+              {
+                path: '/supplierStore/list',
+                name: 'supplierStoreList',
+                component: () => import('@/views/supplierStore/SupplierStoreList'),
+                meta: { title: 'Supplier Store List', keepAlive: true, permission: [ 'form' ] }
+              }
+            ]
+          },
         ]
       },
       // products
 
-      {
-        path: '/product',
-        name: 'products',
-        hideChildrenInMenu: true,
-        component: RouteView,
-        redirect: '/product/list',
-        meta: { title: 'products', icon: 'shop', permission: [ 'table' ] },
-        children: [
-          {
-            path: '/product/list',
-            name: 'ProductList',
-            component: () => import('@/views/products/ProductList'),
-            meta: { title: 'products', keepAlive: true, permission: [ 'table' ] }
-          }
-        ]
-      },
-      {
-        path: '/attrs',
-        name: 'attributes',
-        hideChildrenInMenu: true,
-        component: RouteView,
-        redirect: '/attrs/list',
-        meta: { title: 'attrs', icon: 'project', permission: [ 'table' ] },
-        children: [
-          {
-            path: '/attrs/list',
-            name: 'AtributesList',
-            component: () => import('@/views/attrs/AttrsList'),
-            meta: { title: 'attrs', keepAlive: true, permission: [ 'table' ] }
-          }
-        ]
-      }
+      // {
+      //   path: '/product',
+      //   name: 'products',
+      //   hideChildrenInMenu: true,
+      //   component: RouteView,
+      //   redirect: '/product/list',
+      //   meta: { title: 'products', icon: 'shop', permission: [ 'table' ] },
+      //   children: [
+      //     {
+      //       path: '/product/list',
+      //       name: 'ProductList',
+      //       component: () => import('@/views/products/ProductList'),
+      //       meta: { title: 'products', keepAlive: true, permission: [ 'table' ] }
+      //     }
+      //   ]
+      // },
+      // {
+      //   path: '/attrs',
+      //   name: 'attributes',
+      //   hideChildrenInMenu: true,
+      //   component: RouteView,
+      //   redirect: '/attrs/list',
+      //   meta: { title: 'attrs', icon: 'project', permission: [ 'table' ] },
+      //   children: [
+      //     {
+      //       path: '/attrs/list',
+      //       name: 'AtributesList',
+      //       component: () => import('@/views/attrs/AttrsList'),
+      //       meta: { title: 'attrs', keepAlive: true, permission: [ 'table' ] }
+      //     }
+      //   ]
+      // }
 
       // forms
       // {

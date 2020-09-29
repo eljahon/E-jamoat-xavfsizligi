@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a-card title="Brand List" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="addBrand">{{ $t('add') }}</a-button>
+    <a-card title="Complaint Type List" style="width: 100%">
+      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
@@ -10,31 +10,23 @@
       </a-row>
       <a-table
         :columns="columns"
-        :data-source="allBrands"
-        :loading="loadBrand"
+        :data-source="allComplaintTypes"
+        :loading="loadComplaintTypes"
         :rowKey="item => item.id"
+        :pagination="paginationComplaintTypes"
         @change="changePagination"
         bordered
       >
-        <template slot="status" slot-scope="item">
-          <a-tag v-if="item" color="green">Popular</a-tag>
-          <a-tag v-else color="red">Not Popular</a-tag>
-        </template>
-        <template slot="image" slot-scope="item">
-          <div class="imagePreview">
-            <img :src="item.logo_url">
-          </div>
-        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editBrand(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
             slot="extra"
             :title="$t('deleteMsg')"
-            @confirm="removeBrand(item)"
+            @confirm="removeCourier(item)"
             :okText="$t('yes')"
             :cancelText="$t('no')"
           >
@@ -52,17 +44,17 @@
     </a-card>
 
     <!-- MODALS -->
-    <brand-create ref="createBrand" :editable="false" :params="params"/>
-    <brand-create ref="editBrand" :editable="true" :params="params"/>
+    <complaint-create ref="createComplaintType" :editable="false" :params="params"/>
+    <complaint-create ref="editComplaintType" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import BrandCreate from './BrandCreate'
+import complaintTypeCreate from './ComplaintTypesCreateUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    'brand-create': BrandCreate,
-    // 'category-edit': editBrand
+    'complaint-create': complaintTypeCreate,
+    // 'category-edit': editCourier
   },
   data() {
     return {
@@ -72,24 +64,24 @@ export default {
       columns: [
         {
           title: 'Name',
-          dataIndex: 'name_ru',
+          dataIndex: 'name',
         },
         {
-          title: 'Name uz',
-          dataIndex: 'name_uz',
+          title: 'Phone',
+          dataIndex: 'phone',
         },
         {
-          title: 'Slug',
-          dataIndex: 'slug',
+          title: 'Car Type',
+          dataIndex: 'car_type',
         },
         {
-          title: 'Status',
-          dataIndex: 'is_popular',
-          scopedSlots: { customRender: 'status' },
+          title: 'car number',
+          dataIndex: 'car_number',
         },
         {
-          title: 'Image',
-          scopedSlots: { customRender: 'image' },
+          title: 'car model',
+          dataIndex: 'car_model',
+          // scopedSlots: { customRender: 'status' },
         },
         {
           title: this.$t('action'),
@@ -110,42 +102,39 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllBrands', 'deleteBrand']),
-    editBrand(item) {
-      this.$refs.editBrand.show(item)
+    ...mapActions(['getAllComplaintTypes']),
+    editItem(item) {
+      this.$refs.editComplaintType.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllBrands(this.params)
+      this.getAllComplaintTypes(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllComplaintTypes(this.params)
     },
-    removeBrand (item) {
+    removeCourier (item) {
       console.log(item)
-      this.deleteBrand(item.id).then(res => {
-        this.getAllBrands(this.params)
+      this.deleteCourier(item.id).then(res => {
+        this.getAllComplaintTypes(this.params)
       })
     },
-    addBrand () {
-      this.$refs.createBrand.show()
+    addItem () {
+      this.$refs.createComplaintType.show()
     }
   },
   computed: {
-    ...mapGetters(['allBrands', 'loadBrand', 'paginationBrand']),
+    ...mapGetters(['allComplaintTypes', 'loadComplaintTypes', 'paginationComplaintTypes']),
   },
   mounted() {
-    this.getAllBrands(this.params)
+    this.getAllComplaintTypes(this.params)
   },
 }
 </script>
 <style>
-.imagePreview img {
-  width: auto;
-  height: 100px;
-  box-sizing: border-box;
-  object-fit: cover;
+.ant-table-row:hover {
+  cursor: pointer;
 }
 </style>

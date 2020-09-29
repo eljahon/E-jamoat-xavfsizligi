@@ -1,0 +1,9 @@
+Brands - 100 % with simple pagination
+Delivery Types - 100 % with simple pagination
+Location - 100 % with router pagination
+Measures - 100 % with simple pagination
+Vacancy - 100 % with simple pagination
+Category - 100 % with simple pagination
+Courier - 100 % with simple pagination
+Supplier - 100 % with simple pagination
+Complaint Types - 50 % (api's have 500 error)

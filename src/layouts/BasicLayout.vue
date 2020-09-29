@@ -7,7 +7,7 @@
     :isMobile="isMobile"
     :handleMediaQuery="handleMediaQuery"
     :handleCollapse="handleCollapse"
-    logo="https://images.vexels.com/media/users/3/133800/isolated/preview/5c446a6451f319ed403621e852e08990-olive-branch-hand-drawn-cartoon-icon-21-by-vexels.png"
+    logo="http://163.172.182.95:2500/storage/files/1896211312-1601381935-logo.png.webp"
     :i18nRender="i18nRender"
     v-bind="settings"
   >

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a-card title="Complait Type List" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="addCourier">{{ $t('add') }}</a-button>
+    <a-card title="Supplier Store List" style="width: 100%">
+      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
@@ -10,22 +10,26 @@
       </a-row>
       <a-table
         :columns="columns"
-        :data-source="allcomplaitTypes"
-        :loading="loadcomplaitTypes"
+        :data-source="allSupplierStores"
+        :loading="loadSupplierStore"
         :rowKey="item => item.id"
+        :pagination="paginationSupplierStore"
         @change="changePagination"
         bordered
       >
+        <template slot="phone" slot-scope="phone">
+          +998{{ phone }}
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editCourier(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
             slot="extra"
             :title="$t('deleteMsg')"
-            @confirm="removeCourier(item)"
+            @confirm="removeItem(item)"
             :okText="$t('yes')"
             :cancelText="$t('no')"
           >
@@ -43,17 +47,16 @@
     </a-card>
 
     <!-- MODALS -->
-    <complait-create ref="createCourier" :editable="false" :params="params"/>
-    <complait-create ref="editCourier" :editable="true" :params="params"/>
+    <supplier-store-create ref="createSupplierStore" :editable="false" :params="params"/>
+    <supplier-store-create ref="editSupplierStore" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import complaitTypeCreate from './ComplaitTypesCreateUpdate'
+import supplierStoreCreate from './SupplierStoreCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    'complait-create': complaitTypeCreate,
-    // 'category-edit': editCourier
+    'supplier-store-create': supplierStoreCreate,
   },
   data() {
     return {
@@ -62,25 +65,21 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
+          title: 'Name UZ',
+          dataIndex: 'name_uz',
+        },
+        {
+          title: 'Name RU',
+          dataIndex: 'name_ru',
         },
         {
           title: 'Phone',
           dataIndex: 'phone',
+          scopedSlots: { customRender: 'phone' },
         },
         {
-          title: 'Car Type',
-          dataIndex: 'car_type',
-        },
-        {
-          title: 'car number',
-          dataIndex: 'car_number',
-        },
-        {
-          title: 'car model',
-          dataIndex: 'car_model',
-          // scopedSlots: { customRender: 'status' },
+          title: 'Email',
+          dataIndex: 'email',
         },
         {
           title: this.$t('action'),
@@ -93,7 +92,7 @@ export default {
       params: {
         pagination: {
           current: 1,
-          pageSize: 100,
+          pageSize: 15,
           total: null,
         },
         search: '',
@@ -101,43 +100,36 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllComplaitTypes', 'deleteCourier']),
-    editCourier(item) {
-      this.$refs.editCourier.show(item)
+    ...mapActions(['getAllSupplierStores', 'deleteSupplierStore', 'getAllLocationsList', 'getAllSuppliersList']),
+    editItem(item) {
+      this.$refs.editSupplierStore.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllCategory(this.params)
+      this.getAllSupplierStores(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllSupplierStores(this.params)
     },
-    removeCourier (item) {
+    removeItem (item) {
       console.log(item)
-      this.deleteCourier(item.id).then(res => {
-        this.getAllCouriers()
+      this.deleteSupplier(item.id).then(res => {
+        this.getAllSupplierStores(this.params)
       })
     },
-    addCourier () {
-      this.$refs.createCourier.editable = false
-      this.$refs.createCourier.show()
-    },
-    enterProduct (id) {
-      this.$router.push({
-        name: 'CategoryProduct',
-        params: {
-          categoryId: id
-        }
-      })
+    addItem () {
+      this.$refs.createSupplierStore.show()
     }
   },
   computed: {
-    ...mapGetters(['allcomplaitTypes', 'loadcomplaitTypes', 'paginationcomplaitTypes']),
+    ...mapGetters(['allSupplierStores', 'loadSupplierStore', 'paginationSupplierStore']),
   },
   mounted() {
-    this.getAllComplaitTypes()
+    this.getAllSupplierStores(this.params)
+    this.getAllLocationsList()
+    this.getAllSuppliersList()
   },
 }
 </script>

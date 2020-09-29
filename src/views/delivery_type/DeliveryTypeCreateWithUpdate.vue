@@ -78,7 +78,7 @@ export default {
         console.log(res)
         this.loading = true
         this.postDeliveryTypes(res.data).then(res => {
-          this.getAllDeliveryTypes()
+          this.getAllDeliveryTypes(this.params)
           console.log(res)
           this.hide()
         })
@@ -103,7 +103,7 @@ export default {
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllDeliveryTypes()
+          this.getAllDeliveryTypes(this.params)
           this.hide()
           console.log(res)
         }).catch(error => {

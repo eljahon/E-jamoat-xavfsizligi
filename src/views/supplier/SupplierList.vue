@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Measures List" style="width: 100%">
+    <a-card title="Supplier List" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -10,12 +10,16 @@
       </a-row>
       <a-table
         :columns="columns"
-        :data-source="allMeasures"
-        :loading="loadMeasure"
+        :data-source="allSuppliers"
+        :loading="loadSupplier"
         :rowKey="item => item.id"
+        :pagination="paginationSupplier"
         @change="changePagination"
         bordered
       >
+        <template slot="phone" slot-scope="phone">
+          +998{{ phone }}
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -43,16 +47,16 @@
     </a-card>
 
     <!-- MODALS -->
-    <measure-create ref="createMeasure" :editable="false" :params="params"/>
-    <measure-create ref="editMeasure" :editable="true" :params="params"/>
+    <supplier-create ref="createSupplier" :editable="false" :params="params"/>
+    <supplier-create ref="editSupplier" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import measureCreate from './MeasureCreateWithUpdate'
+import supplierCreate from './SupplierCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    'measure-create': measureCreate,
+    'supplier-create': supplierCreate,
   },
   data() {
     return {
@@ -69,8 +73,13 @@ export default {
           dataIndex: 'name_ru',
         },
         {
-          title: 'Symbol',
-          dataIndex: 'symbol',
+          title: 'Phone',
+          dataIndex: 'phone',
+          scopedSlots: { customRender: 'phone' },
+        },
+        {
+          title: 'Email',
+          dataIndex: 'email',
         },
         {
           title: this.$t('action'),
@@ -91,34 +100,34 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllMeasures', 'deleteMeasure']),
+    ...mapActions(['getAllSuppliers', 'deleteSupplier']),
     editItem(item) {
-      this.$refs.editMeasure.show(item)
+      this.$refs.editSupplier.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllMeasures(this.params)
+      this.getAllSuppliers(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllMeasures(this.params)
+      this.getAllSuppliers(this.params)
     },
     removeItem (item) {
       console.log(item)
-      this.deleteMeasure(item.id).then(res => {
-        this.getAllMeasures(this.params)
+      this.deleteSupplier(item.id).then(res => {
+        this.getAllSuppliers(this.params)
       })
     },
     addItem () {
-      this.$refs.createMeasure.show()
+      this.$refs.createSupplier.show()
     }
   },
   computed: {
-    ...mapGetters(['allMeasures', 'loadMeasure', 'paginationMeasure']),
+    ...mapGetters(['allSuppliers', 'loadSupplier', 'paginationSupplier']),
   },
   mounted() {
-    this.getAllMeasures(this.params)
+    this.getAllSuppliers(this.params)
   },
 }
 </script>
