@@ -948,6 +948,21 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@ckeditor/ckeditor5-build-classic@^23.0.0":
+  version "23.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-classic/-/ckeditor5-build-classic-23.0.0.tgz#9b4ae5dc470e9ae4be14672b49d05d21887e2d81"
+  integrity sha512-9Pgb9OAPnx1577WDYizEuOFHmLyXkwU8UxneyP4Zkr9mrJUEL0w0uVgQhiB8DYlAAArHXeFasSogwFvLX6xBtw==
+
+"@ckeditor/ckeditor5-build-decoupled-document@^23.0.0":
+  version "23.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-decoupled-document/-/ckeditor5-build-decoupled-document-23.0.0.tgz#52fde3e31ccf77dca43bfd25ac2b28aee5ee951b"
+  integrity sha512-gZH3OuJslxHfXILtVc9pPnB6avZ7iKKPB3XEdBrVqjfXgwZmjnP5a5UFdFxQQeySdEgura+q9WNI8OAVQee8rw==
+
+"@ckeditor/ckeditor5-vue@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-vue/-/ckeditor5-vue-1.0.3.tgz#b73babe217e222614f0567bf858de8152c2071b2"
+  integrity sha512-8pYcWkOSUTZ4KD6nT2JbD4rQycvhCaoOAJeOiaSrjWb3X/xRWoDEOOJzXC6VRk9AeNE1UYY9wKBAsq3VoR5V9w==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.npm.taobao.org/@cnakazawa/watch/download/@cnakazawa/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"

@@ -17,6 +17,7 @@ import vacancy from './modules/vacancy'
 import upload from './modules/upload'
 import supplier from './modules/supplier'
 import supplierStore from './modules/supplierStore'
+import article from './modules/article'
 
 // default router permission control
 import permission from './modules/permission'
@@ -31,6 +32,7 @@ export default new Vuex.Store({
   modules: {
     app,
     attrs,
+    article,
     courier,
     complaitTypes,
     deliveryType,

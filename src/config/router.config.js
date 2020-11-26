@@ -42,6 +42,23 @@ export const asyncRouterMap = [
         //   // }
         // ]
       },
+      // article
+      {
+        path: '/article',
+        name: 'article',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/article/list',
+        meta: { title: 'Article', icon: 'file', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/article/list',
+            name: 'articleList',
+            component: () => import('@/views/article/ArticleList'),
+            meta: { title: 'Article List', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
       // category
       {
         path: '/category/list',

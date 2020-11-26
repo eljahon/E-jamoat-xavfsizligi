@@ -127,7 +127,6 @@ export default {
           if (valid) {
             this.form.phone = this.form.phone.slice(1)
             this.form.second_phone = this.form.second_phone === '' ? '' : this.form.phone.slice(1)
-            this.form.coordinates = JSON.stringify(this.form.coordinates)
             resolve({
               id: this.id ? this.id : undefined,
               data: this.form
