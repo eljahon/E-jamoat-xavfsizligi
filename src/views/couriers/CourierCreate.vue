@@ -83,10 +83,10 @@ export default {
         console.log(res)
         this.loading = true
         this.postCouriers(res.data).then(res => {
-          this.getAllCouriers()
-          console.log(res)
-          this.hide()
-        })
+            this.getAllCouriers()
+            console.log(res)
+            this.hide()
+          })
           .catch(error => {
             this.$notification.error({
               message: 'Error Request or Response',
