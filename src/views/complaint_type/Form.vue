@@ -2,25 +2,25 @@
   <a-form-model ref="ruleForm" :model="form" :rules="rules">
     <a-row>
       <a-col :span="11">
-        <a-form-model-item label="Title RU" prop="title_ru">
+        <a-form-model-item :label="$t('name_ru')" prop="title_ru">
           <a-input v-model="form.title_ru" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item label="Title EN" prop="title_en">
+        <a-form-model-item :label="$t('name_uz')" prop="title_en">
           <a-input v-model="form.title_en" />
         </a-form-model-item>
       </a-col>
     </a-row>
     <a-row>
       <a-col :span="11">
-        <a-form-model-item label="Description RU">
-          <a-input v-model="form.description_ru" />
+        <a-form-model-item :label="$t('description_ru')">
+          <a-input type="textarea" v-model="form.description_ru" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item label="Description EN">
-          <a-input v-model="form.description_en" />
+        <a-form-model-item :label="$t('description_uz')">
+          <a-input type="textarea" v-model="form.description_en" />
         </a-form-model-item>
       </a-col>
     </a-row>
@@ -38,8 +38,8 @@ export default {
         description_en: ''
       },
       rules: {
-        title_ru: [{ required: true, message: 'Title RU Required', trigger: 'blur' }],
-        title_en: [{ required: true, message: 'Title EN Required', trigger: 'blur' }],
+        title_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        title_en: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
       }
     }
   },

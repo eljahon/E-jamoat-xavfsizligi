@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Location List" style="width: 100%">
+    <a-card :title="$t('location.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -17,6 +17,14 @@
         @change="changePagination"
         bordered
       >
+        <template slot="status" slot-scope="status">
+          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
+        </template>
+        <template slot="has_delivery" slot-scope="has_delivery">
+          <a-tag v-if="has_delivery" color="green">{{ $t('active') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -53,32 +61,40 @@ import locationCreate from './LocationCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    'location-create': locationCreate,
-    // 'category-edit': editItem
+    'location-create': locationCreate
   },
   data() {
     return {
       visible: false,
       loading: false,
-      slug: null,
       columns: [
         {
-          title: 'Name UZ',
+          title: this.$t('name_uz'),
           dataIndex: 'name_uz',
         },
         {
-          title: 'Name RU',
+          title: this.$t('name_ru'),
           dataIndex: 'name_ru',
         },
         {
-          title: 'Slug',
+          title: this.$t('slug'),
           dataIndex: 'slug',
+        },
+        {
+          title: this.$t('has_delivery'),
+          dataIndex: 'has_delivery',
+          scopedSlots: { customRender: 'has_delivery' }
+        },
+        {
+          title: this.$t('status'),
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
         },
         {
           title: this.$t('action'),
           key: 'action',
           align: 'center',
-          width: '20%',
+          width: '12%',
           scopedSlots: { customRender: 'action' },
         },
       ],

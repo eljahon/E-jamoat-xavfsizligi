@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Vacancy List" style="width: 100%">
+    <a-card :title="$t('vacancy.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -59,29 +59,28 @@ export default {
     return {
       visible: false,
       loading: false,
-      slug: null,
       columns: [
         {
-          title: 'Title UZ',
+          title: this.$t('name_uz'),
           dataIndex: 'title_uz',
         },
         {
-          title: 'Title RU',
+          title: this.$t('name_ru'),
           dataIndex: 'title_ru',
         },
         {
-          title: 'Content UZ',
+          title: this.$t('content_uz'),
           dataIndex: 'content_uz',
         },
         {
-          title: 'Content RU',
+          title: this.$t('content_ru'),
           dataIndex: 'content_ru',
         },
         {
           title: this.$t('action'),
           key: 'action',
           align: 'center',
-          width: '20%',
+          width: '12%',
           scopedSlots: { customRender: 'action' },
         },
       ],

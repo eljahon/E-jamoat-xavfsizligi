@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Location' : 'Edit Location'">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
@@ -29,21 +29,12 @@ export default {
       default: () => {
         return {}
       }
-    },
-    slug: {
-      type: String,
-      default: () => {
-        return ''
-      }
     }
   },
   data() {
     return {
-      activeKey: '1',
       loading: false,
-      visible: false,
-      editableData: [],
-      boolUpdateLoad: {}
+      visible: false
     }
   },
   methods: {
@@ -57,6 +48,7 @@ export default {
         console.log(data)
         console.log(this.$refs.locationEdit)
         setTimeout(() => {
+          data.status === 10 ? this.$refs.locationEdit.status = true : this.$refs.locationEdit.status = false
           this.$refs.locationEdit.id = data.id
           this.$refs.locationEdit.form.name_uz = data.name_uz
           this.$refs.locationEdit.form.name_ru = data.name_ru
@@ -85,12 +77,6 @@ export default {
           console.log(res)
           this.hide()
         })
-          .catch(error => {
-            this.$notification.error({
-              message: 'Error Request or Response',
-              description: error.message,
-            })
-          })
           .finally(() => {
             this.loading = false
           })

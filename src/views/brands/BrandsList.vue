@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Brand List" style="width: 100%">
+    <a-card :title="$t('brands.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addBrand">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -16,9 +16,13 @@
         @change="changePagination"
         bordered
       >
-        <template slot="status" slot-scope="item">
-          <a-tag v-if="item" color="green">Popular</a-tag>
-          <a-tag v-else color="red">Not Popular</a-tag>
+        <template slot="popular" slot-scope="is_popular">
+          <a-tag v-if="is_popular" color="green">{{ $t('popular') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('popular.no') }}</a-tag>
+        </template>
+        <template slot="status" slot-scope="status">
+          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
         </template>
         <template slot="image" slot-scope="item">
           <div class="imagePreview">
@@ -71,31 +75,37 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name',
+          title: this.$t('name_ru'),
           dataIndex: 'name_ru',
         },
         {
-          title: 'Name uz',
+          title: this.$t('name_uz'),
           dataIndex: 'name_uz',
         },
         {
-          title: 'Slug',
+          title: this.$t('slug'),
           dataIndex: 'slug',
         },
         {
-          title: 'Status',
+          title: this.$t('popular'),
           dataIndex: 'is_popular',
+          scopedSlots: { customRender: 'popular' },
+        },
+        {
+          title: this.$t('status'),
+          dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
         },
         {
-          title: 'Image',
+          title: this.$t('image'),
+          align: 'center',
           scopedSlots: { customRender: 'image' },
         },
         {
           title: this.$t('action'),
           key: 'action',
           align: 'center',
-          width: '20%',
+          width: '12%',
           scopedSlots: { customRender: 'action' },
         },
       ],
@@ -143,8 +153,8 @@ export default {
 </script>
 <style>
 .imagePreview img {
-  width: auto;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   box-sizing: border-box;
   object-fit: cover;
 }

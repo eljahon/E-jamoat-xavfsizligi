@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Delivery Type List" style="width: 100%">
+    <a-card :title="$t('delivery_type.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -16,6 +16,10 @@
         @change="changePagination"
         bordered
       >
+        <template slot="status" slot-scope="status">
+          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -52,30 +56,29 @@ import deliveryTypeCreate from './DeliveryTypeCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    'delivery-create': deliveryTypeCreate,
-    // 'category-edit': editItem
+    'delivery-create': deliveryTypeCreate
   },
   data() {
     return {
       visible: false,
       loading: false,
-      slug: null,
       columns: [
         {
-          title: 'Name UZ',
+          title: this.$t('name_uz'),
           dataIndex: 'name_uz',
         },
         {
-          title: 'Name RU',
+          title: this.$t('name_ru'),
           dataIndex: 'name_ru',
         },
         {
-          title: 'Price',
+          title: this.$t('price'),
           dataIndex: 'price',
         },
         {
-          title: 'Status',
+          title: this.$t('status'),
           dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
         },
         {
           title: this.$t('action'),

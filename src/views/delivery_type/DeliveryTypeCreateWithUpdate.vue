@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Delivery Type' : 'Edit Delivery Type'">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
@@ -29,21 +29,12 @@ export default {
       default: () => {
         return {}
       }
-    },
-    slug: {
-      type: String,
-      default: () => {
-        return ''
-      }
     }
   },
   data() {
     return {
-      activeKey: '1',
       loading: false,
-      visible: false,
-      editableData: [],
-      boolUpdateLoad: {}
+      visible: false
     }
   },
   methods: {
@@ -58,6 +49,7 @@ export default {
         setTimeout(() => {
           this.$refs.deliveryTypeEdit.id = data.id
           this.$refs.deliveryTypeEdit.form = { ...data }
+          data.status === 10 ? this.$refs.deliveryTypeEdit.status = true : this.$refs.deliveryTypeEdit.status = false
           this.$refs.deliveryTypeEdit.form.id = undefined
         }, 0)
         this.visible = true
@@ -82,12 +74,6 @@ export default {
           console.log(res)
           this.hide()
         })
-          .catch(error => {
-            this.$notification.error({
-              message: 'Error Request or Response',
-              description: error.message,
-            })
-          })
           .finally(() => {
             this.loading = false
           })
@@ -106,11 +92,6 @@ export default {
           this.getAllDeliveryTypes(this.params)
           this.hide()
           console.log(res)
-        }).catch(error => {
-          this.$notification.error({
-            message: 'Error Request or Response',
-            description: error.message,
-          })
         })
           .finally(() => {
             this.loading = false
@@ -121,13 +102,4 @@ export default {
 }
 </script>
 <style>
-
-.flag-icon {
-  min-width: 26px;
-  min-height: 26px;
-  border-radius: 50%;
-  box-shadow: 0px 0px 4px black;
-  margin-right: 2px;
-  transform: translateY(-5px);
-}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Complaint Type List" style="width: 100%">
+    <a-card :title="$t('complaint_type.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -60,28 +60,22 @@ export default {
     return {
       visible: false,
       loading: false,
-      slug: null,
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
+          title: this.$t('name_uz'),
+          dataIndex: 'title_uz',
         },
         {
-          title: 'Phone',
-          dataIndex: 'phone',
+          title: this.$t('name_ru'),
+          dataIndex: 'title_ru',
         },
         {
-          title: 'Car Type',
-          dataIndex: 'car_type',
+          title: this.$t('description_uz'),
+          dataIndex: 'description_uz',
         },
         {
-          title: 'car number',
-          dataIndex: 'car_number',
-        },
-        {
-          title: 'car model',
-          dataIndex: 'car_model',
-          // scopedSlots: { customRender: 'status' },
+          title: this.$t('description_ru'),
+          dataIndex: 'description_ru',
         },
         {
           title: this.$t('action'),

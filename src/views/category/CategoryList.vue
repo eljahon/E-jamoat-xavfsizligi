@@ -17,9 +17,13 @@
         @change="changePagination"
         bordered
       >
-        <template slot="status" slot-scope="is_popular">
-          <a-tag @click="cropper" v-if="is_popular" color="green">Popular</a-tag>
-          <a-tag v-else color="red">Not Popular</a-tag>
+        <template slot="popular" slot-scope="is_popular">
+          <a-tag v-if="is_popular" color="green">{{ $t('popular') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('popular.no') }}</a-tag>
+        </template>
+        <template slot="status" slot-scope="status">
+          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
         </template>
         <template slot="image" slot-scope="item">
           <div class="imagePreview">
@@ -53,55 +57,57 @@
     </a-card>
 
     <!-- MODALS -->
-    <cropper ref="imageCrop"></cropper>
+<!--    <cropper ref="imageCrop"></cropper>-->
     <category-create ref="createCategory" :editable="false" :params="params"/>
-    <category-create ref="editCategory" :editable="true" :slug="slug" :params="params"/>
+    <category-create ref="editCategory" :editable="true" :params="params"/>
     <!-- <category-edit ref="editCategory" :editable="true" :params="params"/> -->
   </div>
 </template>
 <script>
 import CreateCategory from './CategoryCreate'
-import Croppper from '@/components/CropImageUpload/cropper'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
-    'category-create': CreateCategory,
-    'cropper': Croppper
-    // 'category-edit': EditCategory
+    'category-create': CreateCategory
   },
   data() {
     return {
       visible: false,
       loading: false,
-      slug: null,
       columns: [
         {
-          title: 'Name UZ',
+          title: this.$t('name_uz'),
           dataIndex: 'name_uz',
         },
         {
-          title: 'Name RU',
+          title: this.$t('name_ru'),
           dataIndex: 'name_ru',
         },
         {
-          title: 'Slug',
+          title: this.$t('slug'),
           dataIndex: 'slug',
         },
         {
-          title: 'Popular',
+          title: this.$t('popular'),
           dataIndex: 'is_popular',
+          scopedSlots: { customRender: 'popular' },
+        },
+        {
+          title: this.$t('status'),
+          dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
         },
         {
-          title: 'Image',
+          title: this.$t('image'),
           dataIndex: 'image_url',
+          align: 'center',
           scopedSlots: { customRender: 'image' },
         },
         {
           title: this.$t('action'),
           key: 'action',
           align: 'center',
-          width: '20%',
+          width: '12%',
           scopedSlots: { customRender: 'action' },
         },
       ],
@@ -131,29 +137,6 @@ export default {
       console.log(value)
       this.params.search = value
       this.getAllCategory(this.params)
-    },
-    lockCategory(item) {
-      console.log(item)
-      this.updateCategory({
-        id: item.id,
-        locker: true,
-        data: {
-          active: item.active,
-          lang: item.lang,
-          name: item.name,
-          order: item.order,
-          vendor_id: '5f4a2611c001ec0012f23596'
-        },
-      })
-        .then((res) => {
-          this.getAllCategory(this.params)
-        })
-        .catch((err) => {
-          this.$notification.error({
-            message: 'Error Request or Response',
-            description: err.message,
-          })
-        })
     },
     removeCategory (item) {
       console.log(item)
@@ -195,8 +178,8 @@ export default {
   cursor: pointer;
 }
 .imagePreview img {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
 }
 </style>

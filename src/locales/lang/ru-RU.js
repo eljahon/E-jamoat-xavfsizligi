@@ -25,10 +25,36 @@ const locale = {
     'update': 'Изменить',
     'action': 'Действия',
     'search': 'Поиск',
+    'slug': 'Слизняк',
+    'popular': 'Популярный',
+    'popular.no': 'Не популярный',
     'logout': 'Выход',
+    'image': 'Фото',
+    'name_uz': 'Название yзбекский',
+    'name_ru': 'Название русский',
+    'image_view': 'Просмотр фото',
+    'description_uz': 'Oписание yзбекский',
+    'description_ru': 'Oписание русский',
+    'keyword': 'Ключевое слово',
+    'keyword_uz': 'Ключевое слово yзбекский',
+    'keyword_ru': 'Ключевое слово русский',
+    'content': 'Содержание',
+    'content_uz': 'Содержание yзбекский',
+    'content_ru': 'Содержание русский',
+    'symbol': 'Символ',
+    'phone': 'Телефон',
+    'price': 'Цена',
+    'add_form': 'Добавить форму',
+    'update_form': 'Изменить форму',
+    'email': 'Электронной почты',
+    'short_info': 'Kороткий информация',
+    'short_info_uz': 'Kороткий информация yзбекский',
+    'short_info_ru': 'Kороткий информация русский',
     'personal_settings': 'Личный кабинет',
+    'phone.syntax.error': 'Ошибка номера телефона',
     'blocked': 'Заблокирован',
     'unblock': 'Активация',
+    'requiredField': 'Обязательное поле',
     'blockMsg': 'Вы действительно хотите заблокировать?',
     'unblockMsg': 'Вы действительно хотите активировать?',
     'deleteMsg': 'Вы действительно хотите удалить это?',
@@ -43,6 +69,50 @@ const locale = {
     'description': 'Описание',
     'add_type': 'Выберите тип',
 
+    // courier
+    'couriers': 'Курьеры',
+    'couriers.list': 'Список курьеров',
+    'car_type': 'Тип машины',
+    'car_number': 'Номер машины',
+    'car_model': 'Модель машины',
+
+    // brands
+    'brands': 'Бренды',
+    'brands.list': 'Список брендов',
+
+    // complaint
+    'complaint_type': 'Тип жалобы',
+    'complaint_type.list': 'Список типов жалоб',
+
+    // delivery
+    'delivery_type': 'Тип доставки',
+    'delivery_type.list': 'Список типов доставки',
+
+    // loaction
+
+    'location': 'Локаций',
+    'location.list': 'Список локаций',
+    'has_delivery': 'Есть доставка',
+
+    // measures
+    'measures': 'Меры',
+    'measures.list': 'Список мер',
+
+    // vacancy
+    'vacancy': 'Вакансия',
+    'vacancy.list': 'Список вакансий',
+
+    // supplier
+    'supplier': 'Поставщик',
+    'supplier.list': 'Список поставщиков',
+
+    // supplier store
+    'supplier_store': 'Магазин-поставщик',
+    'supplier_store.list': 'Список магазинов поставщиков',
+
+    // article
+    'article': 'Статья',
+    'article.list': 'Список статей',
 
     // order
     'order': 'Заказы',

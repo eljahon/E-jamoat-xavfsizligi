@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="800px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_category') : $t('edit_category')">
+  <a-modal width="800px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
@@ -50,6 +50,7 @@ export default {
           const e = this.$refs.categoryEdit.form
           this.$refs.categoryEdit.item = data
           this.$refs.categoryEdit.imageUrl = data.image_url
+          data.status === 10 ? this.$refs.categoryEdit.status = true : this.$refs.categoryEdit.status = false
           e.name_ru = data.name_ru
           e.name_uz = data.name_uz
           e.is_popular = data.is_popular
@@ -81,17 +82,11 @@ export default {
             this.getAllCategory(this.params)
             this.hide()
           })
-          .catch(error => {
-            this.$notification.error({
-              message: 'Error Request or Response',
-              description: error.message,
-            })
-          })
           .finally(() => {
             this.loading = false
           })
       }).catch(error => {
-        console.log(error, 'ERRROORRRRRRRRRRRR')
+        console.log(error, 'Error')
       })
     },
     updateData () {
@@ -103,30 +98,15 @@ export default {
           this.getAllCategory(this.params)
           this.hide()
         })
-          .catch(error => {
-            this.$notification.error({
-              message: 'Error Request or Response',
-              description: error.message,
-            })
-          })
           .finally(() => {
             this.loading = false
           })
       }).catch(error => {
-        console.log(error, 'ERRROORRRRRRRRRRRR')
+        console.log(error, 'Error')
       })
     }
   },
 }
 </script>
 <style>
-
-.flag-icon {
-  min-width: 26px;
-  min-height: 26px;
-  border-radius: 50%;
-  box-shadow: 0px 0px 4px black;
-  margin-right: 2px;
-  transform: translateY(-5px);
-}
 </style>

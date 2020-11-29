@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? 'Add Couriers' : $t('edit_category')">
+  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
@@ -29,21 +29,12 @@ export default {
       default: () => {
         return {}
       }
-    },
-    slug: {
-      type: String,
-      default: () => {
-        return ''
-      }
     }
   },
   data() {
     return {
-      activeKey: '1',
       loading: false,
-      visible: false,
-      editableData: [],
-      boolUpdateLoad: {}
+      visible: false
     }
   },
   methods: {
@@ -56,6 +47,7 @@ export default {
       if (this.editable) {
         console.log(data)
         setTimeout(() => {
+          data.status === 10 ? this.$refs.courierEdit.status = true : this.$refs.courierEdit.status = false
           this.$refs.courierEdit.id = data.id
           this.$refs.courierEdit.form = { ...data }
           this.$refs.courierEdit.form.phone = '+' + data.phone
@@ -87,17 +79,11 @@ export default {
             console.log(res)
             this.hide()
           })
-          .catch(error => {
-            this.$notification.error({
-              message: 'Error Request or Response',
-              description: error.message,
-            })
-          })
           .finally(() => {
             this.loading = false
           })
       }).catch(error => {
-        console.log(error, 'ERRROORRRRRRRRRRRR')
+        console.log(error, 'Error')
       })
     },
     updateData() {
@@ -111,11 +97,6 @@ export default {
           this.getAllCouriers()
           this.hide()
           console.log(res)
-        }).catch(error => {
-          this.$notification.error({
-            message: 'Error Request or Response',
-            description: error.message,
-          })
         })
           .finally(() => {
             this.loading = false
@@ -126,13 +107,4 @@ export default {
 }
 </script>
 <style>
-
-.flag-icon {
-  min-width: 26px;
-  min-height: 26px;
-  border-radius: 50%;
-  box-shadow: 0px 0px 4px black;
-  margin-right: 2px;
-  transform: translateY(-5px);
-}
 </style>

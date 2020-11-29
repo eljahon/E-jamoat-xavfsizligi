@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Courier List" style="width: 100%">
+    <a-card :title="$t('couriers.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addCourier">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -62,71 +62,24 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          // scopedSlots: { customRender: 'name' },
-          // customCell: (record, inddex) => {
-          //   return {
-          //     on: {
-          //       click: (event) => {
-          //         this.enterProduct(record.id)
-          //       }
-          //     }
-          //   }
-          // },
+          title: this.$t('name'),
+          dataIndex: 'name'
         },
         {
-          title: 'Phone',
-          dataIndex: 'phone',
-          // customCell: (record, inddex) => {
-          //   return {
-          //     on: {
-          //       click: (event) => {
-          //         this.enterProduct(record.id)
-          //       }
-          //     }
-          //   }
-          // },
+          title: this.$t('phone'),
+          dataIndex: 'phone'
         },
         {
-          title: 'Car Type',
-          dataIndex: 'car_type',
-          // customCell: (record, inddex) => {
-          //   return {
-          //     on: {
-          //       click: (event) => {
-          //         this.enterProduct(record.id)
-          //       }
-          //     }
-          //   }
-          // },
+          title: this.$t('car_type'),
+          dataIndex: 'car_type'
         },
         {
-          title: 'car number',
-          dataIndex: 'car_number',
-          // customCell: (record, inddex) => {
-          //   return {
-          //     on: {
-          //       click: (event) => {
-          //         this.enterProduct(record.id)
-          //       }
-          //     }
-          //   }
-          // },
+          title: this.$t('car_number'),
+          dataIndex: 'car_number'
         },
         {
-          title: 'car model',
-          // customCell: (record, inddex) => {
-          //   return {
-          //     on: {
-          //       click: (event) => {
-          //         this.enterProduct(record.id)
-          //       }
-          //     }
-          //   }
-          // },
+          title: this.$t('car_model'),
           dataIndex: 'car_model',
-          // scopedSlots: { customRender: 'status' },
         },
         {
           title: this.$t('action'),

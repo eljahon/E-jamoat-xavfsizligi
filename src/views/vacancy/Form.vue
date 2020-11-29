@@ -2,31 +2,31 @@
   <a-form-model ref="ruleForm" :model="form" :rules="rules">
     <a-row>
       <a-col :span="11">
-        <a-form-model-item label="Ttile UZ" prop="title_uz">
+        <a-form-model-item :label="$t('name_uz')" prop="title_uz">
           <a-input v-model="form.title_uz" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item label="Ttile RU" prop="title_ru">
+        <a-form-model-item :label="$t('name_ru')" prop="title_ru">
           <a-input v-model="form.title_ru" />
         </a-form-model-item>
       </a-col>
     </a-row>
     <a-row>
       <a-col :span="11">
-        <a-form-model-item label="Content UZ" prop="content_uz">
+        <a-form-model-item :label="$t('content_uz')" prop="content_uz">
           <a-input v-model="form.content_uz" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item label="Content RU" prop="content_ru">
+        <a-form-model-item :label="$t('content_ru')" prop="content_ru">
           <a-input v-model="form.content_ru" />
         </a-form-model-item>
       </a-col>
     </a-row>
     <a-row>
       <a-col :span="11">
-        <a-form-model-item label="Location">
+        <a-form-model-item :label="$t('location')">
           <a-select
             show-search
             option-filter-prop="children"

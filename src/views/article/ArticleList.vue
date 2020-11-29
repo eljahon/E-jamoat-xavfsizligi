@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Article List" style="width: 100%">
+    <a-card :title="$t('article.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -63,15 +63,15 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name UZ',
+          title: this.$t('name_uz'),
           dataIndex: 'name_uz',
         },
         {
-          title: 'Name RU',
+          title: this.$t('name_ru'),
           dataIndex: 'name_ru',
         },
         {
-          title: 'Symbol',
+          title: this.$t('symbol'),
           dataIndex: 'symbol',
         },
         {
