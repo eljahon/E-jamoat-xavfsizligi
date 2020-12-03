@@ -18,6 +18,7 @@ import upload from './modules/upload'
 import supplier from './modules/supplier'
 import supplierStore from './modules/supplierStore'
 import article from './modules/article'
+import features from '@/store/modules/features'
 
 // default router permission control
 import permission from './modules/permission'
@@ -47,7 +48,8 @@ export default new Vuex.Store({
     vacancy,
     upload,
     supplier,
-    supplierStore
+    supplierStore,
+    features
   },
   state: {
 

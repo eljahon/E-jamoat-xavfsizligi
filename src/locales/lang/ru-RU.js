@@ -61,6 +61,10 @@ const locale = {
     'yes': 'Да',
     'no': 'Нет',
     'type': 'Тип',
+    'filter_type': 'Типы фильтров',
+    'color': 'Цвет',
+    'unit': 'Ед. изм',
+    'order': 'Номер порядок',
     'delete': 'Удалить',
     'save': 'Сохранить',
     'cancel': 'Отмена',
@@ -68,6 +72,7 @@ const locale = {
     'order_number': 'Порядковый номер',
     'description': 'Описание',
     'add_type': 'Выберите тип',
+    'fill': 'Заполните поле',
 
     // courier
     'couriers': 'Курьеры',
@@ -79,6 +84,19 @@ const locale = {
     // brands
     'brands': 'Бренды',
     'brands.list': 'Список брендов',
+
+    // features
+    'features': 'Bозможност',
+    'features.list': 'Список возможностей',
+    'features.create': 'Создать возможност',
+    'features.value.uz': 'Bозможност yзбекский значение',
+    'features.value.ru': 'Bозможност русский значение',
+    'filter': 'Фильтр',
+    'main': 'Основной',
+    'variant': 'Вариант',
+    'required': 'Обязательное',
+
+
 
     // complaint
     'complaint_type': 'Тип жалобы',
@@ -115,7 +133,7 @@ const locale = {
     'article.list': 'Список статей',
 
     // order
-    'order': 'Заказы',
+    // 'order': 'Заказы',
     'order_list': 'Список заказов',
     'update_attr': 'Изменить атрибуты',
     'total': 'Всего',

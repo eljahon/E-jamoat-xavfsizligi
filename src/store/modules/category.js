@@ -3,12 +3,14 @@ export default {
   state: {
     categorys: [],
     loadCategory: false,
-    pagination: {}
+    pagination: {},
+    tree: []
   },
   getters: {
     allCategory: (state) => state.categorys,
     loadCategory: (state) => state.loadCategory,
-    paginationCategory: (state) => state.pagination
+    paginationCategory: (state) => state.pagination,
+    treeCategory: (state) => state.tree
   },
   mutations: {
     GET_ALL_CATEGORY(state, payload) {
@@ -19,6 +21,14 @@ export default {
     },
     GET_CATEGORY_PAGINATION(state, payload) {
       state.pagination = payload
+    },
+    GET_CATEGORY_TREE (state, payload) {
+      state.tree = payload.map(e => {
+        return {
+          title: e.name_uz + ' ' + e.name_ru,
+          key: e.id
+        }
+      })
     }
   },
   actions: {
@@ -90,6 +100,17 @@ export default {
           lang: payload.lang
         }).then(res => {
           resolve(res)
+          console.log(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    getTreeCategory({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get('/admin/category/parent-with-children').then(res => {
+          commit('GET_CATEGORY_TREE', res.data)
+          resolve(res.data)
           console.log(res)
         }).catch(err => {
           reject(err)

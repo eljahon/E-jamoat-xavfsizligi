@@ -116,6 +116,28 @@ export const asyncRouterMap = [
           }
         ]
       },
+      {
+        path: '/features',
+        name: 'features',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/features/list',
+        meta: { title: 'features', icon: 'dropbox', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/features/list',
+            name: 'FeaturesList',
+            component: () => import('@/views/features/FeaturesList'),
+            meta: { title: 'features.list', keepAlive: true, permission: [ 'form' ] }
+          },
+          {
+            path: '/features/create',
+            name: 'FeaturesCreate',
+            component: () => import('@/views/features/FeaturesCreateWithUpdate'),
+            meta: { title: 'features.create', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
       // brands
       {
         path: '/brands',
