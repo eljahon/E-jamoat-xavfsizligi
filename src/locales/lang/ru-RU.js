@@ -73,6 +73,12 @@ const locale = {
     'description': 'Описание',
     'add_type': 'Выберите тип',
     'fill': 'Заполните поле',
+    'password': 'Пароль',
+    'password_confirm': 'Подтвердить пароль',
+    'errorPhone': 'Ошибка телефона',
+    'errorEmail': 'Электронная почта ошибки',
+    'passwordLength': 'Пароль должен быть от 6 до 50',
+    'passwordError': 'Пароль не равен паролю подтвердить',
 
     // courier
     'couriers': 'Курьеры',
@@ -123,6 +129,10 @@ const locale = {
     // supplier
     'supplier': 'Поставщик',
     'supplier.list': 'Список поставщиков',
+    // staff
+    'users': 'Пользователи',
+    'users.list': 'Список пользователей',
+
 
     // supplier store
     'supplier_store': 'Магазин-поставщик',

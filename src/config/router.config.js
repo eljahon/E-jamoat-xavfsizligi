@@ -138,6 +138,22 @@ export const asyncRouterMap = [
           }
         ]
       },
+      {
+        path: '/users',
+        name: 'users',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/users/list',
+        meta: { title: 'users', icon: 'user', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/users/list',
+            name: 'UsersList',
+            component: () => import('@/views/staff/StaffList'),
+            meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
       // brands
       {
         path: '/brands',

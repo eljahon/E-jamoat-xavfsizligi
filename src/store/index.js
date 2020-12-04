@@ -19,6 +19,7 @@ import supplier from './modules/supplier'
 import supplierStore from './modules/supplierStore'
 import article from './modules/article'
 import features from '@/store/modules/features'
+import staff from '@/store/modules/staff'
 
 // default router permission control
 import permission from './modules/permission'
@@ -49,7 +50,8 @@ export default new Vuex.Store({
     upload,
     supplier,
     supplierStore,
-    features
+    features,
+    staff
   },
   state: {
 
