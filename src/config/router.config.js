@@ -154,6 +154,26 @@ export const asyncRouterMap = [
           }
         ]
       },
+
+      // widjet
+
+      {
+        path: '/widget',
+        name: 'widget',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/widget/list',
+        meta: { title: 'widget', icon: 'picture', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/widget/list',
+            name: 'WidgetList',
+            component: () => import('@/views/widget/WidgetList'),
+            meta: { title: 'widget.list', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
+
       // brands
       {
         path: '/brands',

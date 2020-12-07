@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a-card :title="$t('features.list')" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="() => { $router.push({ name: 'FeaturesCreate' }) }">{{ $t('add') }}</a-button>
+    <a-card :title="$t('widget.list')" style="width: 100%">
+      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
@@ -10,30 +10,27 @@
       </a-row>
       <a-table
         :columns="columns"
-        :data-source="allFeatures"
-        :loading="loadFeatures"
+        :data-source="allWigets"
+        :loading="loadWigets"
         :rowKey="item => item.id"
-        :pagination="paginationFeatures"
+        :pagination="paginationWigets"
         @change="changePagination"
         bordered
       >
-        <template slot="popular" slot-scope="is_popular">
-          <a-tag v-if="is_popular" color="green">{{ $t('popular') }}</a-tag>
-          <a-tag v-else color="red">{{ $t('popular.no') }}</a-tag>
+<!--        <template slot="status" slot-scope="status">-->
+<!--          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>-->
+<!--          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>-->
+<!--        </template>-->
+        <template slot="category" slot-scope="item">
+          {{ getCatgory(item.category_id) }}
         </template>
-        <template slot="status" slot-scope="status">
-          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
-          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
-        </template>
-        <template slot="image" slot-scope="item">
-          <div class="imagePreview">
-            <img :src="item.logo_url">
-          </div>
+        <template slot="brand" slot-scope="item">
+          {{ getBrand(item.brand_id) }}
         </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -57,12 +54,12 @@
     </a-card>
 
     <!-- MODALS -->
-<!--    <create ref="createBrand" :editable="false" :params="params"/>-->
-<!--    <create ref="editItem" :editable="true" :params="params"/>-->
+    <create ref="createItem" :editable="false" :params="params"/>
+    <create ref="editItem" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import Create from './FeaturesCreateWithUpdate'
+import Create from './WidgetCreate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
@@ -74,18 +71,18 @@ export default {
       loading: false,
       columns: [
         {
-          title: this.$t('name_ru'),
-          dataIndex: 'name_ru',
+          title: this.$t('categories'),
+          dataIndex: 'category_id',
+          scopedSlots: { customRender: 'category' }
         },
         {
-          title: this.$t('name_uz'),
-          dataIndex: 'name_uz',
+          title: this.$t('brands'),
+          dataIndex: 'brand_id',
+          scopedSlots: { customRender: 'brand' }
         },
         {
-          title: this.$t('status'),
-          dataIndex: 'status',
-          align: 'center',
-          scopedSlots: { customRender: 'status' },
+          title: this.$t('key'),
+          dataIndex: 'key',
         },
         {
           title: this.$t('action'),
@@ -106,42 +103,51 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllFeatures', 'deleteFeatures']),
+    ...mapActions(['getAllWidgets', 'deleteWidgets', 'getListCategory', 'getAllBrands']),
     editItem(item) {
       this.$refs.editItem.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllFeatures(this.params)
+      this.getAllWidgets(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllWidgets(this.params)
     },
     removeItem (item) {
       console.log(item)
-      this.deleteFeatures(item.id).then(res => {
-        this.getAllFeatures(this.params)
+      this.deleteMeasure(item.id).then(res => {
+        this.getAllWidgets(this.params)
       })
     },
     addItem () {
-      this.$refs.createBrand.show()
+      this.$refs.createItem.show()
+    },
+    getCatgory (id) {
+      for (var i = 0; i < this.listCategory.length; i++) {
+        if (id === this.listCategory[i].category_id) return this.listCategory[i].name_ru
+      }
+    },
+    getBrand(id) {
+      for (var i = 0; i < this.allBrands.length; i++) {
+        if (id === this.allBrands[i].brand_id) return this.allBrands[i].name_ru
+      }
     }
   },
   computed: {
-    ...mapGetters(['allFeatures', 'loadFeatures', 'paginationFeatures']),
+    ...mapGetters(['allWigets', 'loadWigets', 'paginationWigets', 'allBrands', 'listCategory'])
   },
   mounted() {
-    this.getAllFeatures(this.params)
+    this.getAllBrands()
+    this.getListCategory()
+    this.getAllWidgets(this.params)
   },
 }
 </script>
 <style>
-.imagePreview img {
-  width: 80px;
-  height: 80px;
-  box-sizing: border-box;
-  object-fit: cover;
+.ant-table-row:hover {
+  cursor: pointer;
 }
 </style>

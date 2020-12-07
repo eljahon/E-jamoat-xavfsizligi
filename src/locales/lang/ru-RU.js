@@ -64,6 +64,7 @@ const locale = {
     'filter_type': 'Типы фильтров',
     'color': 'Цвет',
     'unit': 'Ед. изм',
+    'key': 'Ключ',
     'order': 'Номер порядок',
     'delete': 'Удалить',
     'save': 'Сохранить',
@@ -74,6 +75,9 @@ const locale = {
     'add_type': 'Выберите тип',
     'fill': 'Заполните поле',
     'password': 'Пароль',
+    'upload': 'Загрузить',
+    'upload_photo': 'Загрузить фото',
+    'add_photo': 'Добавить фото',
     'password_confirm': 'Подтвердить пароль',
     'errorPhone': 'Ошибка телефона',
     'errorEmail': 'Электронная почта ошибки',
@@ -125,6 +129,10 @@ const locale = {
     // vacancy
     'vacancy': 'Вакансия',
     'vacancy.list': 'Список вакансий',
+
+    // widget
+    'widget': 'Виджет',
+    'widget.list': 'Список виджетов',
 
     // supplier
     'supplier': 'Поставщик',

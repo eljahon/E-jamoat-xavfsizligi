@@ -4,13 +4,15 @@ export default {
     categorys: [],
     loadCategory: false,
     pagination: {},
-    tree: []
+    tree: [],
+    list: []
   },
   getters: {
     allCategory: (state) => state.categorys,
     loadCategory: (state) => state.loadCategory,
     paginationCategory: (state) => state.pagination,
-    treeCategory: (state) => state.tree
+    treeCategory: (state) => state.tree,
+    listCategory: (state) => state.list
   },
   mutations: {
     GET_ALL_CATEGORY(state, payload) {
@@ -21,6 +23,9 @@ export default {
     },
     GET_CATEGORY_PAGINATION(state, payload) {
       state.pagination = payload
+    },
+    GET_LIST_CATEGORY(state, payload) {
+      state.list = payload
     },
     GET_CATEGORY_TREE (state, payload) {
       state.tree = payload.map(e => {
@@ -110,6 +115,17 @@ export default {
       return new Promise((resolve, reject) => {
         axiosInit.get('/admin/category/parent-with-children').then(res => {
           commit('GET_CATEGORY_TREE', res.data)
+          resolve(res.data)
+          console.log(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    getListCategory({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get('/admin/category/list').then(res => {
+          commit('GET_LIST_CATEGORY', res.data)
           resolve(res.data)
           console.log(res)
         }).catch(err => {

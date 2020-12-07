@@ -49,7 +49,7 @@
           <a-row>
             <a-col :span="11">
               <a-form-model-item :label="$t('order')" prop="order">
-                <a-input type="number" style="width: 100%" v-model="form.order"></a-input>
+                <a-input-number style="width: 100%" v-model="form.order"></a-input-number>
               </a-form-model-item>
             </a-col>
             <a-col :span="11" :offset="2">
@@ -129,7 +129,7 @@
         </a-col>
       </a-row>
       <a-row>
-        <a-button type="primary" html-type="submit" :loading="loading">
+        <a-button type="primary" html-type="submit">
           {{ $t('save') }}
         </a-button>
       </a-row>
@@ -139,6 +139,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { Tree } from 'ant-design-vue'
+import notification from 'ant-design-vue/lib/notification'
 export default {
   components: {
     'a-tree': Tree
@@ -189,6 +190,7 @@ export default {
         is_main: [{ required: true, message: this.$t('required'), trigger: 'change' }],
         is_variant: [{ required: true, message: this.$t('required'), trigger: 'change' }],
         is_required: [{ required: true, message: this.$t('required'), trigger: 'change' }],
+        categories: [{ required: true, message: this.$t('required'), trigger: 'change' }],
       }
     }
   },
@@ -199,14 +201,14 @@ export default {
     ...mapActions(['getTreeCategory', 'postFeatures']),
     saveData () {
       this.$refs.ruleForm.validate((valid) => {
-        this.loading = true
         if (valid) {
-          this.form.categories = this.form.categories.checked
-          this.postFeatures(this.form).finally(() => {
-            this.loading = false
-          })
-          console.log('Valid')
-        }
+          if (this.validateFeatures(this.form.feature_values)) {
+            this.form.categories = this.form.categories.checked
+            this.postFeatures(this.form).finally(() => {
+              this.loading = false
+            })
+          }
+        } else this.loading = true
       })
       console.log('submit')
     },
@@ -225,6 +227,19 @@ export default {
       } else {
         this.$refs.brandCreate.resetForm()
       }
+    },
+    validateFeatures(array) {
+      for (var i = 0; i < array.length; i++) {
+        if (array[i].value_ru === '' || array[i].value_uz === '') {
+          notification.error({
+            message: 'Ошибка',
+            description: 'Значения функций предупреждения пусты',
+            duration: 5
+          })
+          return false
+        }
+      }
+      return true
     }
   },
   mounted () {
