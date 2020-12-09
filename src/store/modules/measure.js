@@ -24,18 +24,16 @@ export default {
   actions: {
     getAllMeasures({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        let { pagination } = payload
         commit('GET_LOAD_MEASURE', true)
         // axios
-        axiosInit.get('/admin/measure',
-          {
-            page: pagination.current
-          }
-        )
+        axiosInit.get('/admin/measure')
           .then(res => {
             resolve()
-            pagination.total = parseInt(res.links.total)
-            commit('GET_MEASURE_PAGINATION', pagination)
+            if (payload) {
+              let { pagination } = payload
+              pagination.total = parseInt(res.links.total)
+              commit('GET_BRAND_PAGINATION', pagination)
+            }
             commit('GET_ALL_MEASURE', res.data)
           })
           .catch(error => {

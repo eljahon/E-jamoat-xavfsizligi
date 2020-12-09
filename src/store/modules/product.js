@@ -1,21 +1,22 @@
 import axiosInit from '@/utils/axios_init'
+import notification from 'ant-design-vue/lib/notification'
 export default {
   state: {
-    products: [],
-    loadProduct: false,
+    data: [],
+    loading: false,
     pagination: {}
   },
   getters: {
-    allProduct: (state) => state.products,
-    loadProduct: (state) => state.loadProduct,
+    allProduct: (state) => state.data,
+    loadProduct: (state) => state.loading,
     paginationProduct: (state) => state.pagination
   },
   mutations: {
     GET_ALL_PRODUCT(state, payload) {
-      state.products = payload
+      state.data = payload
     },
     GET_LOAD_PRODUCT(state, payload) {
-      state.loadProduct = payload
+      state.loading = payload
     },
     GET_PRODUCT_PAGINATION(state, payload) {
       state.pagination = payload
@@ -24,25 +25,27 @@ export default {
   actions: {
     getAllProduct({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        let { pagination, search, categoryId } = payload
+        let { pagination } = payload
         commit('GET_LOAD_PRODUCT', true)
         // axios
-        axiosInit.get('/products', {
-          limit: pagination.pageSize,
-          offset: (pagination.current - 1) * pagination.pageSize,
-          search: search,
-          vendor_category: categoryId
+        axiosInit.get('/admin/products', {
+          page: pagination.current
         })
           .then(res => {
             resolve()
             console.log(res)
-            pagination.total = parseInt(res.count)
-            commit('GET_PRODUCT_PAGINATION', pagination)
+            let page = { ...pagination }
+            page.total = parseInt(res.count)
+            commit('GET_PRODUCT_PAGINATION', page)
             commit('GET_ALL_PRODUCT', res.products)
           })
-          .catch(error => {
-            reject(error)
-            this.$message.error(error.message)
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
           })
           .finally(() => {
             commit('GET_LOAD_PRODUCT', false)
@@ -50,69 +53,54 @@ export default {
       })
     },
     updateProduct ({ commit }, payload) {
-      if (payload.locker) {
-        payload.data.active = !payload.data.active
-      }
       return new Promise((resolve, reject) => {
-        axiosInit.put(`/products/${payload.id}`, payload.data)
+        axiosInit.put(`/admin/products/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
             console.log(res)
           })
-          .catch(error => {
-            reject(error)
-            console.log(error.message)
+          .catch(err => {
+            reject(err)
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
           })
-      })  
+      })
     },
     deleteProduct({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/products/${payload}`)
+        axiosInit.delete(`/admin/products/${payload}`)
           .then(res => {
             resolve()
             console.log(res)
           })
-          .catch(error => {
-            reject(error)
-            console.log(error.message)
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
           })
-      }) 
+      })
     },
     postProduct({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.post('/products', payload).then(res => {
+        axiosInit.post('/admin/products', payload).then(res => {
           resolve(res)
           console.log(res)
         })
-        .catch(error => {
-          reject(error)
-        })
-      })
-    },
-    getProductBySlug({ commit }, payload) {
-      return new Promise((resolve, reject) => {
-        axiosInit.get(`/products/${payload.slug}`, {
-          lang: payload.lang
-        }).then(res => {
-          resolve(res)
-          console.log(res)
-        }).catch(err => {
+        .catch(err => {
+          notification.error({
+            message: 'Ошибка сети или сервер не работает',
+            description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+            duration: 5
+          })
           reject(err)
         })
       })
-    },
-    updateProductAttr ({ commit }, payload) {
-      return new Promise((resolve, reject) => {
-        axiosInit.put(`/products/${payload.id}/update-property`, payload.data)
-          .then(res => {
-            resolve(res)
-            console.log(res)
-          })
-          .catch(error => {
-            reject(error)
-            console.log(error.message)
-          })
-      })
-    },
+    }
   }
 }

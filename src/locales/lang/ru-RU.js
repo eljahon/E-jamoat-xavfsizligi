@@ -14,9 +14,14 @@ const locale = {
     'category_list': 'Список категорий',
     'add_category': 'Добавить категорию',
     'edit_category': 'Изменить категорию',
+
+
     // product
     'products': 'Продукты',
     'product_list': 'Список продукты',
+
+
+
     // basic
     'add': 'Добавить',
     'active': 'Активный',
@@ -30,6 +35,8 @@ const locale = {
     'popular.no': 'Не популярный',
     'logout': 'Выход',
     'image': 'Фото',
+    'uzbek': 'Узбекский',
+    'russian': 'Pусский',
     'name_uz': 'Название yзбекский',
     'name_ru': 'Название русский',
     'image_view': 'Просмотр фото',

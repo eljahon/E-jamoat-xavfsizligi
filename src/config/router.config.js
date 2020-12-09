@@ -99,6 +99,8 @@ export const asyncRouterMap = [
       //     }
       //   ]
       // },
+
+
       // couriers
       {
         path: '/courier',
@@ -116,6 +118,30 @@ export const asyncRouterMap = [
           }
         ]
       },
+
+      {
+        path: '/products',
+        name: 'products',
+        hideChildrenInMenu: true,
+        component: RouteView,
+        redirect: '/products/list',
+        meta: { title: 'products', icon: 'shop', permission: [ 'form' ] },
+        children: [
+          {
+            path: '/products/list',
+            name: 'ProductsList',
+            component: () => import('@/views/products/ProductsList'),
+            meta: { title: 'product_list', keepAlive: true, permission: [ 'form' ] }
+          },
+          {
+            path: '/products/create',
+            name: 'ProductsCreate',
+            component: () => import('@/views/products/ProductsCreateWithUpdate'),
+            meta: { title: 'Product Create', keepAlive: true, permission: [ 'form' ] }
+          }
+        ]
+      },
+
       {
         path: '/features',
         name: 'features',
