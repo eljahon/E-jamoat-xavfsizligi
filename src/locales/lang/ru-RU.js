@@ -34,6 +34,7 @@ const locale = {
     'popular': 'Популярный',
     'popular.no': 'Не популярный',
     'logout': 'Выход',
+    'clear': 'Очистить',
     'image': 'Фото',
     'uzbek': 'Узбекский',
     'russian': 'Pусский',

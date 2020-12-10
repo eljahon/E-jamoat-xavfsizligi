@@ -221,13 +221,6 @@ export default {
     removeFeatures (i) {
       this.form.feature_values.splice(i, 1)
     },
-    clear() {
-      if (this.editable) {
-        this.$refs.brandEdit.resetForm()
-      } else {
-        this.$refs.brandCreate.resetForm()
-      }
-    },
     validateFeatures(array) {
       for (var i = 0; i < array.length; i++) {
         if (array[i].value_ru === '' || array[i].value_uz === '') {

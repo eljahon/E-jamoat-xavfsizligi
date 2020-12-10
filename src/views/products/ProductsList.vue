@@ -106,13 +106,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllFeatures', 'deleteFeatures']),
+    ...mapActions(['getAllProduct', 'deleteProduct']),
     editItem(item) {
       this.$refs.editItem.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllFeatures(this.params)
+      this.getAllProduct(this.params)
     },
     search(value) {
       console.log(value)
@@ -120,9 +120,8 @@ export default {
       this.getAllCategory(this.params)
     },
     removeItem (item) {
-      console.log(item)
-      this.deleteFeatures(item.id).then(res => {
-        this.getAllFeatures(this.params)
+      this.deleteProduct(item.id).then(res => {
+        this.getAllProduct(this.params)
       })
     },
     addItem () {
@@ -133,7 +132,7 @@ export default {
     ...mapGetters(['allProduct', 'loadProduct', 'paginationProduct']),
   },
   mounted() {
-    this.getAllFeatures(this.params)
+    this.getAllProduct(this.params)
   },
 }
 </script>
