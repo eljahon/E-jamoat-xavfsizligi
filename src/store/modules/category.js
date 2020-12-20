@@ -28,12 +28,7 @@ export default {
       state.list = payload
     },
     GET_CATEGORY_TREE (state, payload) {
-      state.tree = payload.map(e => {
-        return {
-          title: e.name_uz + ' ' + e.name_ru,
-          key: e.id
-        }
-      })
+      state.tree = payload
     }
   },
   actions: {

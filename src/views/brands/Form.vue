@@ -13,7 +13,7 @@
       </a-col>
     </a-row>
     <a-row>
-      <a-col :span="6">
+      <a-col :span="11">
         <a-form-model-item :label="$t('image')" prop="image">
           <a-upload
             :custom-request="uploadImage"
@@ -22,11 +22,14 @@
             :show-upload-list="false"
             :before-upload="beforeUpload"
           >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-            <div v-else>
-              <a-icon :type="loadingImage ? 'loading' : 'plus'" />
-              <div class="ant-upload-text">
-                {{ $t('image_view') }}
+            <div v-if="imageUrl" class="upload-image">
+              <img :src="imageUrl" alt="avatar" />
+            </div>
+            <div class="upload-empty" v-else>
+              <a-icon v-if="!(loadingImage && onUpload)" type="upload" style="font-size: 48px" />
+              <a-progress v-if="loadingImage && onUpload" :percent="progress" />
+              <div v-if="!(loadingImage && onUpload)" class="ant-upload-text">
+                {{ $t('upload_photo') }}
               </div>
             </div>
           </a-upload>
@@ -37,7 +40,7 @@
           <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="form.is_popular" />
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="0">
+      <a-col :span="6" :offset="1">
         <a-form-model-item :label="$t('status')">
           <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
         </a-form-model-item>
@@ -46,11 +49,7 @@
   </a-form-model>
 </template>
 <script>
-function getBase64(img, callback) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
-}
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -69,7 +68,7 @@ export default {
         name_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         name_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         status: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        logo: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }]
+        // logo: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }]
       }
     }
   },
@@ -78,6 +77,9 @@ export default {
       if (val) this.form.status = 10
       else this.form.status = 0
     }
+  },
+  computed: {
+    ...mapGetters(['progress', 'onUpload'])
   },
   methods: {
     validateForm() {
@@ -99,52 +101,21 @@ export default {
     },
     uploadImage(e) {
       console.log(e)
+      this.imageUrl = null
       this.loadingImage = true
-      const image = new FormData()
-      image.append('image', e.file)
-      this.$store.dispatch('uploadData', image).then(res => {
-        getBase64(e.file, imageUrl => {
-          this.form.logo = res.data.path
-          this.imageUrl = imageUrl
+      this.$imageUp(e).then(res => {
+        this.form.logo = res.image
+        this.imageUrl = res.image_url
+      })
+        .finally(() => {
+          this.loadingImage = false
         })
-      })
-      .catch(err => {
-        console.log('FINALLLY')
-        this.loadingImage = false
-      })
     },
     beforeUpload(file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-      if (!isJpgOrPng) {
-        this.$message.error('You can only upload JPG, PNG file!')
-      }
-      return isJpgOrPng
-    },
+      return this.$beforeUpImage(file)
+    }
   }
 }
 </script>
 <style>
-img, .mask {
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 250px;
-  height: auto;
-  overflow: hidden;
-}
-
-.avatar-uploader > .ant-upload.ant-upload-select-picture-card {
-  width: 150px;
-  height: 150px;
-}
-
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
-}
-
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
-}
 </style>

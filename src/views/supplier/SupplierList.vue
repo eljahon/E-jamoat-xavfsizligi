@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card title="Supplier List" style="width: 100%">
+    <a-card size="small" :title="$t('supplier.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -9,13 +9,13 @@
         </a-col>
       </a-row>
       <a-table
+        size="small"
         :columns="columns"
         :data-source="allSuppliers"
         :loading="loadSupplier"
         :rowKey="item => item.id"
         :pagination="paginationSupplier"
         @change="changePagination"
-        bordered
       >
         <template slot="phone" slot-scope="phone">
           +998{{ phone }}
@@ -23,7 +23,7 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button size="small" style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -36,6 +36,7 @@
             <a-tooltip>
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
+                size="small"
                 style="margin: 0 2px"
                 type="danger"
                 icon="delete"
@@ -65,20 +66,16 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name UZ',
+          title: this.$t('name'),
           dataIndex: 'name_uz',
         },
         {
-          title: 'Name RU',
-          dataIndex: 'name_ru',
-        },
-        {
-          title: 'Phone',
+          title: this.$t('phone'),
           dataIndex: 'phone',
           scopedSlots: { customRender: 'phone' },
         },
         {
-          title: 'Email',
+          title: this.$t('email'),
           dataIndex: 'email',
         },
         {

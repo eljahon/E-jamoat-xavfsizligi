@@ -16,14 +16,19 @@ import { FormModel } from 'ant-design-vue'
 import InputTag from 'vue-input-tag'
 import YmapPlugin from 'vue-yandex-maps'
 import CKeditor from '@ckeditor/ckeditor5-vue'
-// mock
-// WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
+import Verte from 'verte'
+
+
+// global functions
+import imageUp from '@/utils/globals/image_upload'
+import beforeUpImage from '@/utils/globals/before_upload_image'
 
 import bootstrap from './core/bootstrap'
 import './core/lazy_use'
 import './permission' // permission control
 import './utils/filter' // global filter
 import './global.less'
+import 'verte/dist/verte.css';
 
 Vue.config.productionTip = false
 
@@ -41,9 +46,12 @@ Vue.use(YmapPlugin, {
   coordorder: 'latlong',
   version: '2.1'
 })
+Vue.prototype.$imageUp = imageUp
+Vue.prototype.$beforeUpImage = beforeUpImage
 Vue.component('pro-layout', ProLayout)
 Vue.component('page-header-wrapper', PageHeaderWrapper)
 Vue.component('input-tag', InputTag)
+Vue.component('verte', Verte)
 
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 

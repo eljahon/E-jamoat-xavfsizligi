@@ -154,10 +154,10 @@ export default {
           this.items[index].url = imageUrl
         })
       })
-      .catch(err => {
-        console.log('FINALLLY')
-        this.items[index].loading = false
-      })
+        .catch(err => {
+          console.log('FINALLLY')
+          this.items[index].loading = false
+        })
     },
     beforeUpload(file) {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'

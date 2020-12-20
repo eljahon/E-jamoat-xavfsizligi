@@ -14,11 +14,16 @@
     </a-row>
     <a-row>
       <a-col :span="11">
-        <a-form-model-item :label="$t('symbol')" prop="symbol">
-          <a-input v-model="form.symbol" />
+        <a-form-model-item :label="$t('symbol_uz')" prop="symbol_uz">
+          <a-input v-model="form.symbol_uz" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
+        <a-form-model-item :label="$t('symbol_ru')" prop="symbol_ru">
+          <a-input v-model="form.symbol_ru" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="11">
         <a-form-model-item :label="$t('status')">
           <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
         </a-form-model-item>
@@ -35,7 +40,8 @@ export default {
       form: {
         name_ru: '',
         name_uz: '',
-        symbol: '',
+        symbol_uz: '',
+        symbol_ru: '',
         status: 10
       },
       rules: {

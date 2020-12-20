@@ -1,6 +1,5 @@
 import antdruRU from 'ant-design-vue/es/locale-provider/ru_RU'
 import momentRU from 'moment/locale/ru'
-
 const components = {
   antLocale: antdruRU,
   momentName: 'ru',
@@ -9,7 +8,9 @@ const components = {
 
 const locale = {
     'dashboard': 'Дашборд',
-    // category
+
+
+    'category': 'Категория',
     'categories': 'Категории',
     'category_list': 'Список категорий',
     'add_category': 'Добавить категорию',
@@ -50,7 +51,9 @@ const locale = {
     'content_uz': 'Содержание yзбекский',
     'content_ru': 'Содержание русский',
     'symbol': 'Символ',
-    'phone': 'Телефон',
+    'symbol_uz': 'Символ yзбекский',
+    'symbol_ru': 'Символ русский',
+    'phone': 'Телефон ',
     'price': 'Цена',
     'add_form': 'Добавить форму',
     'update_form': 'Изменить форму',
@@ -66,6 +69,7 @@ const locale = {
     'blockMsg': 'Вы действительно хотите заблокировать?',
     'unblockMsg': 'Вы действительно хотите активировать?',
     'deleteMsg': 'Вы действительно хотите удалить это?',
+    'upload_image_error': 'Произошла ошибка при загрузке изображения',
     'yes': 'Да',
     'no': 'Нет',
     'type': 'Тип',
@@ -83,6 +87,7 @@ const locale = {
     'add_type': 'Выберите тип',
     'fill': 'Заполните поле',
     'password': 'Пароль',
+    'settings': 'Настройки',
     'upload': 'Загрузить',
     'upload_photo': 'Загрузить фото',
     'add_photo': 'Добавить фото',
@@ -107,6 +112,7 @@ const locale = {
     'features': 'Bозможност',
     'features.list': 'Список возможностей',
     'features.create': 'Создать возможност',
+    'features.value': 'Bозможност значение',
     'features.value.uz': 'Bозможност yзбекский значение',
     'features.value.ru': 'Bозможност русский значение',
     'filter': 'Фильтр',
@@ -139,12 +145,15 @@ const locale = {
     'vacancy.list': 'Список вакансий',
 
     // widget
+    'pages_and_widgets': 'Страницы и виджеты',
     'widget': 'Виджет',
     'widget.list': 'Список виджетов',
 
     // supplier
     'supplier': 'Поставщик',
     'supplier.list': 'Список поставщиков',
+
+
     // staff
     'users': 'Пользователи',
     'users.list': 'Список пользователей',

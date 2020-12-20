@@ -38,7 +38,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['postCategory', 'getAllCategory', 'updateCategory', 'getCategoryBySlug']),
+    ...mapActions(['postCategory', 'getAllCategory', 'updateCategory', 'getCategoryBySlug', 'getTreeCategory']),
     hide() {
       this.visible = false
       this.clear()
@@ -54,6 +54,7 @@ export default {
           e.name_ru = data.name_ru
           e.name_uz = data.name_uz
           e.is_popular = data.is_popular
+          e.parent_id = data.parent_id
           e.description = data.description
           e.image = data.image
           e.keyword = data.keyword
@@ -80,6 +81,7 @@ export default {
           this.postCategory(res.data).then(res => {
             console.log(res)
             this.getAllCategory(this.params)
+            this.getTreeCategory()
             this.hide()
           })
           .finally(() => {

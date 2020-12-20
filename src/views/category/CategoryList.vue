@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :title="$t('category_list')" style="width: 100%">
+    <a-card size="small" :title="$t('category_list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addCategory">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -10,12 +10,12 @@
       </a-row>
       <a-table
         :columns="columns"
+        size="small"
         :data-source="allCategory"
         :loading="loadCategory"
         :rowKey="item => item.id"
         :pagination="paginationCategory"
         @change="changePagination"
-        bordered
       >
         <template slot="popular" slot-scope="is_popular">
           <a-tag v-if="is_popular" color="green">{{ $t('popular') }}</a-tag>
@@ -33,7 +33,7 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editCategory(item)" icon="edit"></a-button>
+            <a-button size="small" style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editCategory(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -47,6 +47,7 @@
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
                 style="margin: 0 2px"
+                size="small"
                 type="danger"
                 icon="delete"
               ></a-button>
@@ -122,7 +123,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllCategory', 'updateCategory', 'deleteCategory']),
+    ...mapActions(['getAllCategory', 'updateCategory', 'deleteCategory', 'getTreeCategory']),
     cropper () {
       this.$refs.imageCrop.show()
     },
@@ -170,6 +171,7 @@ export default {
   },
   mounted() {
     this.getAllCategory(this.params)
+    this.getTreeCategory()
   },
 }
 </script>

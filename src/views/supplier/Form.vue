@@ -38,8 +38,8 @@
     </a-row>
     <a-row>
       <a-col :span="11">
-        <a-form-model-item label="Status" prop="status">
-          <a-input-number style="width: 100%" :min="0" v-model="form.status" />
+        <a-form-model-item :label="$t('status')">
+          <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
         </a-form-model-item>
       </a-col>
     </a-row>
@@ -70,6 +70,7 @@ export default {
     }
     return {
       id: null,
+      status: true,
       form: {
         name_uz: '',
         name_ru: '',
@@ -88,6 +89,12 @@ export default {
         email: [{ validator: validateEmail, trigger: 'change' }],
         status: [{ required: true, message: 'Status Required', trigger: 'blur' }]
       }
+    }
+  },
+  watch: {
+    status (val) {
+      if (val) this.form.status = 10
+      else this.form.status = 0
     }
   },
   methods: {

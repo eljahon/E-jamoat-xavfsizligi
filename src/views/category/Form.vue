@@ -14,29 +14,48 @@
     </a-row>
     <a-row>
       <a-col :span="11">
-        <a-form-model-item :label="$t('description')">
-          <a-input v-model="form.description" />
+        <a-form-model-item :label="$t('category')" prop="parent_id">
+          <a-tree-select
+            show-search
+            v-model="form.parent_id"
+            :treeData="treeData"
+            style="width: 100%"
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+            placeholder="Please select"
+            allow-clear
+          />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item :label="$t('keyword')">
-          <a-input v-model="form.keyword" />
-        </a-form-model-item>
+        <a-row>
+          <a-col :span="14">
+            <a-form-model-item :label="$t('status')">
+              <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
+            </a-form-model-item>
+          </a-col>
+          <a-col :span="6" :offset="2">
+            <a-form-model-item :label="$t('popular')">
+              <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="form.is_popular" />
+            </a-form-model-item>
+          </a-col>
+        </a-row>
       </a-col>
     </a-row>
     <a-row>
-      <a-col :span="7">
-        <a-form-model-item :label="$t('status')">
-          <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
-        </a-form-model-item>
-      </a-col>
-      <a-col :span="3" :offset="1">
-        <a-form-model-item :label="$t('popular')">
-          <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="form.is_popular" />
-        </a-form-model-item>
+      <a-col :span="11">
+        <a-col :span="24">
+          <a-form-model-item :label="$t('keyword')">
+            <a-input v-model="form.keyword" />
+          </a-form-model-item>
+        </a-col>
+        <a-col :span="24">
+          <a-form-model-item :label="$t('description')">
+            <a-input type="textarea" v-model="form.description" />
+          </a-form-model-item>
+        </a-col>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item :label="$t('image')" prop="image">
+        <a-form-model-item :label="$t('image')">
           <a-upload
             :custom-request="uploadImage"
             list-type="picture-card"
@@ -44,11 +63,14 @@
             :show-upload-list="false"
             :before-upload="beforeUpload"
           >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-            <div v-else>
-              <a-icon :type="loadingImage ? 'loading' : 'plus'" />
-              <div class="ant-upload-text">
-                {{ $t('image_view') }}
+            <div v-if="imageUrl" class="upload-image">
+              <img :src="imageUrl" alt="avatar" />
+            </div>
+            <div class="upload-empty" v-else>
+              <a-icon v-if="!(loadingImage && onUpload)" type="upload" style="font-size: 48px" />
+              <a-progress v-if="loadingImage && onUpload" :percent="progress" />
+              <div v-if="!(loadingImage && onUpload)" class="ant-upload-text">
+                {{ $t('upload_photo') }}
               </div>
             </div>
           </a-upload>
@@ -58,10 +80,24 @@
   </a-form-model>
 </template>
 <script>
-function getBase64(img, callback) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
+import { mapGetters } from 'vuex'
+import { TreeSelect } from 'ant-design-vue'
+
+function treeDataMap (category) {
+  return category.map((c) => {
+      if (!c.children) {
+        return {
+          title: c.name_uz + ' ' + c.name_ru,
+          value: c.id
+        }
+      } else {
+        return {
+          title: c.name_uz + ' ' + c.name_ru,
+          value: c.id,
+          children: treeDataMap(c.children)
+        }
+      }
+    })
 }
 export default {
   props: {
@@ -71,6 +107,9 @@ export default {
         return false
       }
     }
+  },
+  components: {
+    'a-tree-select': TreeSelect
   },
   watch: {
     status (val) {
@@ -87,6 +126,7 @@ export default {
       form: {
         name_ru: '',
         name_uz: '',
+        parent_id: null,
         is_popular: true,
         description: '',
         image: null,
@@ -97,7 +137,7 @@ export default {
       rules: {
         name_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         name_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        image: [{ required: true, message: this.$t('requiredField'), trigger: 'change' }]
+        // image: [{ validator: validateImage, trigger: 'change' }]
       }
     }
   },
@@ -105,66 +145,48 @@ export default {
     validateForm() {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
-          if (valid === true) {
-            resolve({
-              id: this.edit ? this.item.id : undefined,
-              data: this.form
-            })
+          if (valid) {
+            if (this.form.image) {
+              resolve({
+                id: this.edit ? this.item.id : undefined,
+                data: this.form
+              })
+            } else {
+              this.$message.error('Поле изображения обязательное')
+            }
           } else reject(valid)
         })
       })
     },
     resetForm () {
+      this.imageUrl = null
+      this.loadingImage = false
       this.$refs.ruleForm.resetFields();
     },
     uploadImage(e) {
       console.log(e)
+      this.imageUrl = null
       this.loadingImage = true
-      const image = new FormData()
-      image.append('image', e.file)
-      this.$store.dispatch('uploadData', image).then(res => {
-        getBase64(e.file, imageUrl => {
-          this.form.image = res.data.path
-          this.imageUrl = imageUrl
-        })
+      this.$imageUp(e).then(res => {
+        this.form.image = res.image
+        this.imageUrl = res.image_url
       })
-        .catch(err => {
-          console.log('FINALLLY')
+        .finally(() => {
           this.loadingImage = false
         })
     },
     beforeUpload(file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
-      if (!isJpgOrPng) {
-        this.$message.error('You can only upload JPG, PNG file!')
-      }
-      return isJpgOrPng
-    },
+      return this.$beforeUpImage(file)
+    }
+},
+  computed: {
+    ...mapGetters(['progress', 'onUpload', 'treeCategory']),
+    treeData () {
+      return treeDataMap(this.treeCategory)
+    }
   }
 }
 </script>
-<style>
-img, .mask {
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 250px;
-  height: auto;
-  overflow: hidden;
-}
+<style lang="less">
 
-.avatar-uploader > .ant-upload.ant-upload-select-picture-card {
-  width: 150px;
-  height: 150px;
-}
-
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
-}
-
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
-}
 </style>

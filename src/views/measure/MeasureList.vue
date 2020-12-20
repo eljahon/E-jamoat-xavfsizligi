@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :title="$t('measures.list')" style="width: 100%">
+    <a-card size="small" :title="$t('measures.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -9,12 +9,12 @@
         </a-col>
       </a-row>
       <a-table
+        size="small"
         :columns="columns"
         :data-source="allMeasures"
         :loading="loadMeasure"
         :rowKey="item => item.id"
         @change="changePagination"
-        bordered
       >
         <template slot="status" slot-scope="status">
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
@@ -23,7 +23,7 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button size="small" style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -36,6 +36,7 @@
             <a-tooltip>
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
+                size="small"
                 style="margin: 0 2px"
                 type="danger"
                 icon="delete"

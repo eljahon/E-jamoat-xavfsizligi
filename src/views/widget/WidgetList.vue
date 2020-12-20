@@ -118,7 +118,7 @@ export default {
     },
     removeItem (item) {
       console.log(item)
-      this.deleteMeasure(item.id).then(res => {
+      this.deleteWidgets(item.id).then(res => {
         this.getAllWidgets(this.params)
       })
     },
