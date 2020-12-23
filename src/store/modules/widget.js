@@ -69,6 +69,23 @@ export default {
           })
       })
     },
+    getWidgetById({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/widget/${payload}`)
+          .then(res => {
+            resolve(res)
+            console.log(res)
+          })
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
+          })
+      })
+    },
     deleteWidgets({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.delete(`/admin/widget/${payload}`)

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a-card title="Supplier Store List" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
+    <a-card size="small" title="Supplier Store List" style="width: 100%">
+      <a-button size="small" type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
@@ -15,7 +15,7 @@
         :rowKey="item => item.id"
         :pagination="paginationSupplierStore"
         @change="changePagination"
-        bordered
+        size="small"
       >
         <template slot="phone" slot-scope="phone">
           +998{{ phone }}

@@ -17,6 +17,7 @@ import InputTag from 'vue-input-tag'
 import YmapPlugin from 'vue-yandex-maps'
 import CKeditor from '@ckeditor/ckeditor5-vue'
 import Verte from 'verte'
+import Mask from 'vue-the-mask'
 
 
 // global functions
@@ -37,6 +38,7 @@ Vue.use(FormModel)
 Vue.use(VueAxios)
 Vue.use(CKeditor)
 Vue.use(FlagIcon)
+Vue.use(Mask)
 Vue.use(VueDebounce, {
   defaultTime: '700ms'
 })

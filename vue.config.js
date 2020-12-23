@@ -4,7 +4,8 @@ const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const GitRevision = new GitRevisionPlugin()
 const buildDate = JSON.stringify(new Date().toLocaleString())
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
-
+const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' )
+const { styles } = require( '@ckeditor/ckeditor5-dev-utils' )
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
@@ -39,9 +40,19 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
+  transpileDependencies: [
+    /ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/,
+  ],
   configureWebpack: {
     // webpack plugins
     plugins: [
+      new CKEditorWebpackPlugin({
+        // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
+        language: 'ru',
+
+        // Append translations to the file matching the `app` name.
+        translationsOutputFile: /app/
+      }),
       // Ignore all locale files of moment.js
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.DefinePlugin({
@@ -55,6 +66,25 @@ const vueConfig = {
   },
 
   chainWebpack: (config) => {
+    config.module
+      .rule( 'cke-svg' )
+      .test( /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/ )
+      .use( 'raw-loader' )
+      .loader( 'raw-loader' )
+
+    config.module
+      .rule( 'cke-css' )
+      .test( /ckeditor5-[^/\\]+[/\\].+\.css$/ )
+      .use( 'postcss-loader' )
+      .loader( 'postcss-loader' )
+      .tap( () => {
+        return styles.getPostCssConfig({
+          themeImporter: {
+            themePath: require.resolve('@ckeditor/ckeditor5-theme-lark' ),
+          },
+          minify: true
+        })
+      })
     config.resolve.alias
       .set('@$', resolve('src'))
 
@@ -90,8 +120,8 @@ const vueConfig = {
         modifyVars: {
           // less vars，customize ant design theme
 
-          'primary-color': '#D72323',
-          'link-color': '#D72323',
+          'primary-color': '#0066FF',
+          'link-color': '#FFF45F',
           'border-radius-base': '2px'
         },
         // DO NOT REMOVE THIS LINE
@@ -103,14 +133,6 @@ const vueConfig = {
   devServer: {
     // development server port 8000
     port: 8033
-    // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
-    // proxy: {
-    //   '/api': {
-    //     target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
-    //     ws: false,
-    //     changeOrigin: true
-    //   }
-    // }
   },
 
   // disable source map in production

@@ -45,17 +45,11 @@
     </a-card>
 
     <!-- MODALS -->
-    <article-create ref="createArticle" :editable="false" :params="params"/>
-    <article-create ref="editArticle" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import articleCreate from './ArticleCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  components: {
-    'article-create': articleCreate,
-  },
   data() {
     return {
       visible: false,
@@ -113,7 +107,9 @@ export default {
       })
     },
     addItem () {
-      this.$refs.createArticle.show()
+      this.$router.push({
+        name: 'ArticleCreate'
+      })
     }
   },
   computed: {

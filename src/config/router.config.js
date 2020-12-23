@@ -217,7 +217,13 @@ export const asyncRouterMap = [
               },
               {
                 path: '/pages_and_widgets/widget/create',
-                name: 'WidgetList',
+                name: 'WidgetCreate',
+                component: () => import('@/views/widget/WidgetCreateWithUpdate'),
+                meta: { title: 'widget.list', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/pages_and_widgets/widget/update/:id',
+                name: 'WidgetUpdate',
                 component: () => import('@/views/widget/WidgetCreateWithUpdate'),
                 meta: { title: 'widget.list', keepAlive: true, permission: [ 'form' ] }
               }
@@ -236,6 +242,12 @@ export const asyncRouterMap = [
                 path: '/pages_and_widgets/article/list',
                 name: 'ArticleList',
                 component: () => import('@/views/article/ArticleList'),
+                meta: { title: 'article.list', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/pages_and_widgets/article/create',
+                name: 'ArticleCreate',
+                component: () => import('@/views/article/ArticleCreateWithUpdate'),
                 meta: { title: 'article.list', keepAlive: true, permission: [ 'form' ] }
               }
             ]

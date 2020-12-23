@@ -1,40 +1,99 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
-    <template slot="footer">
-      <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
-      <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
-      <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
-    </template>
-    <!-- FORM -->
-    <FormModel v-if="!editable" ref="articleCreate"/>
-    <FormModel v-if="editable" ref="articleEdit"/>
-  </a-modal>
+  <a-card :title="$t('fill')">
+    <a-form-model ref="ruleForm" :model="form" :rules="rules">
+      <a-row>
+        <a-col :span="11">
+          <a-form-model-item :label="$t('name_uz')" prop="title_uz">
+            <a-input v-model="form.title_uz" />
+          </a-form-model-item>
+        </a-col>
+        <a-col :span="11" :offset="1">
+          <a-form-model-item :label="$t('name_ru')" prop="title_ru">
+            <a-input v-model="form.title_ru" />
+          </a-form-model-item>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="11">
+          <a-form-model-item :label="$t('keyword_uz')" prop="keywords_uz">
+            <a-input v-model="form.keywords_uz" />
+          </a-form-model-item>
+        </a-col>
+        <a-col :span="11" :offset="1">
+          <a-form-model-item :label="$t('keyword_ru')" prop="keywords_ru">
+            <a-input v-model="form.keywords_ru" />
+          </a-form-model-item>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="24">
+          <a-form-model-item :label="$t('content_uz')" prop="content_uz">
+            <!--          <a-input v-model="form.content_uz" />-->
+            <ckeditor :config="editorConfig" :editor="editor" v-model="form.content_uz" ></ckeditor>
+          </a-form-model-item>
+        </a-col>
+        <a-col :span="24">
+          <a-form-model-item :label="$t('content_ru')" prop="content_ru">
+            <ckeditor :editor="editor" v-model="form.content_ru" ></ckeditor>
+          </a-form-model-item>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="11">
+          <a-form-model-item :label="$t('description_uz')" prop="description_uz">
+            <a-input type="textarea" v-model="form.description_uz" />
+          </a-form-model-item>
+        </a-col>
+        <a-col :span="11" :offset="1">
+          <a-form-model-item :label="$t('description_ru')" prop="description_ru">
+            <a-input type="textarea" v-model="form.description_ru" />
+          </a-form-model-item>
+        </a-col>
+      </a-row>
+    </a-form-model>
+  </a-card>
 </template>
 <script>
-import FormModel from './Form'
 import { mapActions } from 'vuex'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import uploadAdapter from '@/utils/ckUploadAdapter'
+// import Image from '@ckeditor/ckeditor5-image/src/image'
+// import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize'
 export default {
-  components: {
-    FormModel
-  },
-  props: {
-    editable: {
-      type: Boolean,
-      default: () => {
-        return false
-      }
-    },
-    params: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
-  },
   data() {
     return {
       loading: false,
-      visible: false
+      ckEditor: null,
+      editor: ClassicEditor,
+      editorConfig: {
+        extraPlugins: [this.uploader],
+        language: 'ru'
+      },
+      form: {
+        title_uz: '',
+        title_ru: '',
+        keywords_uz: '',
+        keywords_ru: '',
+        description_ru: '',
+        description_uz: '',
+        content_uz: '',
+        content_ru: '',
+      },
+      rules: {
+        title_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        title_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        content_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        content_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        keywords_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        keywords_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        description_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        description_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+      }
+    }
+  },
+  watch: {
+    ckEditor (e) {
+      console.log(e)
     }
   },
   methods: {
@@ -100,6 +159,12 @@ export default {
           })
       })
     },
+    uploader (editor) {
+      editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+        // eslint-disable-next-line
+        return new uploadAdapter(loader)
+      }
+    }
   }
 }
 </script>

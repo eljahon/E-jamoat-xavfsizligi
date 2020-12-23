@@ -2,42 +2,31 @@
   <a-form-model ref="ruleForm" :model="form" :rules="rules">
     <a-row>
       <a-col :span="11">
-        <a-form-model-item label="Name UZ" prop="name_uz">
-          <a-input v-model="form.name_uz" />
+        <a-form-model-item :label="$t('name')" prop="name">
+          <a-input v-model="form.name" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item label="Name RU" prop="name_ru">
-          <a-input v-model="form.name_ru" />
+        <a-form-model-item :label="$t('phone')" prop="phone">
+          <a-input addon-before="+998" v-mask="'## ### ## ##'" v-model="form.phone" />
         </a-form-model-item>
-      </a-col>
-    </a-row>
-    <a-row>
+      </a-col >
       <a-col :span="11">
-        <a-form-model-item label="Phone" prop="phone">
-          <a-input v-model="form.phone" />
-        </a-form-model-item>
-      </a-col>
-      <a-col :span="11" :offset="1">
-        <a-form-model-item label="Email" prop="email">
+        <a-form-model-item :label="$t('email')" prop="email">
           <a-input v-model="form.email" />
         </a-form-model-item>
       </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="11">
+      <a-col :span="11" :offset="1">
         <a-form-model-item label="Address UZ" prop="address_uz">
           <a-input v-model="form.address_uz" />
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="1">
+      <a-col :span="11">
         <a-form-model-item label="Address RU" prop="address_ru">
           <a-input v-model="form.address_ru" />
         </a-form-model-item>
       </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="11">
+      <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('status')">
           <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
         </a-form-model-item>
@@ -49,7 +38,7 @@
 export default {
   data () {
     const validatePhone = (rule, value, callback) => {
-      if (/^[+][9][9][8]\d{9}$/.test(value)) {
+      if (/^\d{9}$/.test(value.replaceAll(' ', ''))) {
         callback()
       } else {
         callback(new Error('Phone Error'))
@@ -72,8 +61,7 @@ export default {
       id: null,
       status: true,
       form: {
-        name_uz: '',
-        name_ru: '',
+        name: '',
         phone: '',
         email: '',
         address_uz: '',
@@ -95,6 +83,9 @@ export default {
     status (val) {
       if (val) this.form.status = 10
       else this.form.status = 0
+    },
+    'form.phone': function (val) {
+      console.log(val)
     }
   },
   methods: {
@@ -102,7 +93,10 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            this.form.phone = this.form.phone.slice(4)
+            this.form.name_ru = this.form.name
+            this.form.name_uz = this.form.name
+            this.form.name = undefined
+            this.form.phone = '+998' + this.form.phone.replaceAll(' ', '')
             resolve({
               id: this.id ? this.id : undefined,
               data: this.form
@@ -113,6 +107,7 @@ export default {
     },
     resetForm () {
       this.form.email = ''
+      this.form.phone = ''
       this.$refs.ruleForm.resetFields();
     }
   }

@@ -105,7 +105,14 @@ export default {
   methods: {
     ...mapActions(['getAllWidgets', 'deleteWidgets', 'getListCategory', 'getAllBrands']),
     editItem(item) {
-      this.$refs.editItem.show(item)
+      console.log(item)
+      this.$router.push({
+        name: 'WidgetUpdate',
+        params: {
+          id: item.id
+        }
+      })
+      // this.$refs.editItem.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
@@ -123,7 +130,10 @@ export default {
       })
     },
     addItem () {
-      this.$refs.createItem.show()
+      this.$router.push({
+        name: 'WidgetCreate'
+      })
+      // this.$refs.createItem.show()
     },
     getCatgory (id) {
       for (var i = 0; i < this.listCategory.length; i++) {

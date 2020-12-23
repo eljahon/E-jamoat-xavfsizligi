@@ -23,7 +23,8 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button size="small" style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button size="small" style="margin: 0 2px" type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button size="small" style="margin: 0 2px" type="default" @click="preview(item)" icon="eye"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -50,14 +51,17 @@
     <!-- MODALS -->
     <supplier-create ref="createSupplier" :editable="false" :params="params"/>
     <supplier-create ref="editSupplier" :editable="true" :params="params"/>
+    <preview ref="preview"/>
   </div>
 </template>
 <script>
 import supplierCreate from './SupplierCreateWithUpdate'
+import Preview from '@/views/supplier/Preview'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
     'supplier-create': supplierCreate,
+    'preview': Preview
   },
   data() {
     return {
@@ -100,6 +104,10 @@ export default {
     ...mapActions(['getAllSuppliers', 'deleteSupplier']),
     editItem(item) {
       this.$refs.editSupplier.show(item)
+    },
+    preview (item) {
+      this.$refs.preview.show()
+      console.log(item)
     },
     changePagination(e) {
       this.params.pagination = e

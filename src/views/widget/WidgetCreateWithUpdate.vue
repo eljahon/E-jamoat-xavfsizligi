@@ -20,29 +20,39 @@
             </a-select>
           </a-form-model-item>
         </a-col>
-      </a-row>
-      <a-row>
         <a-col :span="11">
           <a-form-model-item :label="$t('key')" prop="key">
-            <a-input v-model="form.key" />
+            <a-input v-model="form.key"/>
           </a-form-model-item>
         </a-col>
         <a-col :span="11" :offset="1">
           <a-form-model-item :label="$t('order')" prop="order">
-            <a-input-number style="width: 100%" v-model="form.order" />
+            <a-input type="number" style="width: 100%" v-model="form.order"/>
           </a-form-model-item>
         </a-col>
       </a-row>
-      <a-divider>Images</a-divider>
-      <a-row>
-        <a-col style="margin-top: 5px; margin-bottom: 5px" v-for="(item, i) in items" :key="i" :span="7" :offset="i % 3 !== 0 ? 1 : 0">
+      <a-card title="Images">
+        <a-button type="dashed" @click="addPhoto" slot="extra">{{ $t('add_photo') }}</a-button>
+      </a-card>
+      <draggable
+        tag="a-row"
+        v-bind="dragOptions"
+        class="animated"
+        :list="items"
+        :move="checkMove"
+      >
+        <a-col class="animated" v-for="(item, i) in items" :key="i + 1"
+               style="margin-top: 5px; margin-bottom: 5px; padding-left: 5px; padding-right: 5px" :span="8">
           <a-tooltip>
             <template slot="title">
               {{ $t('delete') }}
             </template>
-            <div v-if="items.length > 1" @click="removePhoto(i)" class="remove-image"><a-icon type="delete" class="icon"/></div>
+            <div v-if="items.length > 1" @click="removePhoto(i)" class="remove-image">
+              <a-icon type="delete" class="icon"/>
+            </div>
           </a-tooltip>
-          <a-form-model-item :label="$t('image')" prop="image">
+          <a-checkbox class="status" v-model="item.status">Active</a-checkbox>
+          <a-form-model-item :label="$t('image') + ' ' + (i +1)" prop="image">
             <a-upload
               list-type="picture-card"
               :custom-request="(e) => { uploadImage(e, i) }"
@@ -51,46 +61,44 @@
               :before-upload="beforeUpload"
             >
               <div v-if="item.url" class="upload-image">
-                <img :src="item.url" alt="avatar" />
+                <img :src="item.url" alt="avatar"/>
               </div>
               <div class="upload-empty" v-else>
-                <a-icon v-if="!(item.loading && onUpload)" type="upload" style="font-size: 48px" />
-                <a-progress v-if="item.loading && onUpload" :percent="progress" />
+                <a-icon v-if="!(item.loading && onUpload)" type="upload" style="font-size: 48px"/>
+                <a-progress v-if="item.loading && onUpload" :percent="progress"/>
                 <div v-if="!(item.loading && onUpload)" class="ant-upload-text">
                   {{ $t('upload_photo') }}
                 </div>
               </div>
             </a-upload>
           </a-form-model-item>
-          <div style="display: flex; margin-top: -40px; width: 100%;">
-            <a-switch style="width: 50%; margin-right: 10px; margin-top: 5px" :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="item.status" />
-            <a-input style="width: 50%" v-model="item.order" type="number" :placeholder="$t('order')"/>
-          </div>
         </a-col>
-        <a-col :span="2" :offset="1">
-          <div @click="addPhoto" class="add-upload">
-            <a-icon type="plus" style="font-size: 32px" />
-            <p>{{ $t('add_photo') }}</p>
-          </div>
-        </a-col>
-      </a-row>
+      </draggable>
+      <a-card>
+        <a-button style="margin-right: 10px" type="primary" ghost>{{ $t('clear') }}</a-button>
+        <a-button type="primary" @click="saveDate" :loading="loading">{{ $route.params.id ? $t('update') : $t('save') }}</a-button>
+      </a-card>
     </a-form-model>
   </a-card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
+import draggable from 'vuedraggable'
+
 export default {
-  data () {
+  components: {
+    draggable
+  },
+  data() {
     return {
-      id: null,
+      loading: false,
       items: [
         {
           loading: false,
           url: null,
           image: '',
           status: true,
-          order: null
         }
       ],
       form: {
@@ -101,43 +109,27 @@ export default {
         items: []
       },
       rules: {
-        category_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        brand_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        key: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        order: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }]
+        category_id: [{required: false, message: this.$t('requiredField'), trigger: 'blur'}],
+        brand_id: [{required: false, message: this.$t('requiredField'), trigger: 'blur'}],
+        key: [{required: true, message: this.$t('requiredField'), trigger: 'blur'}],
+        order: [{required: true, message: this.$t('requiredField'), trigger: 'blur'}]
       }
     }
   },
   watch: {
-    items (val) {
+    newArray(val) {
+      console.log(val)
+    },
+    items(val) {
       console.log(val)
     }
   },
   methods: {
-    ...mapActions(['getListCategory', 'getAllBrands']),
-    validateForm() {
-      return new Promise((resolve, reject) => {
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            this.form.items = this.items.map(e => {
-              return {
-                image: e.image,
-                status: e.status ? 10 : 0,
-                order: e.order ? parseInt(e.order) : null
-              }
-            })
-            this.form.order = parseInt(this.form.order)
-            resolve({
-              id: this.id ? this.id : undefined,
-              data: this.form
-            })
-          } else reject(valid)
-        })
-      })
+    ...mapActions(['getListCategory', 'getAllBrands', 'postWidgets', 'getWidgetById', 'updateWidgets', 'updateWidgets']),
+    checkMove(e) {
+      console.log(e)
     },
-    resetForm () {
-      this.imageUrl = null
-      this.loadingImage = false
+    resetForm() {
       this.$refs.ruleForm.resetFields();
     },
     uploadImage(e, i) {
@@ -148,9 +140,9 @@ export default {
         this.items[i].image = res.image
         this.items[i].url = res.image_url
       })
-      .finally(() => {
-        this.items[i].loading = false
-      })
+        .finally(() => {
+          this.items[i].loading = false
+        })
     },
     beforeUpload(file) {
       return this.$beforeUpImage(file)
@@ -166,40 +158,124 @@ export default {
         }
       )
     },
-    removePhoto (i) {
+    removePhoto(i) {
       this.items.splice(i, 1)
+    },
+    saveDate() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          this.form.items = this.items.map((e, i) => {
+            return {
+              image: e.image,
+              status: e.status ? 1 : 0,
+              order: i + 1
+            }
+          })
+          console.log(this.form)
+          this.loading = true
+          if (!this.$route.params.id) {
+            this.postWidgets(this.form).then(res => {
+              this.$router.push({ name: 'WidgetList' })
+              console.log(res)
+            })
+              .finally(() => {
+                this.loading = false
+              })
+          } else {
+            this.loading = true
+            this.updateWidgets({
+              id: this.$route.params.id,
+              data: this.form
+            }).then(res => {
+              this.$router.push({ name: 'WidgetList' })
+              console.log(res)
+            })
+              .finally(() => {
+                this.loading = false
+              })
+          }
+        }
+      })
     }
   },
   computed: {
-    ...mapGetters(['listCategory', 'allBrands', 'progress', 'onUpload'])
+    ...mapGetters(['listCategory', 'allBrands', 'progress', 'onUpload']),
+    dragOptions() {
+      return {
+        animation: 0,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost'
+      };
+    }
   },
   mounted() {
     this.getAllBrands()
     this.getListCategory()
+    if (this.$route.params.id) {
+      this.getWidgetById(this.$route.params.id).then(res => {
+        const _data = res.data
+        const form = this.form
+          form.category_id = _data.category_id
+          form.brand_id = _data.brand_id
+          form.key = _data.key
+          form.order = _data.order
+          this.items = _data.items.map(e => {
+            return {
+              loading: false,
+              url: 'http://163.172.182.95:2500/storage/' + e.image,
+              image: e.image,
+              status: e.status === 1
+            }
+          })
+        console.log(res)
+      })
+    }
   }
 }
 </script>
 <style lang="less">
+.flip-list-move {
+  transition: transform 0.5s;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
 .remove-image {
   position: absolute;
-  z-index: 10;
-  top: 5%;
+  z-index: 5;
+  top: 4%;
   right: 2%;
   cursor: pointer;
+
   .icon {
     font-size: 18px;
     color: #484747;
     transition: all, .5s;
+
     :hover {
       color: #D72323;
     }
   }
 }
+
+.status {
+  position: absolute;
+  z-index: 5;
+  top: 4%;
+  right: 10%;
+  cursor: pointer;
+}
+
 .upload-image {
   //height: 160px;
   height: 180px;
   width: 100%;
   object-fit: contain;
+
   img {
     margin: 0 auto;
     width: 100%;
@@ -207,6 +283,7 @@ export default {
     object-fit: contain;
   }
 }
+
 .upload-empty {
   height: 180px;
   width: 100%;
@@ -215,6 +292,7 @@ export default {
   align-items: center;
   flex-flow: column;
 }
+
 .avatar-uploader > .ant-upload.ant-upload-select-picture-card {
   width: 100%;
   height: 180px;
@@ -234,28 +312,29 @@ export default {
   margin-top: 8px;
   color: #666;
 }
+
 .add-upload {
   padding: 10px;
   text-align: center;
-  margin-top: 90px;
   width: 100px;
-  height: 100px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #D72323;
   border-radius: 5px;
-  flex-flow: column;
   color: white;
   font-size: 14px;
   transition: all, .4s;
   cursor: pointer;
 }
+
 .add-upload:hover {
   color: #999;
   background-color: white;
   border: 1px dashed #D72323;
 }
+
 .ant-upload {
   padding: 0;
 }
