@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :title="$t('location.list')" style="width: 100%">
+    <a-card size="small" :title="$t('location.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -9,6 +9,7 @@
         </a-col>
       </a-row>
       <a-table
+        size="small"
         :columns="columns"
         :data-source="allLocations"
         :loading="loadLocation"
@@ -28,7 +29,7 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" size="small" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -42,6 +43,7 @@
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
                 style="margin: 0 2px"
+                size="small"
                 type="danger"
                 icon="delete"
               ></a-button>
@@ -59,11 +61,13 @@
 <script>
 import locationCreate from './LocationCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
 export default {
   components: {
     'location-create': locationCreate
   },
   data() {
+    this.search = debounce(this.search, 1000)
     return {
       visible: false,
       loading: false,
@@ -109,7 +113,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllLocations', 'deleteCourier', 'deleteLocation']),
+    ...mapActions(['getAllLocations', 'deleteLocation', 'getParentLocationsList']),
     editItem(item) {
       this.$refs.editLocation.show(item)
     },
@@ -126,7 +130,7 @@ export default {
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllLocations(this.params)
     },
     removeItem (item) {
       console.log(item)
@@ -160,6 +164,7 @@ export default {
       })
       this.getAllLocations(this.params)
     }
+    this.getParentLocationsList()
   },
 }
 </script>

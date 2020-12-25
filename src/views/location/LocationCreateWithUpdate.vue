@@ -6,8 +6,10 @@
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
     <!-- FORM -->
-    <FormModel v-if="!editable" ref="locationCreate"/>
-    <FormModel v-if="editable" ref="locationEdit"/>
+    <div tabindex="1" @keypress.enter="enter" style="outline: none">
+      <FormModel v-if="!editable" ref="locationCreate"/>
+      <FormModel v-if="editable" ref="locationEdit"/>
+    </div>
   </a-modal>
 </template>
 <script>
@@ -43,6 +45,10 @@ export default {
       this.visible = false
       this.clear()
     },
+    enter () {
+      if (!this.editable) this.saveDate()
+      else this.updateData()
+    },
     show(data) {
       if (this.editable) {
         console.log(data)
@@ -52,6 +58,7 @@ export default {
           this.$refs.locationEdit.id = data.id
           this.$refs.locationEdit.form.name_uz = data.name_uz
           this.$refs.locationEdit.form.name_ru = data.name_ru
+          this.$refs.locationEdit.form.parent_id = data.parent_id
           this.$refs.locationEdit.form.has_delivery = data.has_delivery
           this.$refs.locationEdit.form.status = data.status
         }, 10)

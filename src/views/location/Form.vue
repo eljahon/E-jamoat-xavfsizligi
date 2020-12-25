@@ -14,6 +14,15 @@
     </a-row>
     <a-row>
       <a-col :span="11">
+        <a-form-model-item :label="$t('region')" prop="parent_id">
+          <a-select v-model="form.parent_id" style="width: 100%">
+            <a-select-option v-for="item in parentLocation" :key="item.id" :value="item.id">
+              {{ item.name_uz + ' ' + item.name_ru }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="11" :offset="1">
         <a-row>
           <a-col :span="11">
             <a-form-model-item :label="$t('has_delivery')">
@@ -31,6 +40,7 @@
   </a-form-model>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -40,6 +50,7 @@ export default {
         name_ru: '',
         name_uz: '',
         has_delivery: true,
+        parent_id: null,
         status: 10
       },
       rules: {
@@ -71,6 +82,9 @@ export default {
     resetForm () {
       this.$refs.ruleForm.resetFields();
     }
+  },
+  computed: {
+    ...mapGetters(['parentLocation'])
   }
 }
 </script>

@@ -50,7 +50,32 @@
           </a-form-model-item>
         </a-col>
       </a-row>
+      <a-divider orientation="left">{{ $t('attachments') }}</a-divider>
+      <div class="clearfix">
+        <a-upload
+          :custom-request="uploadImage"
+          :before-upload="beforeUpload"
+          list-type="picture-card"
+          :file-list="fileList"
+          @preview="handlePreview"
+          @change="handleChange"
+        >
+          <div v-if="fileList.length < 8">
+            <a-icon type="plus" />
+            <div class="ant-upload-text">
+              {{ $t('upload') }}
+            </div>
+          </div>
+        </a-upload>
+        <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+          <img alt="example" style="width: 100%" :src="previewImage" />
+        </a-modal>
+      </div>
     </a-form-model>
+    <a-divider></a-divider>
+    <a-button @click="$router.push({ name: 'ArticleList' })" style="margin-right: 5px" type="danger" icon="close" ghost>{{ $t('cancel') }}</a-button>
+    <a-button @click="clear" style="margin: 0 5px" type="primary" icon="redo" ghost>{{ $t('clear') }}</a-button>
+    <a-button @click="saveDate" :loading="loading" style="margin-left: 5px" type="primary" icon="save">{{ $t('save') }}</a-button>
   </a-card>
 </template>
 <script>
@@ -59,6 +84,14 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import uploadAdapter from '@/utils/ckUploadAdapter'
 // import Image from '@ckeditor/ckeditor5-image/src/image'
 // import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize'
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
 export default {
   data() {
     return {
@@ -88,7 +121,10 @@ export default {
         keywords_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         description_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         description_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-      }
+      },
+      previewVisible: false,
+      previewImage: '',
+      fileList: [],
     }
   },
   watch: {
@@ -120,26 +156,24 @@ export default {
       }
     },
     clear() {
-      if (this.editable) {
-        this.$refs.articleEdit.resetForm()
-      } else {
-        this.$refs.articleCreate.resetForm()
-      }
+      this.fileList = []
+      this.$refs.ruleForm.resetFields()
     },
     saveDate() {
-      this.$refs.articleCreate.validateForm().then(res => {
-        console.log(res)
-        this.loading = true
-        this.postArticle(res.data).then(res => {
-          this.getAllArticles(this.params)
-          console.log(res)
-          this.hide()
-        })
-          .finally(() => {
-            this.loading = false
-          })
-      }).catch(error => {
-        console.log(error, 'ERRROORRRRRRRRRRRR')
+      this.$refs.ruleForm.validate((valid) => {
+        if (valid) {
+          if (this.fileList.length > 1) {
+            this.loading = true
+            let _data = { ...this.form }
+            _data.attachments = this.fileList.map(e => e.name)
+            this.postArticle(_data).then(res => {
+              console.log(res)
+            })
+              .finally(() => {
+                this.loading = false
+              })
+          } else this.$message.error('Please Enter Attachments')
+        }
       })
     },
     updateData() {
@@ -164,18 +198,59 @@ export default {
         // eslint-disable-next-line
         return new uploadAdapter(loader)
       }
+    },
+    handleCancel() {
+      this.previewVisible = false
+    },
+    async handlePreview(file) {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj)
+      }
+      this.previewImage = file.url || file.preview
+      this.previewVisible = true
+    },
+    handleChange({ fileList }) {
+      console.log(fileList)
+    },
+    uploadImage(e) {
+      console.log(e)
+      this.imageUrl = null
+      this.loadingImage = true
+      this.$imageUp(e).then(res => {
+        console.log(res)
+        let a = {
+          name: res.image,
+          uid: res.image,
+          status: 'done',
+          url: res.image_url
+        }
+        this.fileList.push(a)
+      })
+        .catch(err => {
+          let a = {
+            uid: err.image,
+            status: 'error'
+          }
+          this.fileList.push(a)
+        })
+        .finally(() => {
+          this.loadingImage = false
+        })
+    },
+    beforeUpload(file) {
+      return this.$beforeUpImage(file)
     }
   }
 }
 </script>
 <style>
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
 
-.flag-icon {
-  min-width: 26px;
-  min-height: 26px;
-  border-radius: 50%;
-  box-shadow: 0px 0px 4px black;
-  margin-right: 2px;
-  transform: translateY(-5px);
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
 }
 </style>

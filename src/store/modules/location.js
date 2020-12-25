@@ -2,6 +2,7 @@ import axiosInit from '@/utils/axios_init'
 export default {
   state: {
     locations: [],
+    parent_location: [],
     locationList: [],
     loadLocation: false,
     pagination: {}
@@ -10,7 +11,8 @@ export default {
     allLocations: (state) => state.locations,
     allLocationList: (state) => state.locationList,
     loadLocation: (state) => state.loadLocation,
-    paginationLocation: (state) => state.pagination
+    paginationLocation: (state) => state.pagination,
+    parentLocation: (state) => state.parent_location
   },
   mutations: {
     GET_ALL_LOCATION(state, payload) {
@@ -24,6 +26,9 @@ export default {
     },
     GET_LOCATION_PAGINATION(state, payload) {
       state.pagination = payload
+    },
+    GET_PARENT_LOCATION(state, payload) {
+      state.parent_location = payload
     }
   },
   actions: {
@@ -34,7 +39,8 @@ export default {
         // axios
         axiosInit.get('/admin/location',
           {
-            page: pagination.current
+            page: pagination.current,
+            search: payload.search
           }
         )
           .then(res => {
@@ -59,6 +65,20 @@ export default {
           .then(res => {
             resolve()
             commit('GET_ALL_LOCATION_LIST', res.data)
+          })
+          .catch(error => {
+            reject(error)
+            this.$message.error(error.message)
+          })
+      })
+    },
+    getParentLocationsList({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        // axios
+        axiosInit.get('/admin/location/parent')
+          .then(res => {
+            resolve()
+            commit('GET_PARENT_LOCATION', res.data)
           })
           .catch(error => {
             reject(error)

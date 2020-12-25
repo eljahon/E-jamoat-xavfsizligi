@@ -135,6 +135,7 @@ const locale = {
     'location': 'Локаций',
     'location.list': 'Список локаций',
     'has_delivery': 'Есть доставка',
+    'region': 'Область',
 
     // measures
     'measures': 'Меры',
@@ -166,6 +167,7 @@ const locale = {
     // article
     'article': 'Статья',
     'article.list': 'Список статей',
+    'attachments': 'Вложения',
 
     // order
     // 'order': 'Заказы',

@@ -23,6 +23,14 @@ export default (e) => {
           message: i18n.t('upload_image_error'),
           description: err.message
         })
+        getBase64(e.file, imageUrl => {
+          // eslint-disable-next-line
+          reject({
+            message: 'error',
+            image: imageUrl
+          })
+        })
+
       })
       .finally(() => {
         console.log('upload final')
