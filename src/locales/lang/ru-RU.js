@@ -44,6 +44,8 @@ const locale = {
     'image_view': 'Просмотр фото',
     'description_uz': 'Oписание yзбекский',
     'description_ru': 'Oписание русский',
+    'title_uz': 'Заглавие yзбекский',
+    'title_ru': 'Заглавие русский',
     'keyword': 'Ключевое слово',
     'keyword_uz': 'Ключевое слово yзбекский',
     'keyword_ru': 'Ключевое слово русский',
@@ -96,6 +98,15 @@ const locale = {
     'errorEmail': 'Электронная почта ошибки',
     'passwordLength': 'Пароль должен быть от 6 до 50',
     'passwordError': 'Пароль не равен паролю подтвердить',
+    'head_setting': 'Настройки заголовка',
+    'basic_setting': 'Базовые настройки',
+    'company_name': 'Название компании',
+    'android_app_url': 'URL-адрес пр.Android',
+    'ios_app_url': 'URL-адрес пр.iOS',
+    'usd_course': 'Курс доллара США',
+    'incorrectEmail': 'Ошибка синтаксиса электронной почты',
+    'incorrectPhone': 'Ошибка синтаксиса телефона',
+    'main_setting': 'Основная настройка',
 
     // courier
     'couriers': 'Курьеры',
@@ -155,10 +166,13 @@ const locale = {
     'supplier.list': 'Список поставщиков',
 
 
-    // staff
+    // stuff
     'users': 'Пользователи',
     'users.list': 'Список пользователей',
 
+    // role
+    'roles': 'Роли',
+    'roles.list': 'Список ролей',
 
     // supplier store
     'supplier_store': 'Магазин-поставщик',
@@ -169,7 +183,24 @@ const locale = {
     'article.list': 'Список статей',
     'attachments': 'Вложения',
 
-    // order
+    // reports
+    'reports': 'Отчеты',
+    'reports_by_sold': 'Отчеты по проданным',
+
+    // statistics
+    'statistics': 'Статистика',
+    'search_histories': 'Истории поиска',
+    'top_sold_products': 'Самые продаваемые продукты',
+    'top_clients': 'Топ-клиенты',
+    'top_pages': 'Лучшие страницы',
+
+    // notifications
+    'notifications': 'Уведомления',
+    // complaints
+    'complaints': 'Жалобы',
+    // discounts
+    'discounts': 'Скидки',
+    'coupons': 'Kупоны',
     // 'order': 'Заказы',
     'order_list': 'Список заказов',
     'update_attr': 'Изменить атрибуты',
@@ -184,7 +215,8 @@ const locale = {
     'ordersCount': 'Количество заказов',
     'createOrder': 'Создать заказ',
     'orders': 'Заказы',
-    'all': 'Все заказы',
+    'allOrder': 'Все заказы',
+    'orders_in_delivery': 'Заказы в доставке',
     'preview_order': 'Информация о заказы',
     'delivered': 'Доставлен',
     'finished': 'Завершен',
@@ -212,6 +244,7 @@ const locale = {
     'descriptionOrder': 'Описание',
     'noValidAddress': 'Нет подходящих адресов',
     'verifiedAddress': 'Уточненный адрес',
+    'address': 'Адрес',
     'finishReason': 'Причина отмены',
     'finishTime': 'Время отмены',
     'allTime': 'Общее время',
