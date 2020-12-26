@@ -2,12 +2,12 @@
   <div>
     <a-card size="small" title="Supplier Store List" style="width: 100%">
       <a-button size="small" type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
-      <a-row style="margin: 10px 0">
-        <a-col :span="16"></a-col>
-        <a-col :span="8">
-          <a-input v-debounce="search" :placeholder="$t('search')" />
-        </a-col>
-      </a-row>
+<!--      <a-row style="margin: 10px 0">-->
+<!--        <a-col :span="16"></a-col>-->
+<!--        <a-col :span="8">-->
+<!--          <a-input v-debounce="search" :placeholder="$t('search')" />-->
+<!--        </a-col>-->
+<!--      </a-row>-->
       <a-table
         :columns="columns"
         :data-source="allSupplierStores"

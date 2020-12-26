@@ -191,22 +191,22 @@ export const asyncRouterMap = [
               }
             ]
           },
-          {
-            path: '/supplier_all/supplierStore',
-            name: 'supplierStore',
-            hideChildrenInMenu: true,
-            component: RouteView,
-            redirect: '/supplierStore/list',
-            meta: { title: 'supplier_store', permission: [ 'form' ] },
-            children: [
-              {
-                path: '/supplierStore/list',
-                name: 'supplierStoreList',
-                component: () => import('@/views/supplierStore/SupplierStoreList'),
-                meta: { title: 'supplier_store.list', keepAlive: true, permission: [ 'form' ] }
-              }
-            ]
-          },
+          // {
+          //   path: '/supplier_all/supplierStore',
+          //   name: 'supplierStore',
+          //   hideChildrenInMenu: true,
+          //   component: RouteView,
+          //   redirect: '/supplierStore/list',
+          //   meta: { title: 'supplier_store', permission: [ 'form' ] },
+          //   children: [
+          //     {
+          //       path: '/supplierStore/list',
+          //       name: 'supplierStoreList',
+          //       component: () => import('@/views/supplierStore/SupplierStoreList'),
+          //       meta: { title: 'supplier_store.list', keepAlive: true, permission: [ 'form' ] }
+          //     }
+          //   ]
+          // },
         ]
       },
       // products
@@ -599,16 +599,16 @@ export const asyncRouterMap = [
             path: '/discounts/coupons',
             name: 'CouponsMain',
             hideChildrenInMenu: true,
-            component: () => import('@/views/TestRouter'),
-            // redirect: '/users/stuff/list',
+            component: RouteView,
+            redirect: '/discounts/coupons/list',
             meta: { title: 'coupons', icon: 'tags', permission: [ 'form' ] },
             children: [
-              // {
-              //   path: '/users/stuff/list',
-              //   name: 'StuffList',
-              //   component: () => import('@/views/staff/StaffList'),
-              //   meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
-              // }
+              {
+                path: '/discounts/coupons/list',
+                name: 'CouponsList',
+                component: () => import('@/views/Coupons/CouponsList'),
+                meta: { title: 'coupons.list', keepAlive: true, permission: [ 'form' ] }
+              }
             ]
           },
         ]

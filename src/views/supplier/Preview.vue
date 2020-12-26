@@ -30,6 +30,12 @@ export default {
       console.log(e)
     },
     hide () {
+      this.$router.push({
+        name: 'supplierList',
+        query: {
+
+        }
+      })
       this.visible = false
     },
     show () {

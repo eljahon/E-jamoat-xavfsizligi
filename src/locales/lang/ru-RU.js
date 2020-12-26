@@ -201,6 +201,17 @@ const locale = {
     // discounts
     'discounts': 'Скидки',
     'coupons': 'Kупоны',
+    'coupons.list': 'Список купонов',
+    'coupon_amount': 'Сумма купона',
+    'coupon_percent': 'Купонный процент',
+    'min_amount': 'Мин. Сумма',
+    'max_amount': 'Макс. Сумма',
+    'left_amount': 'Оставшаяся сумма',
+    'begin_at': 'Начать с',
+    'finish_at': 'Закончить в',
+
+
+
     // 'order': 'Заказы',
     'order_list': 'Список заказов',
     'update_attr': 'Изменить атрибуты',

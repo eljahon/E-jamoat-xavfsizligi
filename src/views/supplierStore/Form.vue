@@ -66,7 +66,11 @@
     >
       <ymap-marker
         :coords="location"
+        :options="{
+          draggable: true
+        }"
         marker-id="123"
+        @dragend="markerDrag"
         hint-content="some hint"
       />
     </yandex-map>
@@ -106,12 +110,12 @@ export default {
         address_ru: '',
         coordinates: {
           lat: 41.31110283875746,
-          long: 69.28024783730488
+          lng: 69.28024783730488
         }
       },
       rules: {
-        address_uz: [{ required: true, message: 'Address uz Required', trigger: 'blur' }],
-        address_ru: [{ required: true, message: 'Address ru Required', trigger: 'blur' }],
+        address_uz: [{ required: false, message: 'Address uz Required', trigger: 'blur' }],
+        address_ru: [{ required: false, message: 'Address ru Required', trigger: 'blur' }],
         phone: [{ required: true, message: 'Phone Required', trigger: 'change' },
           { validator: validatePhone, trigger: 'change' }],
         second_phone: [ { validator: validatePhoneSecond, trigger: 'change' } ],
@@ -125,11 +129,13 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            this.form.phone = this.form.phone.slice(1)
-            this.form.second_phone = this.form.second_phone === '' ? '' : this.form.phone.slice(1)
+            let _form = { ...this.form }
+            _form.coordinates = JSON.stringify(this.form.coordinates)
+            _form.phone = this.form.phone.slice(1)
+            _form.second_phone = this.form.second_phone === '' ? '' : this.form.phone.slice(1)
             resolve({
               id: this.id ? this.id : undefined,
-              data: this.form
+              data: _form
             })
           } else reject(valid)
         })
@@ -148,8 +154,13 @@ export default {
       const coords = e.get('coords')
       this.location = coords
       this.form.coordinates.lat = coords[0]
-      this.form.coordinates.long = coords[1]
+      this.form.coordinates.lng = coords[1]
       console.log(coords)
+    },
+    markerDrag (e) {
+      const coords = e.get('target').geometry._coordinates
+      this.form.coordinates.lat = coords[0]
+      this.form.coordinates.lng = coords[1]
     }
   },
   computed: {
