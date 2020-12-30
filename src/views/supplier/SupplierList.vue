@@ -51,7 +51,7 @@
     <!-- MODALS -->
     <supplier-create ref="createSupplier" :editable="false" :params="params"/>
     <supplier-create ref="editSupplier" :editable="true" :params="params"/>
-    <preview ref="preview"/>
+<!--    <preview ref="preview"/>-->
   </div>
 </template>
 <script>
@@ -107,12 +107,12 @@ export default {
     },
     preview (item) {
       this.$router.push({
-        name: 'supplierList',
-        query: {
+        name: 'supplierPreview',
+        params: {
           id: item.id
         }
       })
-      this.$refs.preview.show()
+      // this.$refs.preview.show()
     },
     changePagination(e) {
       this.params.pagination = e

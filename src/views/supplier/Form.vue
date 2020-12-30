@@ -93,13 +93,14 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            this.form.name_ru = this.form.name
-            this.form.name_uz = this.form.name
-            this.form.name = undefined
-            this.form.phone = '+998' + this.form.phone.replaceAll(' ', '')
+            const _form = { ...this.form }
+            _form.name_ru = this.form.name
+            _form.name_uz = this.form.name
+            _form.name = undefined
+            _form.phone = '+998' + this.form.phone.replaceAll(' ', '')
             resolve({
               id: this.id ? this.id : undefined,
-              data: this.form
+              data: _form
             })
           } else reject(valid)
         })

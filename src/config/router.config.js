@@ -188,6 +188,12 @@ export const asyncRouterMap = [
                 name: 'supplierList',
                 component: () => import('@/views/supplier/SupplierList'),
                 meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/supplier/preview/:id',
+                name: 'supplierPreview',
+                component: () => import('@/views/supplier/Preview'),
+                meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
               }
             ]
           },

@@ -1,5 +1,6 @@
 <template>
-  <a-modal title="Preview" width="800px" centered v-model="visible" @cancel="hide">
+<!--  <a-modal title="Preview" width="800px" centered v-model="visible" @cancel="hide">-->
+  <a-card>
     <a-tabs type="card" size="small" @change="callback">
       <a-tab-pane key="1" tab="Information">
         Content of Tab Pane 1
@@ -11,7 +12,8 @@
         Content of Tab Pane 3
       </a-tab-pane>
     </a-tabs>
-  </a-modal>
+  </a-card>
+<!--  </a-modal>-->
 </template>
 
 <script>
@@ -31,10 +33,7 @@ export default {
     },
     hide () {
       this.$router.push({
-        name: 'supplierList',
-        query: {
-
-        }
+        name: 'supplierList'
       })
       this.visible = false
     },
