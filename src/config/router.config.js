@@ -131,6 +131,12 @@ export const asyncRouterMap = [
                 name: 'FeaturesCreate',
                 component: () => import('@/views/features/FeaturesCreateWithUpdate'),
                 meta: { title: 'features.create', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/main/features/edit/:id',
+                name: 'FeaturesEdit',
+                component: () => import('@/views/features/FeaturesCreateWithUpdate'),
+                meta: { title: 'features.update', keepAlive: true, permission: [ 'form' ] }
               }
             ]
           },

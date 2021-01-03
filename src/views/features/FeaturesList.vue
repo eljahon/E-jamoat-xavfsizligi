@@ -108,7 +108,13 @@ export default {
   methods: {
     ...mapActions(['getAllFeatures', 'deleteFeatures']),
     editItem(item) {
-      this.$refs.editItem.show(item)
+      this.$router.push({
+        name: 'FeaturesEdit',
+        params: {
+          id: item.id
+        }
+      })
+      console.log(item)
     },
     changePagination(e) {
       this.params.pagination = e

@@ -55,7 +55,8 @@ export default {
         setTimeout(() => {
           this.$refs.supplierEdit.id = data.id
           this.$refs.supplierEdit.form = { ...data }
-          this.$refs.supplierEdit.form.phone = '+998' + data.phone
+          this.$refs.supplierEdit.form.name = data.name_uz
+          this.$refs.supplierEdit.form.phone = data.phone
           this.$refs.supplierEdit.form.id = undefined
           this.$refs.supplierEdit.form.slug = undefined
         }, 10)

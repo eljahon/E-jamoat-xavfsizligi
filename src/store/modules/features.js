@@ -102,11 +102,9 @@ export default {
           })
       })
     },
-    getFeaturesBySlug({ commit }, payload) {
+    getFeaturesById({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.get(`/vendor-categories/${payload.slug}`, {
-          lang: payload.lang
-        }).then(res => {
+        axiosInit.get(`/admin/features/${payload}`).then(res => {
           resolve(res)
           console.log(res)
         }).catch(err => {

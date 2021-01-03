@@ -97,7 +97,7 @@ export default {
             _form.name_ru = this.form.name
             _form.name_uz = this.form.name
             _form.name = undefined
-            _form.phone = '+998' + this.form.phone.replaceAll(' ', '')
+            _form.phone = this.form.phone.replaceAll(' ', '')
             resolve({
               id: this.id ? this.id : undefined,
               data: _form
