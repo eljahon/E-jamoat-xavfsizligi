@@ -2,6 +2,16 @@
   <a-form-model ref="ruleForm" :model="form" :rules="rules">
     <a-row>
       <a-col :span="11">
+        <a-form-model-item :label="$t('name')" prop="name">
+          <a-input v-model="form.name" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="11" :offset="1">
+        <a-form-model-item :label="$t('last_name')" prop="last_name">
+          <a-input v-model="form.last_name" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="11">
         <a-form-model-item :label="$t('phone')" prop="phone">
           <a-input v-model="form.phone" />
         </a-form-model-item>
@@ -11,8 +21,6 @@
           <a-input v-model="form.email" />
         </a-form-model-item>
       </a-col>
-    </a-row>
-    <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('password')" prop="password">
           <a-input-password v-model="form.password" />
@@ -21,13 +29,6 @@
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('password_confirm')" prop="password_confirm">
           <a-input-password v-model="form.password_confirm" />
-        </a-form-model-item>
-      </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="11">
-        <a-form-model-item :label="$t('status')">
-          <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
         </a-form-model-item>
       </a-col>
     </a-row>
@@ -68,26 +69,22 @@ export default {
       id: null,
       status: true,
       form: {
+        name: '',
+        last_name: '',
         phone: null,
         email: '',
-        role_name: 'staff',
+        role_name: 'seller',
         password_confirm: '',
-        password: '',
-        status: 10
+        password: ''
       },
       rules: {
         phone: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }, { validator: validatePhone, trigger: 'change' }],
         email: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }, { validator: validateEmail, trigger: 'change' }],
         password: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }, { validator: validatePassword, trigger: 'change' }],
         password_confirm: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }, { validator: validateNotEqual, trigger: 'blur' }],
-        status: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        name: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        last_name: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
       }
-    }
-  },
-  watch: {
-    status (val) {
-      if (val) this.form.status = 10
-      else this.form.status = 0
     }
   },
   methods: {

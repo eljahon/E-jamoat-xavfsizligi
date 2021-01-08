@@ -419,7 +419,7 @@ export const asyncRouterMap = [
               {
                 path: '/users/stuff/list',
                 name: 'StuffList',
-                component: () => import('@/views/staff/StaffList'),
+                component: () => import('@/views/stuff/StuffList'),
                 meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
               }
             ]
@@ -521,7 +521,7 @@ export const asyncRouterMap = [
               // {
               //   path: '/users/stuff/list',
               //   name: 'StuffList',
-              //   component: () => import('@/views/staff/StaffList'),
+              //   component: () => import('@/views/stuff/StaffList'),
               //   meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
               // }
             ]
@@ -538,7 +538,7 @@ export const asyncRouterMap = [
               // {
               //   path: '/users/stuff/list',
               //   name: 'StuffList',
-              //   component: () => import('@/views/staff/StaffList'),
+              //   component: () => import('@/views/stuff/StaffList'),
               //   meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
               // }
             ]
@@ -555,7 +555,7 @@ export const asyncRouterMap = [
               // {
               //   path: '/users/stuff/list',
               //   name: 'StuffList',
-              //   component: () => import('@/views/staff/StaffList'),
+              //   component: () => import('@/views/stuff/StaffList'),
               //   meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
               // }
             ]
@@ -572,7 +572,7 @@ export const asyncRouterMap = [
               // {
               //   path: '/users/stuff/list',
               //   name: 'StuffList',
-              //   component: () => import('@/views/staff/StaffList'),
+              //   component: () => import('@/views/stuff/StaffList'),
               //   meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
               // }
             ]

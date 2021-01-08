@@ -45,6 +45,7 @@ const locale = {
     'description_uz': 'Oписание yзбекский',
     'description_ru': 'Oписание русский',
     'title_uz': 'Заглавие yзбекский',
+    'last_name': 'Фамилия',
     'title_ru': 'Заглавие русский',
     'keyword': 'Ключевое слово',
     'keyword_uz': 'Ключевое слово yзбекский',

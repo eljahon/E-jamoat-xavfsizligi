@@ -38,7 +38,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllCoupons', 'postCoupons', 'updateCoupons']),
+    ...mapActions(['getAllStuffs', 'postStuffs', 'updateStuffs']),
     hide() {
       this.visible = false
       this.clear()
@@ -46,19 +46,13 @@ export default {
     show(data) {
       if (this.editable) {
         console.log(data)
+        console.log(this.$refs.itemEdit)
         setTimeout(() => {
-          const _edit = this.$refs.itemEdit
-          const _form = this.$refs.itemEdit.form
-          data.status === 10 ? _edit.status = true : _edit.status = false
-          _edit.id = data.id
-          _form.coupon_amount = data.coupon_amount
-          _form.coupon_percent = data.coupon_percent
-          _form.min_amount = data.min_amount
-          _form.max_amount = data.max_amount
-          _form.left_amount = data.left_amount
-          _form.begin_at = data.begin_at
-          _form.finish_at = data.finish_at
-          _form.status = data.status
+          data.status === 10 ? this.$refs.itemEdit.status = true : this.$refs.itemEdit.status = false
+          this.$refs.itemEdit.id = data.id
+          this.$refs.itemEdit.form.email = data.email
+          this.$refs.itemEdit.form.phone = '+' + data.phone
+          this.$refs.itemEdit.form.status = data.status
         }, 10)
         this.visible = true
       }
@@ -77,8 +71,8 @@ export default {
       this.$refs.itemCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postCoupons(res.data).then(res => {
-          this.getAllCoupons(this.params)
+        this.postStuffs(res.data).then(res => {
+          this.getAllStuffs(this.params)
           console.log(res)
           this.hide()
         })
@@ -93,11 +87,11 @@ export default {
       this.$refs.itemEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateCoupons({
+        this.updateUsers({
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllCoupons(this.params)
+          this.getAllStuffs(this.params)
           this.hide()
           console.log(res)
         })

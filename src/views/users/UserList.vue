@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-import Create from './StaffCreateWithUpdate'
+import Create from './UserCreate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {

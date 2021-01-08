@@ -19,9 +19,10 @@ import supplier from './modules/supplier'
 import supplierStore from './modules/supplierStore'
 import article from './modules/article'
 import features from '@/store/modules/features'
-import staff from '@/store/modules/staff'
+import stuff from '@/store/modules/stuff'
 import widget from '@/store/modules/widget'
 import coupons from '@/store/modules/coupons'
+import _user from '@/store/modules/_user'
 // default router permission control
 import permission from './modules/permission'
 
@@ -53,8 +54,9 @@ export default new Vuex.Store({
     supplier,
     supplierStore,
     features,
-    staff,
-    widget
+    stuff,
+    widget,
+    _user
   },
   state: {
 
