@@ -97,6 +97,7 @@ export default {
     resetForm () {
       this.imageUrl = null
       this.loadingImage = false
+      this.form.logo = ''
       this.$refs.ruleForm.resetFields();
     },
     uploadImage(e) {

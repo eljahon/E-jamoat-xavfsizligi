@@ -27,7 +27,8 @@
         </template>
         <template slot="image" slot-scope="item">
           <div class="imagePreview">
-            <img :src="item" :alt="item.name">
+            <img v-if="item.image_url" :src="item.image_url" :alt="item.image_url.name">
+            <img v-else src="../../assets/upload.jpg" :alt="item.name">
           </div>
         </template>
         <template slot="action" slot-scope="item">
@@ -100,7 +101,6 @@ export default {
         },
         {
           title: this.$t('image'),
-          dataIndex: 'image_url',
           align: 'center',
           scopedSlots: { customRender: 'image' },
         },
