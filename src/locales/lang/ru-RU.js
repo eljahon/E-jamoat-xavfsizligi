@@ -116,6 +116,7 @@ const locale = {
     'unreading': 'Непрочитанный',
     'view': 'Посмотреть',
     'comment': 'Комментарий',
+    'information': 'Информация',
 
     // courier
     'couriers': 'Курьеры',
@@ -129,8 +130,8 @@ const locale = {
     'brands.list': 'Список брендов',
 
     // features
-    'features': 'Bозможност',
-    'features.list': 'Список возможностей',
+    'features': 'Характеристики',
+    'features.list': 'Список xарактеристики',
     'features.create': 'Создать возможност',
     'features.update': 'Обновление возможност',
     'features.value': 'Bозможност значение',
@@ -159,7 +160,7 @@ const locale = {
     'region': 'Область',
 
     // measures
-    'measures': 'Меры',
+    'measures': 'Единица измерение',
     'measures.list': 'Список мер',
 
     // vacancy
@@ -167,12 +168,12 @@ const locale = {
     'vacancy.list': 'Список вакансий',
 
     // widget
-    'pages_and_widgets': 'Страницы и виджеты',
-    'widget': 'Виджет',
-    'widget.list': 'Список виджетов',
+    'pages_and_widgets': 'Страницы и карусель',
+    'widget': 'Карусель',
+    'widget.list': 'Список карусель',
 
     // supplier
-    'supplier': 'Поставщик',
+    'supplier': 'Поставщики',
     'supplier.list': 'Список поставщиков',
 
 
@@ -192,6 +193,7 @@ const locale = {
     // supplier store
     'supplier_store': 'Магазин-поставщик',
     'supplier_store.list': 'Список магазинов поставщиков',
+    'supplier_store.product': 'Магазин товаров',
 
     // article
     'article': 'Статья',
@@ -200,7 +202,7 @@ const locale = {
 
     // reports
     'reports': 'Отчеты',
-    'reports_by_sold': 'Отчеты по проданным',
+    'reports_by_sold': 'Отчет по продажам',
 
     // statistics
     'statistics': 'Статистика',

@@ -12,7 +12,7 @@
         </a-form-model-item>
       </a-col>
       <a-col :span="11">
-        <a-form-model-item label="Location" prop="location_id">
+        <a-form-model-item :label="$t('location')" prop="location_id">
           <a-tree-select
             show-search
             v-model="form.location_id"
@@ -25,12 +25,12 @@
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item label="Address UZ" prop="address_uz">
+        <a-form-model-item :label="$t('address') + ' UZ'" prop="address_uz">
           <a-input v-model="form.address_uz" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11">
-        <a-form-model-item label="Address RU" prop="address_ru">
+        <a-form-model-item :label="$t('address') + ' RU'" prop="address_ru">
           <a-input v-model="form.address_ru" />
         </a-form-model-item>
       </a-col>
