@@ -20,6 +20,9 @@
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
           <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
         </template>
+        <template slot="symbol" slot-scope="item">
+          {{ item.symbol_uz }} - {{ item.symbol_ru }}
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -74,7 +77,7 @@ export default {
         },
         {
           title: this.$t('symbol'),
-          dataIndex: 'symbol',
+          scopedSlots: { customRender: 'symbol' }
         },
         {
           title: this.$t('status'),

@@ -8,25 +8,25 @@
               <img :src="avatar">
             </div>
             <div class="username">{{ nickname }}</div>
-            <div class="bio">海纳百川，有容乃大</div>
+            <div class="bio">Lorem，Lorem</div>
           </div>
           <div class="account-center-detail">
             <p>
-              <i class="title"></i>交互专家
+              <i class="title"></i>Lorem
             </p>
             <p>
-              <i class="group"></i>蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED
+              <i class="group"></i>Lorem－Lorem－Lorem－Lorem－UED
             </p>
             <p>
               <i class="address"></i>
-              <span>浙江省</span>
-              <span>杭州市</span>
+              <span>Lorem</span>
+              <span>Lorem</span>
             </p>
           </div>
           <a-divider/>
 
           <div class="account-center-tags">
-            <div class="tagsTitle">标签</div>
+            <div class="tagsTitle">Lorem</div>
             <div>
               <template v-for="(tag, index) in tags">
                 <a-tooltip v-if="tag.length > 20" :key="tag" :title="tag">
@@ -62,7 +62,7 @@
           <a-divider :dashed="true"/>
 
           <div class="account-center-team">
-            <div class="teamTitle">团队</div>
+            <div class="teamTitle">Lorem</div>
             <a-spin :spinning="teamSpinning">
               <div class="members">
                 <a-row>
@@ -111,7 +111,7 @@ export default {
   },
   data () {
     return {
-      tags: ['很有想法的', '专注设计', '辣~', '大长腿', '川妹子', '海纳百川'],
+      tags: ['Lorem', 'Lorem', 'Lorem~', 'Lorem', 'Lorem', 'Lorem'],
 
       tagInputVisible: false,
       tagInputValue: '',
@@ -122,15 +122,15 @@ export default {
       tabListNoTitle: [
         {
           key: 'article',
-          tab: '文章(8)'
+          tab: 'Lorem(8)'
         },
         {
           key: 'app',
-          tab: '应用(8)'
+          tab: 'Lorem(8)'
         },
         {
           key: 'project',
-          tab: '项目(8)'
+          tab: 'Lorem(8)'
         }
       ],
       noTitleKey: 'app'

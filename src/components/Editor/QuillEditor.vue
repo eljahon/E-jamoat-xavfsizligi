@@ -30,7 +30,7 @@ export default {
       type: String,
       default: 'ant-editor-quill'
     },
-    // 表单校验用字段
+    // Lorem
     // eslint-disable-next-line
     value: {
       type: String
@@ -70,7 +70,7 @@ export default {
 <style lang="less" scoped>
 @import url('../index.less');
 
-/* 覆盖 quill 默认边框圆角为 ant 默认圆角，用于统一 ant 组件风格 */
+/* Lorem quill Lorem ant Lorem，Lorem ant Lorem */
 .ant-editor-quill {
   line-height: initial;
   /deep/ .ql-toolbar.ql-snow {

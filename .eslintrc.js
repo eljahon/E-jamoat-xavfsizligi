@@ -24,6 +24,7 @@ module.exports = {
     ],
     'vue/attribute-hyphenation': 0,
     'vue/html-self-closing': 0,
+    'vue/html-quotes': 0,
     'vue/component-name-in-template-casing': 0,
     'vue/html-closing-bracket-spacing': 0,
     'vue/singleline-html-element-content-newline': 0,

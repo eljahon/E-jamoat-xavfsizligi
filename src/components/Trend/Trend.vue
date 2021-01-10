@@ -19,14 +19,14 @@ export default {
       default: 'ant-pro-trend'
     },
     /**
-       * 上升下降标识：up|down
+       * Lorem：up|down
        */
     flag: {
       type: String,
       required: true
     },
     /**
-       * 颜色反转
+       * Lorem
        */
     reverseColor: {
       type: Boolean,

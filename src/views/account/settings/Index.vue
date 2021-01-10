@@ -12,27 +12,27 @@
           >
             <a-menu-item key="/account/settings/base">
               <router-link :to="{ name: 'BaseSettings' }">
-                基本设置
+                Lorem
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/security">
               <router-link :to="{ name: 'SecuritySettings' }">
-                安全设置
+                Lorem
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/custom">
               <router-link :to="{ name: 'CustomSettings' }">
-                个性化
+                Lorem
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/binding">
               <router-link :to="{ name: 'BindingSettings' }">
-                账户绑定
+                Lorem
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/notification">
               <router-link :to="{ name: 'NotificationSettings' }">
-                新消息通知
+                Lorem
               </router-link>
             </a-menu-item>
           </a-menu>
@@ -74,11 +74,11 @@ export default {
         outputType: 'jpeg',
         canScale: false,
         autoCrop: true,
-        // 只有自动截图开启 宽度高度才生效
+        // Lorem Lorem
         autoCropWidth: 180,
         autoCropHeight: 180,
         fixedBox: true,
-        // 开启宽度和高度比例
+        // Lorem
         fixed: true,
         fixedNumber: [1, 1]
       },

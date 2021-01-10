@@ -5,9 +5,9 @@
 
         <a-form layout="vertical">
           <a-form-item
-            label="昵称"
+            label="Lorem"
           >
-            <a-input placeholder="给自己起个名字" />
+            <a-input placeholder="Lorem" />
           </a-form-item>
           <a-form-item
             label="Bio"
@@ -16,13 +16,13 @@
           </a-form-item>
 
           <a-form-item
-            label="电子邮件"
+            label="Lorem"
             :required="false"
           >
             <a-input placeholder="exp@admin.com"/>
           </a-form-item>
           <a-form-item
-            label="加密方式"
+            label="Lorem"
             :required="false"
           >
             <a-select defaultValue="aes-256-cfb">
@@ -32,21 +32,21 @@
             </a-select>
           </a-form-item>
           <a-form-item
-            label="连接密码"
+            label="Lorem"
             :required="false"
           >
             <a-input placeholder="h3gSbecd"/>
           </a-form-item>
           <a-form-item
-            label="登录密码"
+            label="Lorem"
             :required="false"
           >
-            <a-input placeholder="密码"/>
+            <a-input placeholder="Lorem"/>
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary">提交</a-button>
-            <a-button style="margin-left: 8px">保存</a-button>
+            <a-button type="primary">Lorem</a-button>
+            <a-button style="margin-left: 8px">Lorem</a-button>
           </a-form-item>
         </a-form>
 
@@ -86,11 +86,11 @@ export default {
         outputType: 'jpeg',
         canScale: false,
         autoCrop: true,
-        // 只有自动截图开启 宽度高度才生效
+        // Lorem Lorem
         autoCropWidth: 180,
         autoCropHeight: 180,
         fixedBox: true,
-        // 开启宽度和高度比例
+        // Lorem
         fixed: true,
         fixedNumber: [1, 1]
       }

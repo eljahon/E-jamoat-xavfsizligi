@@ -45,7 +45,7 @@ export default {
     remove (targetKey) {
       this.pages = this.pages.filter(page => page.fullPath !== targetKey)
       this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
-      // 判断当前标签是否关闭，若关闭则跳转到最后一个还存在的标签页
+      // Lorem，Lorem
       if (!this.fullPathList.includes(this.activeKey)) {
         this.selectedLastPath()
       }
@@ -56,11 +56,11 @@ export default {
 
     // content menu
     closeThat (e) {
-      // 判断是否为最后一个标签页，如果是最后一个，则无法被关闭
+      // Lorem，Lorem，Lorem
       if (this.fullPathList.length > 1) {
         this.remove(e)
       } else {
-        this.$message.info('这是最后一个标签了, 无法被关闭')
+        this.$message.info('Lorem, Lorem')
       }
     },
     closeLeft (e) {
@@ -72,7 +72,7 @@ export default {
           }
         })
       } else {
-        this.$message.info('左侧没有标签')
+        this.$message.info('Lorem')
       }
     },
     closeRight (e) {
@@ -84,7 +84,7 @@ export default {
           }
         })
       } else {
-        this.$message.info('右侧没有标签')
+        this.$message.info('Lorem')
       }
     },
     closeAll (e) {
@@ -101,10 +101,10 @@ export default {
     renderTabPaneMenu (e) {
       return (
         <a-menu {...{ on: { click: ({ key, item, domEvent }) => { this.closeMenuClick(key, e) } } }}>
-          <a-menu-item key="closeThat">关闭当前标签</a-menu-item>
-          <a-menu-item key="closeRight">关闭右侧</a-menu-item>
-          <a-menu-item key="closeLeft">关闭左侧</a-menu-item>
-          <a-menu-item key="closeAll">关闭全部</a-menu-item>
+          <a-menu-item key="closeThat">Lorem</a-menu-item>
+          <a-menu-item key="closeRight">Lorem</a-menu-item>
+          <a-menu-item key="closeLeft">Lorem</a-menu-item>
+          <a-menu-item key="closeAll">Lorem</a-menu-item>
         </a-menu>
       )
     },

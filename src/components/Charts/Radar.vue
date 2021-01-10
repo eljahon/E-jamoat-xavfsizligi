@@ -41,7 +41,7 @@ const scale = [
     max: 80
   }, {
     dataKey: 'user',
-    alias: '类型'
+    alias: 'Lorem'
   }
 ]
 

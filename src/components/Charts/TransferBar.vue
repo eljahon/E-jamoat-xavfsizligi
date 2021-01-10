@@ -24,13 +24,13 @@ const tooltip = [
 ]
 const scale = [{
   dataKey: 'x',
-  title: '日期(天)',
-  alias: '日期(天)',
+  title: 'Lorem(Lorem)',
+  alias: 'Lorem(Lorem)',
   min: 2
 }, {
   dataKey: 'y',
-  title: '流量(Gb)',
-  alias: '流量(Gb)',
+  title: 'Lorem(Gb)',
+  alias: 'Lorem(Gb)',
   min: 1
 }]
 

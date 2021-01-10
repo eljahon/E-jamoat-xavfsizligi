@@ -1,7 +1,7 @@
 <template>
 
   <a-modal
-    title="修改头像"
+    title="Lorem"
     :visible="visible"
     :maskClosable="false"
     :confirmLoading="confirmLoading"
@@ -32,7 +32,7 @@
     <a-row>
       <a-col :lg="2" :md="2">
         <a-upload name="file" :beforeUpload="beforeUpload" :showUploadList="false">
-          <a-button icon="upload">选择图片</a-button>
+          <a-button icon="upload">Lorem</a-button>
         </a-upload>
       </a-col>
       <a-col :lg="{span: 1, offset: 2}" :md="2">
@@ -48,7 +48,7 @@
         <a-button icon="redo" @click="rotateRight"/>
       </a-col>
       <a-col :lg="{span: 2, offset: 6}" :md="2">
-        <a-button type="primary" @click="finish('blob')">保存</a-button>
+        <a-button type="primary" @click="finish('blob')">Lorem</a-button>
       </a-col>
     </a-row>
   </a-modal>
@@ -78,7 +78,7 @@ export default {
     edit (id) {
       this.visible = true
       this.id = id
-      /* 获取原始头像 */
+      /* Lorem */
     },
     close () {
       this.id = null
@@ -99,24 +99,24 @@ export default {
     },
     beforeUpload (file) {
       const reader = new FileReader()
-      // 把Array Buffer转化为blob 如果是base64不需要
-      // 转化为base64
+      // LoremArray BufferLoremblob Lorembase64Lorem
+      // Lorembase64
       reader.readAsDataURL(file)
       reader.onload = () => {
         this.options.img = reader.result
       }
-      // 转化为blob
+      // Loremblob
       // reader.readAsArrayBuffer(file)
 
       return false
     },
 
-    // 上传图片（点击上传按钮）
+    // Lorem（Lorem）
     finish (type) {
       console.log('finish')
       const _this = this
       const formData = new FormData()
-      // 输出
+      // Lorem
       if (type === 'blob') {
         this.$refs.cropper.getCropBlob((data) => {
           const img = window.URL.createObjectURL(data)
@@ -129,12 +129,12 @@ export default {
               // var res = response.data
               // if (response.status === 'done') {
               //   _this.imgFile = ''
-              //   _this.headImg = res.realPathList[0] // 完整路径
-              //   _this.uploadImgRelaPath = res.relaPathList[0] // 非完整路径
-              //   _this.$message.success('上传成功')
+              //   _this.headImg = res.realPathList[0] // Lorem
+              //   _this.uploadImgRelaPath = res.relaPathList[0] // Lorem
+              //   _this.$message.success('Lorem')
               //   this.visible = false
               // }
-              _this.$message.success('上传成功')
+              _this.$message.success('Lorem')
               _this.$emit('ok', response.url)
               _this.visible = false
             })
@@ -153,7 +153,7 @@ export default {
       setTimeout(() => {
         vm.confirmLoading = false
         vm.close()
-        vm.$message.success('上传头像成功')
+        vm.$message.success('Lorem')
       }, 2000)
     },
 
