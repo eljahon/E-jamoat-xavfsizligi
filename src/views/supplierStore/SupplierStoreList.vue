@@ -2,12 +2,6 @@
   <div>
     <a-card size="small" title="Supplier Store List" style="width: 100%">
       <a-button size="small" type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
-<!--      <a-row style="margin: 10px 0">-->
-<!--        <a-col :span="16"></a-col>-->
-<!--        <a-col :span="8">-->
-<!--          <a-input v-debounce="search" :placeholder="$t('search')" />-->
-<!--        </a-col>-->
-<!--      </a-row>-->
       <a-table
         :columns="columns"
         :data-source="allSupplierStores"
@@ -18,12 +12,15 @@
         size="small"
       >
         <template slot="phone" slot-scope="phone">
-          +998{{ phone }}
+          +{{ phone }}
+        </template>
+        <template slot="second_phone" slot-scope="second_phone">
+          +{{ second_phone }}
         </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" size='small' type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -37,6 +34,7 @@
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
                 style="margin: 0 2px"
+                size='small'
                 type="danger"
                 icon="delete"
               ></a-button>
@@ -65,21 +63,18 @@ export default {
       slug: null,
       columns: [
         {
-          title: 'Name UZ',
-          dataIndex: 'name_uz',
-        },
-        {
-          title: 'Name RU',
-          dataIndex: 'name_ru',
-        },
-        {
-          title: 'Phone',
+          title: this.$t('phone'),
           dataIndex: 'phone',
           scopedSlots: { customRender: 'phone' },
         },
         {
-          title: 'Email',
-          dataIndex: 'email',
+          title: this.$t('second_phone'),
+          dataIndex: 'second_phone',
+          scopedSlots: { customRender: 'second_phone' },
+        },
+        {
+          title: this.$t('location'),
+          dataIndex: 'location'
         },
         {
           title: this.$t('action'),
@@ -100,7 +95,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllSupplierStores', 'deleteSupplierStore', 'getAllLocationsList', 'getAllSuppliersList']),
+    ...mapActions(['getAllSupplierStores', 'deleteSupplierStore', 'getAllLocationsList', 'getAllSuppliersList', 'getAllTreeLocationsList']),
     editItem(item) {
       this.$refs.editSupplierStore.show(item)
     },
@@ -115,7 +110,7 @@ export default {
     },
     removeItem (item) {
       console.log(item)
-      this.deleteSupplier(item.id).then(res => {
+      this.deleteSupplierStore(item.id).then(res => {
         this.getAllSupplierStores(this.params)
       })
     },
@@ -128,8 +123,7 @@ export default {
   },
   mounted() {
     this.getAllSupplierStores(this.params)
-    this.getAllLocationsList()
-    this.getAllSuppliersList()
+    this.getAllTreeLocationsList()
   },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
+  <a-modal width="700px" :maskClosable='false' centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>

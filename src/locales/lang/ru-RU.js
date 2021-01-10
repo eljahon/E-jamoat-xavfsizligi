@@ -109,6 +109,13 @@ const locale = {
     'incorrectEmail': 'Ошибка синтаксиса электронной почты',
     'incorrectPhone': 'Ошибка синтаксиса телефона',
     'main_setting': 'Основная настройка',
+    'second_phone': 'Второй телефон',
+    'title': 'Заглавие',
+    'text': 'Текст',
+    'reading': 'Прочитанный',
+    'unreading': 'Непрочитанный',
+    'view': 'Посмотреть',
+    'comment': 'Комментарий',
 
     // courier
     'couriers': 'Курьеры',
@@ -170,7 +177,12 @@ const locale = {
 
 
     // stuff
+    'stuffs': 'Сотрудники',
+    'stuffs.list': 'Список cотрудники',
+
+    // users
     'users': 'Пользователи',
+    'username': 'Имя пользователя',
     'users.list': 'Список пользователей',
 
     // role
@@ -199,8 +211,18 @@ const locale = {
 
     // notifications
     'notifications': 'Уведомления',
+    'notifications.list': 'Список уведомлений',
+
+
     // complaints
     'complaints': 'Жалобы',
+    'complaints.list': 'Список жалоб',
+    // search history
+    'search_history': 'История поиска',
+    'search_history.list': 'Список истории поиска',
+    'query': 'Запрос',
+    'query.count': 'Количество запросов',
+
     // discounts
     'discounts': 'Скидки',
     'coupons': 'Kупоны',

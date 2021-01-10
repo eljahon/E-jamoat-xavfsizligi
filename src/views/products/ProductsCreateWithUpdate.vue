@@ -5,36 +5,37 @@
         <a-step v-for='item in steps' :key='item.title' :title='item.title' />
       </a-steps>
       <div class='steps-content'>
-        <div v-if='current === 0'>
-          <first-step/>
-        </div>
+        <div v-if='current === 0'><first-step/></div>
+        <div v-if='current === 1'><second-step/></div>
         <div v-else>
           {{ steps[current].content }}
         </div>
       </div>
-<!--      <div class='steps-action'>-->
-<!--        <a-button v-if='current < steps.length - 1' type='primary' @click='next'>-->
-<!--          Next-->
-<!--        </a-button>-->
-<!--        <a-button-->
-<!--          v-if='current == steps.length - 1'-->
-<!--          type='primary'-->
-<!--          @click="$message.success('Processing complete!')"-->
-<!--        >-->
-<!--          Done-->
-<!--        </a-button>-->
-<!--        <a-button v-if='current > 0' style='margin-left: 8px' @click='prev'>-->
-<!--          Previous-->
-<!--        </a-button>-->
-<!--      </div>-->
+      <div class='steps-action'>
+        <a-button v-if='current < steps.length - 1' type='primary' @click='next'>
+          Next
+        </a-button>
+        <a-button
+          v-if='current == steps.length - 1'
+          type='primary'
+          @click="$message.success('Processing complete!')"
+        >
+          Done
+        </a-button>
+        <a-button v-if='current > 0' style='margin-left: 8px' @click='prev'>
+          Previous
+        </a-button>
+      </div>
     </div>
   </a-card>
 </template>
 <script>
 import FirstStep from './ProductFirstStep'
+import SecondStep from './ProductSecondStep'
 export default {
   components: {
-    'first-step': FirstStep
+    'first-step': FirstStep,
+    'second-step': SecondStep
   },
   data() {
     return {

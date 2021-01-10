@@ -23,6 +23,9 @@ import stuff from '@/store/modules/stuff'
 import widget from '@/store/modules/widget'
 import coupons from '@/store/modules/coupons'
 import _user from '@/store/modules/_user'
+import notification from '@/store/modules/notification'
+import complaint from '@/store/modules/complaint'
+import searchHistory from '@/store/modules/search_history'
 // default router permission control
 import permission from './modules/permission'
 
@@ -40,6 +43,7 @@ export default new Vuex.Store({
     courier,
     coupons,
     complaitTypes,
+    complaint,
     deliveryType,
     brands,
     location,
@@ -56,7 +60,9 @@ export default new Vuex.Store({
     features,
     stuff,
     widget,
-    _user
+    _user,
+    notification,
+    searchHistory
   },
   state: {
 

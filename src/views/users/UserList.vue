@@ -21,6 +21,9 @@
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
           <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
         </template>
+        <template slot="phone" slot-scope="phone">
+          +{{ phone }}
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -71,6 +74,7 @@ export default {
         {
           title: this.$t('phone'),
           dataIndex: 'phone',
+          scopedSlots: { customRender: 'phone' },
         },
         {
           title: this.$t('email'),

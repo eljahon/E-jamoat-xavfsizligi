@@ -52,6 +52,8 @@ export default {
           this.$refs.itemEdit.id = data.id
           this.$refs.itemEdit.form.email = data.email
           this.$refs.itemEdit.form.phone = '+' + data.phone
+          this.$refs.itemEdit.form.name = data.name
+          this.$refs.itemEdit.form.last_name = data.last_name
           // this.$refs.itemEdit.form.symbol = data.symbol
           this.$refs.itemEdit.form.status = data.status
         }, 10)

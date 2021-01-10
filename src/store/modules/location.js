@@ -4,6 +4,7 @@ export default {
     locations: [],
     parent_location: [],
     locationList: [],
+    tree_location: [],
     loadLocation: false,
     pagination: {}
   },
@@ -12,7 +13,8 @@ export default {
     allLocationList: (state) => state.locationList,
     loadLocation: (state) => state.loadLocation,
     paginationLocation: (state) => state.pagination,
-    parentLocation: (state) => state.parent_location
+    parentLocation: (state) => state.parent_location,
+    treeLocation: (state) => state.tree_location
   },
   mutations: {
     GET_ALL_LOCATION(state, payload) {
@@ -29,6 +31,9 @@ export default {
     },
     GET_PARENT_LOCATION(state, payload) {
       state.parent_location = payload
+    },
+    GET_TREE_LOCATION(state, payload) {
+      state.tree_location = payload
     }
   },
   actions: {
@@ -65,6 +70,20 @@ export default {
           .then(res => {
             resolve()
             commit('GET_ALL_LOCATION_LIST', res.data)
+          })
+          .catch(error => {
+            reject(error)
+            this.$message.error(error.message)
+          })
+      })
+    },
+    getAllTreeLocationsList({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        // axios
+        axiosInit.get('/admin/location/parent-with-child')
+          .then(res => {
+            resolve()
+            commit('GET_TREE_LOCATION', res.data)
           })
           .catch(error => {
             reject(error)

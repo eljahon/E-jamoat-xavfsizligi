@@ -69,8 +69,7 @@ export default {
         status: 10
       },
       rules: {
-        name_uz: [{ required: true, message: 'Name uz Required', trigger: 'blur' }],
-        name_ru: [{ required: true, message: 'Name ru Required', trigger: 'blur' }],
+        name: [{ required: true, message: 'Name uz Required', trigger: 'blur' }],
         address_uz: [{ required: true, message: 'Address uz Required', trigger: 'blur' }],
         address_ru: [{ required: true, message: 'Address ru Required', trigger: 'blur' }],
         phone: [{ required: true, message: 'Phone Required', trigger: 'change' }, { validator: validatePhone, trigger: 'change' }],
@@ -94,14 +93,12 @@ export default {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const _form = { ...this.form }
-            _form.name_ru = this.form.name
-            _form.name_uz = this.form.name
-            _form.name = undefined
             _form.phone = this.form.phone.replaceAll(' ', '')
             resolve({
               id: this.id ? this.id : undefined,
               data: _form
             })
+            console.log(this.form)
           } else reject(valid)
         })
       })

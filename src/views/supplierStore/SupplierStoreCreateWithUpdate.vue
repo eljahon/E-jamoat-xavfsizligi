@@ -53,11 +53,17 @@ export default {
       if (this.editable) {
         console.log(data)
         setTimeout(() => {
+          const _form = this.$refs.supplierStoreEdit.form
           this.$refs.supplierStoreEdit.id = data.id
-          this.$refs.supplierStoreEdit.form = { ...data }
-          this.$refs.supplierStoreEdit.form.phone = '+998' + data.phone
-          this.$refs.supplierStoreEdit.form.id = undefined
-          this.$refs.supplierStoreEdit.form.slug = undefined
+          _form.supplier_id = this.$route.params.id
+          _form.phone = data.phone.toString().slice(3)
+          _form.second_phone = data.second_phone ? data.second_phone.toString().slice(3) : ''
+          _form.location_id = data.location_id
+          _form.address_uz = data.address_uz
+          _form.address_ru = data.address_ru
+          const _coords = JSON.parse(data.coordinates)
+          console.log(_coords)
+          this.$refs.supplierStoreEdit.location = [_coords.lat, _coords.lng]
         }, 10)
         this.visible = true
       }

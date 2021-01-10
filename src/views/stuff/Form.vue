@@ -13,7 +13,7 @@
       </a-col>
       <a-col :span="11">
         <a-form-model-item :label="$t('phone')" prop="phone">
-          <a-input v-model="form.phone" />
+          <a-input addon-before="+998" v-mask="'## ### ## ##'" v-model="form.phone" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
@@ -38,10 +38,10 @@
 export default {
   data () {
     const validatePhone = (rule, value, callback) => {
-      if (/^[+][9][9][8]\d{9}$/.test(value)) {
+      if (/^\d{9}$/.test(value.replaceAll(' ', ''))) {
         callback()
       } else {
-        callback(new Error(this.$t('errorPhone')))
+        callback(new Error('Phone Error'))
       }
     }
     const validateEmail = (rule, value, callback) => {
@@ -73,7 +73,7 @@ export default {
         last_name: '',
         phone: null,
         email: '',
-        role_name: 'seller',
+        role_name: 'admin',
         password_confirm: '',
         password: ''
       },
@@ -92,9 +92,11 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
+            let _form = { ...this.form }
+            _form.phone = '998' + this.form.phone.replaceAll(' ', '')
             resolve({
               id: this.id ? this.id : undefined,
-              data: this.form
+              data: _form
             })
           } else reject(valid)
         })

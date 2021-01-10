@@ -1,31 +1,37 @@
 <template>
   <a-form-model ref="ruleForm" :model="form" :rules="rules">
     <a-row>
-      <a-col :span="11">
-        <a-form-model-item :label="$t('phone')" prop="phone">
-          <a-input v-model="form.phone" />
+      <a-col :span="12" style="padding-right: 10px">
+        <a-form-model-item :label="$t('name')" prop="name">
+          <a-input v-model="form.name" />
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="1">
+      <a-col :span="12" style="padding-left: 10px">
+        <a-form-model-item :label="$t('last_name')" prop="last_name">
+          <a-input v-model="form.last_name" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12" style="padding-right: 10px">
+        <a-form-model-item :label="$t('phone')" prop="phone">
+          <a-input addon-before="+998" v-mask="'## ### ## ##'" v-model="form.phone" />
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="12" style="padding-left: 10px">
         <a-form-model-item :label="$t('email')" prop="email">
           <a-input v-model="form.email" />
         </a-form-model-item>
       </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="11">
+      <a-col :span="12" style="padding-right: 10px">
         <a-form-model-item :label="$t('password')" prop="password">
           <a-input-password v-model="form.password" />
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="1">
+      <a-col :span="12" style="padding-left: 10px">
         <a-form-model-item :label="$t('password_confirm')" prop="password_confirm">
           <a-input-password v-model="form.password_confirm" />
         </a-form-model-item>
       </a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="11">
+      <a-col :span="12" style="padding-right: 10px">
         <a-form-model-item :label="$t('status')">
           <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
         </a-form-model-item>
@@ -37,10 +43,10 @@
 export default {
   data () {
     const validatePhone = (rule, value, callback) => {
-      if (/^[+][9][9][8]\d{9}$/.test(value)) {
+      if (/^\d{9}$/.test(value.replaceAll(' ', ''))) {
         callback()
       } else {
-        callback(new Error(this.$t('errorPhone')))
+        callback(new Error('Phone Error'))
       }
     }
     const validateEmail = (rule, value, callback) => {
@@ -68,14 +74,18 @@ export default {
       id: null,
       status: true,
       form: {
+        name: '',
+        last_name: '',
         phone: null,
         email: '',
-        role_name: 'stuff',
+        role_name: 'customer',
         password_confirm: '',
         password: '',
         status: 10
       },
       rules: {
+        name: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        last_name: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         phone: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }, { validator: validatePhone, trigger: 'change' }],
         email: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }, { validator: validateEmail, trigger: 'change' }],
         password: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }, { validator: validatePassword, trigger: 'change' }],
@@ -95,9 +105,11 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
+            let _form = { ...this.form }
+            _form.phone = '998' + this.form.phone.replaceAll(' ', '')
             resolve({
               id: this.id ? this.id : undefined,
-              data: this.form
+              data: _form
             })
           } else reject(valid)
         })

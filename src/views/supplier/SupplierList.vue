@@ -71,7 +71,7 @@ export default {
       columns: [
         {
           title: this.$t('name'),
-          dataIndex: 'name_uz',
+          dataIndex: 'name',
         },
         {
           title: this.$t('phone'),

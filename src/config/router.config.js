@@ -405,13 +405,13 @@ export const asyncRouterMap = [
             hideChildrenInMenu: true,
             component: RouteView,
             redirect: '/users/stuff/list',
-            meta: { title: 'users', icon: 'user', permission: [ 'form' ] },
+            meta: { title: 'stuffs', icon: 'user', permission: [ 'form' ] },
             children: [
               {
                 path: '/users/stuff/list',
                 name: 'StuffList',
                 component: () => import('@/views/stuff/StuffList'),
-                meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
+                meta: { title: 'stuffs.list', keepAlive: true, permission: [ 'form' ] }
               }
             ]
           },
@@ -444,7 +444,7 @@ export const asyncRouterMap = [
               {
                 path: '/users/user/list',
                 name: 'UserList',
-                component: () => import('@/views/TestRouter'),
+                component: () => import('@/views/users/UserList'),
                 meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
               }
             ]
@@ -576,7 +576,7 @@ export const asyncRouterMap = [
         name: 'Notifications',
         hideChildrenInMenu: true,
         // redirect: '/statistics/search_histories',
-        component: () => import('@/views/TestRouter'),
+        component: () => import('@/views/notification/NotificationList'),
         meta: { title: 'notifications', icon: 'bell', permission: ['form'] },
         children: []
       },
@@ -586,8 +586,18 @@ export const asyncRouterMap = [
         name: 'Complaints',
         hideChildrenInMenu: true,
         // redirect: '/statistics/search_histories',
-        component: () => import('@/views/TestRouter'),
+        component: () => import('@/views/complaints/ComlaintList'),
         meta: { title: 'complaints', icon: 'alert', permission: ['form'] },
+        children: []
+      },
+      // search history
+      {
+        path: '/search_history',
+        name: 'SeHistory',
+        hideChildrenInMenu: true,
+        // redirect: '/statistics/search_histories',
+        component: () => import('@/views/searchHistory/searchHistoryList'),
+        meta: { title: 'search_history', icon: 'history', permission: ['form'] },
         children: []
       },
       // discounts

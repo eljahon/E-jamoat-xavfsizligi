@@ -1,5 +1,5 @@
 <template>
-  <a-card :title="$t('fill')">
+  <a-card size='small' :title="$t('fill')">
     <a-form-model
       @submit.prevent="saveData"
       ref="ruleForm"

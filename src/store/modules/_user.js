@@ -28,7 +28,7 @@ export default {
         let { pagination } = payload
         commit('GET_LOAD_USERS', true)
         // axios
-        axiosInit.get('/admin/users',
+        axiosInit.get('/admin/user',
           {
             page: pagination.current
           }
@@ -54,7 +54,7 @@ export default {
     },
     updateUsers({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.put(`/admin/users/${payload.id}`, payload.data)
+        axiosInit.put(`/admin/user/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
             console.log(res)
@@ -71,7 +71,7 @@ export default {
     },
     deleteUsers({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/admin/users/${payload}`)
+        axiosInit.delete(`/admin/user/${payload}`)
           .then(res => {
             resolve()
             console.log(res)
@@ -88,7 +88,7 @@ export default {
     },
     postUsers({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.post('/admin/users', payload).then(res => {
+        axiosInit.post('/admin/user', payload).then(res => {
           resolve(res)
           console.log(res)
         })
