@@ -26,6 +26,7 @@ import _user from '@/store/modules/_user'
 import notification from '@/store/modules/notification'
 import complaint from '@/store/modules/complaint'
 import searchHistory from '@/store/modules/search_history'
+import roles from '@/store/modules/roles'
 // default router permission control
 import permission from './modules/permission'
 
@@ -61,6 +62,7 @@ export default new Vuex.Store({
     stuff,
     widget,
     _user,
+    roles,
     notification,
     searchHistory
   },
