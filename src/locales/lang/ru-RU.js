@@ -117,6 +117,7 @@ const locale = {
     'view': 'Посмотреть',
     'comment': 'Комментарий',
     'information': 'Информация',
+    'value': 'Значение',
 
     // courier
     'couriers': 'Курьеры',
@@ -286,7 +287,6 @@ const locale = {
     'finishReason': 'Причина отмены',
     'finishTime': 'Время отмены',
     'allTime': 'Общее время',
-
     // attrs
 
     'attrs': 'Атрибуты',

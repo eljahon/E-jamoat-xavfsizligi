@@ -45,7 +45,7 @@
               </a-col>
               <a-col style="padding-left: 5px" :span="8">
                 <a-form-model-item :label="$t('order')" prop="order">
-                  <a-input type="number" style="width: 100%" v-model="form.order"></a-input>
+                  <a-input type="number" :maxLength='3' style="width: 100%" v-model="form.order"></a-input>
                 </a-form-model-item>
               </a-col>
             </a-row>
@@ -89,7 +89,7 @@
               </a-col>
             </a-row>
           </a-card>
-          <a-card v-if="form.type && (form.type !== 'string') && (form.type !== 'range')" title="Возможные значения">
+          <a-card v-if="isHaveFtValue" title="Возможные значения">
             <a-button slot="extra" type="dashed" @click="addFeatures" icon="plus">{{ $t('add') }}</a-button>
             <!--          <div style="width: 100%; height: 300px; overflow-y: scroll">-->
             <a-row v-for="(f, j) in form.feature_values" :key="'features_values' + j">
@@ -198,7 +198,7 @@ export default {
         categories: [],
       },
       types: [
-        'select', 'multiselect', 'checkbox', 'string', 'range'
+        'dropdown', 'radio', 'checkbox', 'text', 'number', 'date', 'datetime', 'textarea'
       ],
       rules: {
         name_uz: [ {required: true, message: this.$t('required'), trigger: 'change'} ],
@@ -217,6 +217,9 @@ export default {
     ...mapGetters(['treeCategory']),
     treeData() {
       return treeDataMap(this.treeCategory)
+    },
+    isHaveFtValue () {
+      return this.form.type && (this.form.type !== 'text') && (this.form.type !== 'number') && (this.form.type !== 'textarea') && (this.form.type !== 'date') && (this.form.type !== 'datetime')
     }
   },
   methods: {
@@ -224,9 +227,10 @@ export default {
     saveData() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
+          let _form = { ...this.form }
           if (!this.multilanguage) {
-            // eslint-disable-next-line
-            let _feature_values = [ ...this.form.feature_values ]
+            // eslint-disable-next-line camelcase
+            let _feature_values = [..._form.feature_values]
             const newList = _feature_values.map(e => {
               return {
                 value_ru: e.value_uz,
@@ -234,16 +238,15 @@ export default {
                 color: e.color
               }
             })
-            console.log(newList)
-            this.form.feature_values = newList
-            console.log(this.form)
+            _form.feature_values = (this.form.type === 'dropdown' || this.form.type === 'radio' || this.form.type === 'checkbox') ? newList : undefined
           }
-          if (this.validateFeatures(this.form.feature_values)) {
-            this.form.categories = this.form.categories.checked
+          if (this.validateFeatures(_form.feature_values)) {
+            _form.categories = this.form.categories.checked
+            _form.order = parseInt(this.form.order)
             if (this.$route.params.id) {
               this.updateFeatures({
                 id: this.$route.params.id,
-                data: this.form
+                data: _form
               }).then(res => {
                   console.log(res)
                   this.$router.push({
@@ -255,7 +258,7 @@ export default {
                 })
               return
             }
-            this.postFeatures(this.form)
+            this.postFeatures(_form)
               .then(res => {
                 console.log(res)
                 this.$router.push({
@@ -273,21 +276,24 @@ export default {
     addFeatures() {
       this.form.feature_values.push({
         value_ru: '',
-        value_uz: ''
+        value_uz: '',
+        color: null
       })
     },
     removeFeatures(i) {
       this.form.feature_values.splice(i, 1)
     },
     validateFeatures(array) {
-      for (var i = 0; i < array.length; i++) {
-        if (array[i].value_ru === '' || array[i].value_uz === '') {
-          notification.error({
-            message: 'Ошибка',
-            description: 'Значения функций предупреждения пусты',
-            duration: 5
-          })
-          return false
+      if (this.form.type === 'dropdown' || this.form.type === 'radio' || this.form.type === 'checkbox') {
+        for (var i = 0; i < array.length; i++) {
+          if (array[i].value_ru === '' || array[i].value_uz === '') {
+            notification.error({
+              message: 'Ошибка',
+              description: 'Значения функций предупреждения пусты',
+              duration: 5
+            })
+            return false
+          }
         }
       }
       return true

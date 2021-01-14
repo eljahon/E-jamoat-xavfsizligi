@@ -2,14 +2,21 @@
   <a-form-model ref="ruleForm" :model="form" :rules="rules">
     <a-row>
       <a-col :span="11">
-        <a-form-model-item :label="$t('name_uz')" prop="name_uz">
-          <a-input v-model="form.name_uz" />
+        <a-form-model-item :label="$t('name')" prop="name">
+          <a-input v-model="form.name" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
-        <a-form-model-item :label="$t('name_ru')" prop="name_ru">
-          <a-input v-model="form.name_ru" />
-        </a-form-model-item>
+        <a-col :span="11">
+          <a-form-model-item :label="$t('popular')">
+            <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="form.is_popular" />
+          </a-form-model-item>
+        </a-col>
+        <a-col :span="11" :offset="1">
+          <a-form-model-item :label="$t('status')">
+            <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
+          </a-form-model-item>
+        </a-col>
       </a-col>
     </a-row>
     <a-row>
@@ -35,16 +42,6 @@
           </a-upload>
         </a-form-model-item>
       </a-col>
-      <a-col :span="5" :offset="1">
-        <a-form-model-item :label="$t('popular')">
-          <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="form.is_popular" />
-        </a-form-model-item>
-      </a-col>
-      <a-col :span="6" :offset="1">
-        <a-form-model-item :label="$t('status')">
-          <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
-        </a-form-model-item>
-      </a-col>
     </a-row>
   </a-form-model>
 </template>
@@ -58,15 +55,15 @@ export default {
       loadingImage: false,
       status: true,
       form: {
-        name_uz: '',
-        name_ru: '',
+        name: '',
+        // name_ru: '',
         logo: '',
         is_popular: true,
         status: 10
       },
       rules: {
-        name_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        name_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        name: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        // name_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         status: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         // logo: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }]
       }

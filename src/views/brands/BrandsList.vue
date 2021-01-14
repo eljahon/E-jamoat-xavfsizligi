@@ -76,12 +76,8 @@ export default {
       slug: null,
       columns: [
         {
-          title: this.$t('name_ru'),
-          dataIndex: 'name_ru',
-        },
-        {
-          title: this.$t('name_uz'),
-          dataIndex: 'name_uz',
+          title: this.$t('name'),
+          dataIndex: 'name',
         },
         {
           title: this.$t('slug'),
