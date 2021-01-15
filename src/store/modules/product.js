@@ -105,7 +105,7 @@ export default {
     postProductGroup({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.post('/admin/product-groups', payload).then(res => {
-          resolve(res)
+          resolve(res.data.id)
           console.log(res)
         })
         .catch(err => {

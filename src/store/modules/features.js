@@ -4,6 +4,7 @@ export default {
   state: {
     data: [],
     categoryFeatures: [],
+    mainFeatures: [],
     loading: false,
     pagination: {}
   },
@@ -11,7 +12,8 @@ export default {
     allFeatures: (state) => state.data,
     loadFeatures: (state) => state.loading,
     paginationFeatures: (state) => state.pagination,
-    categoryFeatures: (state) => state.categoryFeatures
+    categoryFeatures: (state) => state.categoryFeatures,
+    mainFeatures: (state) => state.mainFeatures
   },
   mutations: {
     GET_ALL_FEATURES(state, payload) {
@@ -25,6 +27,9 @@ export default {
     },
     GET_CATEGORY_FEATURES(state, payload) {
       state.categoryFeatures = payload
+    },
+    GET_MAIN_CATEGORY_FEATURES(state, payload) {
+      state.mainFeatures = payload
     }
   },
   actions: {
@@ -63,8 +68,27 @@ export default {
         axiosInit.get(`/admin/features/simple/${payload}`,)
           .then(res => {
             console.log(res)
-            resolve()
+            resolve(res)
             commit('GET_CATEGORY_FEATURES', res.data)
+          })
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
+          })
+      })
+    },
+    getMainFeatures({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        // axios
+        axiosInit.get(`/admin/features/main/${payload}`,)
+          .then(res => {
+            console.log(res)
+            resolve()
+            commit('GET_MAIN_CATEGORY_FEATURES', res.data)
           })
           .catch(err => {
             notification.error({

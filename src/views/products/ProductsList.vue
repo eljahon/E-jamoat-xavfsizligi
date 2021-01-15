@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card :title="$t('product_list')" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="() => { $router.push({ name: 'ProductsCreate' }) }">{{ $t('add') }}</a-button>
+      <a-button type="primary" slot="extra" @click="() => { $router.push({ name: 'ProductsCreate', params: { step: 1 } }) }">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">

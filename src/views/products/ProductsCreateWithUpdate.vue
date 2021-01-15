@@ -1,12 +1,12 @@
 <template>
   <a-card title='Product Creation'>
     <div>
-      <a-steps :current='current'>
+      <a-steps :current='parseInt($route.params.step) - 1'>
         <a-step v-for='item in steps' :key='item.title' :title='item.title' />
       </a-steps>
       <div class='steps-content'>
-        <div v-if='current === 0'><first-step @succes='next'/></div>
-        <div v-if='current === 1'><second-step/></div>
+        <div v-if="$route.params.step == '1'"><first-step/></div>
+        <div v-if="$route.params.step == '2'"><second-step/></div>
 <!--        <div v-else>-->
 <!--          {{ steps[current].content }}-->
 <!--        </div>-->

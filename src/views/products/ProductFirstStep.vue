@@ -50,47 +50,6 @@
             </a-select>
           </a-form-model-item>
         </a-col>
-        <a-divider>Features</a-divider>
-        <a-card style='margin-bottom: 10px; margin-top: 10px;' :title="$t('features') + ' ' + (f +1)" size='small' v-for='(ft, f) in form.features' :key='f'>
-            <div slot='extra' :span="24" style="width: 300px; display: flex">
-              <a-select :style="form.features.length > 1 ? 'width: 85%' : 'width: 100%'" :placeholder="$t('features')" @change='changeFt($event, f)'>
-                <a-select-option v-for="(cf, i) in categoryFeatures" :key="'cf' + i" :value="cf.id">
-                  {{ cf.name_ru }} - {{ cf.name_uz }}
-                </a-select-option>
-              </a-select>
-              <a-button v-if='form.features.length > 1' style='margin-left: 10px' ghost type="danger" icon="delete" />
-            </div>
-          <a-row v-if="ft.feature_id && (ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')">
-            <a-col v-for="(val, v) in ft.values" :key="v + val.id" :span="7" style="padding-left: 10px">
-              <a-form-model-item :label="$t('value')">
-                <a-select style="width: 100%" v-model="val.id">
-                  <a-icon v-if='form.features[f].values.length > 1' slot="suffixIcon" type="delete" style='font-size: 15px; color: red' @click='removeValue(f,v)'/>
-                  <a-select-option v-for="vl in ft.feature.values" :key="vl.id" :value="vl.id">
-                    {{ vl.value_uz }} - {{ vl.value_ru }}
-                  </a-select-option>
-                </a-select>
-              </a-form-model-item>
-            </a-col>
-            <a-col :span='2' style='padding-left: 10px'>
-              <a-form-model-item label=' '>
-                <a-button type="primary" icon="plus" @click='addValue(f)'/>
-              </a-form-model-item>
-            </a-col>
-          </a-row>
-          <a-row v-if="ft.feature_id && !(ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')">
-            <a-col :span="24">
-              <a-form-model-item :label="$t('value')">
-                <a-input v-if="ft.feature.type === 'text'" v-model='ft.values[0].value'></a-input>
-                <a-input v-if="ft.feature.type === 'number'" v-model='ft.values[0].value'></a-input>
-                <a-input v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.values[0].value'></a-input>
-              </a-form-model-item>
-            </a-col>
-          </a-row>
-        </a-card>
-        <a-button style='margin-top: 10px' @click='addFeatures'>
-          Add Features
-        </a-button>
-        <a-divider></a-divider>
         <a-col :span="24">
           <a-form-model-item :label="$t('description')" prop='description'>
             <a-input type='textarea' v-model='form.description' />
@@ -107,8 +66,56 @@
           </a-form-model-item>
         </a-col>
       </a-row>
+      <a-divider v-if='form.features.length > 0'>{{ $t('features') }}</a-divider>
       <a-row>
-        <a-button type="primary" html-type="submit">
+        <a-col
+          :span='8'
+          v-for='(ft, f) in form.features'
+          :key='f'
+          :style="style(f)"
+        >
+          <div v-if="ft.feature.type === 'dropdown' || ft.feature.type === 'checkbox'" style="width: 100%">
+            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+              <a-select style="width: 100%" v-model="ft.value.id">
+                <a-select-option v-for='vl in ft.feature.values' :key='vl.id' :value='vl.id'>
+                  {{ vl.value_uz }} - {{ vl.value_ru }}
+                </a-select-option>
+              </a-select>
+            </a-form-model-item>
+          </div>
+          <div v-if="ft.feature.type === 'radio'" style="width: 100%">
+            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+              <a-radio-group name="radioGroup" v-model="ft.value.id">
+                <a-radio v-for='vl in ft.feature.values' :key="'radio' + vl" :value="vl.id">
+                  {{ vl.value_uz }} - {{ vl.value_ru }}
+                </a-radio>
+              </a-radio-group>
+            </a-form-model-item>
+          </div>
+          <div v-if="!(ft.feature.type === 'radio' || ft.feature.type === 'dropdown' || ft.feature.type === 'checkbox')" style="width: 100%">
+            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+              <a-input v-if="ft.feature.type === 'text'" v-model='ft.value.value'></a-input>
+              <a-input v-if="ft.feature.type === 'number'" v-model='ft.value.value'></a-input>
+              <a-input v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.value.value'></a-input>
+            </a-form-model-item>
+          </div>
+          <div v-if="ft.feature.type === 'date'" style="width: 100%">
+            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+              <a-date-picker :placeholder="$t('select_data')" v-model='ft.value.value' valueFormat="YYYY-MM-DD" format="YYYY-MM-DD"/>
+            </a-form-model-item>
+          </div>
+          <div v-if="ft.feature.type === 'datetime'" style="width: 100%">
+            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+              <a-row>
+                <a-col :span="11"><a-date-picker :placeholder="$t('select_data')" v-model='ft.value.value' valueFormat="YYYY-MM-DD" format="YYYY-MM-DD"/></a-col>
+                <a-col :span="11" :offset='2'><a-time-picker valueFormat="HH:mm" format="HH:mm" /></a-col>
+              </a-row>
+            </a-form-model-item>
+          </div>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-button type="primary" html-type="submit" :loading='loading'>
           {{ $t('save') }}
         </a-button>
         <a-button style="margin-left: 10px" @click="$refs.ruleForm.resetFields()" type="primary" ghost>
@@ -137,16 +144,7 @@ export default {
         content_uz: null,
         description: null,
         status: 10,
-        features: [
-          {
-            feature: null,
-            feature_id: null,
-            values: [{
-              id: null,
-              value: null
-            }]
-          }
-        ]
+        features: []
       },
       rules: {
         measure_id: [{ required: true, message: this.$t('required'), trigger: 'change' }],
@@ -164,7 +162,20 @@ export default {
     },
     'form.category_id': function (val) {
       console.log(val)
-      this.getCategoryFeatures(val)
+      this.getCategoryFeatures(val).then(res => {
+        this.form.features = res.data.map(e => {
+          return {
+            feature: e,
+            feature_id: e.id,
+            value: {
+              id: null,
+              value: null
+            }
+          }
+        })
+        console.log(res)
+        console.log(this.form.features)
+      })
     }
   },
   computed: {
@@ -175,26 +186,34 @@ export default {
     saveData () {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
+          this.loading = true
           let _form = { ...this.form }
           let f = []
           for (let i = 0; i < _form.features.length; i++) {
-            for (let j = 0; j < _form.features[i].values.length; j++) {
+            if (_form.features[i].value.id || _form.features[i].value.value) {
               f.push({
                 feature_id: _form.features[i].feature_id,
-                value_id: _form.features[i].values[j].id,
-                value: _form.features[i].values[j].value
+                value_id: _form.features[i].value.id,
+                value: _form.features[i].value.value
               })
             }
           }
           _form.features = f
-          console.log(_form)
-          this.postProductGroup(_form).finally(() => {
-            this.$emit('success')
+          this.postProductGroup(_form).then((res) => {
             this.$message.success('Success')
-            this.loading = false
-            // this.$router.push({ name: 'ProductsCreate' })
+            this.$router.push({
+              name: 'ProductsCreate',
+              params: {
+                step: 2
+              },
+              query: {
+                productGroupId: res
+              }
+            }).finally(() => {
+              this.loading = false
+            })
           })
-        } else this.loading = true
+        }
       })
     },
     changeFt (val, f) {
@@ -231,6 +250,11 @@ export default {
           })
         }
       }
+    },
+    style (index) {
+      if ((index + 1) % 3 === 1) return 'padding-right: 10px'
+      if ((index + 1) % 3 === 0) return 'padding-left: 10px'
+      if ((index + 1) % 3 === 2) return 'padding-left: 10px; padding-right: 10px'
     }
   },
   mounted () {
