@@ -1,18 +1,12 @@
 <template>
-  <a-card size='small' title='Features Assign'>
-    <a-card style='margin-bottom: 10px; margin-top: 10px;' :title="$t('features') + ' ' + (f +1)" size='small'
+  <div>
+    <a-divider>{{ $t('features.main') }}</a-divider>
+    <a-card v-if='features && features.length' style='margin-bottom: 10px; margin-top: 10px;' :title="ft.feature.name_ru + ' ' + (f +1)" size='small'
             v-for='(ft, f) in features' :key='f'>
-      <div slot='extra' :span='24' style='width: 300px; display: flex'>
-        <a-select :style="features.length > 1 ? 'width: 85%' : 'width: 100%'" :placeholder="$t('features')"
-                  @change='changeFt($event, f)'>
-          <a-select-option v-for='(cf, i) in mainFeatures' :key="'cf' + i" :value='cf.id'>
-            {{ cf.name_ru }} - {{ cf.name_uz }}
-          </a-select-option>
-        </a-select>
-        <a-button v-if='features.length > 1' style='margin-left: 10px' ghost type='danger' icon='delete' />
-      </div>
-      <a-row
-        v-if="ft.feature_id && (ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')">
+<!--      <div slot='extra' :span='24' style='width: 300px; display: flex'>-->
+<!--        <a-button v-if='features.length > 1' style='margin-left: 10px' ghost type='danger' icon='delete' />-->
+<!--      </div>-->
+      <a-row v-if="ft.feature_id && (ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')">
         <a-col v-for='(val, v) in ft.values' :key='v + val.id' :span='7' style='padding-left: 10px'>
           <a-form-model-item :label="$t('value')">
             <a-select style='width: 100%' v-model='val.id'>
@@ -41,10 +35,8 @@
         </a-col>
       </a-row>
     </a-card>
-    <a-button slot='extra' style='margin-top: 10px' type='primary' @click='addFeatures'>
-      Add Features
-    </a-button>
-    <a-card title='Images'>
+    <a-divider>{{ $t('features.upload.image') }}</a-divider>
+    <a-card :title="$t('images')">
       <a-button type='primary' slot='extra' @click='addPhoto'>{{ $t('add_photo') }}</a-button>
     </a-card>
     <draggable
@@ -63,7 +55,7 @@
             <a-icon type="delete" class="icon"/>
           </div>
         </a-tooltip>
-        <a-checkbox class="status" v-model="item.status">Active</a-checkbox>
+<!--        <a-checkbox class="status" v-model="item.status">Active</a-checkbox>-->
         <a-form-model-item :label="$t('image') + ' ' + (i +1)" prop="image">
           <a-upload
             list-type="picture-card"
@@ -100,7 +92,7 @@
         {{ $t('clear') }}
       </a-button>
     </a-row>
-    </a-card>
+  </div>
 </template>
 
 <script>
@@ -113,16 +105,7 @@ export default {
   data() {
     return {
       loading: false,
-      features: [
-        {
-          feature: null,
-          feature_id: null,
-          values: [{
-            id: null,
-            value: null
-          }]
-        }
-      ],
+      features: [],
       images: [
         {
           loading: false,
@@ -135,32 +118,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getMainFeatures']),
-    // saveData() {
-    //   console.log('dsfdsf')
-    // },
-    addFeatures() {
-      if (this.mainFeatures.length > 1) {
-        if (this.mainFeatures.length > this.features.length) {
-          this.features.push({
-            feature: null,
-            feature_id: null,
-            values: [{
-              id: null,
-              value: null
-            }]
-          })
-        }
-      }
-    },
-    changeFt(val, f) {
-      this.features[f].feature_id = val
-      for (let i = 0; i < this.mainFeatures.length; i++) {
-        if (this.mainFeatures[i].id === val) {
-          this.features[f].feature = this.mainFeatures[i]
-        }
-      }
-    },
+    ...mapActions(['getMainFeatures', 'postProduct']),
     removeValue(f, v) {
       this.features[f].values.splice(v, 1)
     },
@@ -207,8 +165,10 @@ export default {
     saveProduct () {
       let _form = {}
       let f = []
-      const _features = { ...this.features }
+      // debugger
+      const _features = [...this.features]
       for (let i = 0; i < _features.length; i++) {
+
         for (let j = 0; j < _features[i].values.length; j++) {
           f.push({
             feature_id: _features[i].feature_id,
@@ -221,7 +181,26 @@ export default {
         return e.image
       })
       _form.sku = this.sku
-      console.log(_form)
+      if (_form.sku !== '') {
+        this.loading = true
+        let products = []
+        products.push(_form)
+        this.postProduct({
+          id: this.$route.query.productGroupId,
+          data: {
+            products: products
+          }
+        }).then(res => {
+          this.$message.success('Product create')
+          this.$router.push({
+            name: 'ProductsList'
+          })
+        }).finally(() => {
+          this.loading = false
+        })
+      } else if (_form.sku === '') {
+        this.$message.error('SKU was not selected')
+      }
     }
   },
   computed: {
@@ -236,7 +215,21 @@ export default {
     }
   },
   mounted() {
-    this.getMainFeatures(parseInt(this.$route.query.productGroupId))
+    this.getMainFeatures(parseInt(this.$route.query.productGroupId)).then(res => {
+      const resFeatures = res.data
+      if (resFeatures && resFeatures.length) {
+        this.features = resFeatures.map(e => {
+          return {
+            feature: e,
+            feature_id: e.id,
+            values: [{
+              id: null,
+              value: null
+            }]
+          }
+        })
+      }
+    })
   }
 }
 </script>

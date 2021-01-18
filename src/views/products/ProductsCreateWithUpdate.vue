@@ -1,5 +1,5 @@
 <template>
-  <a-card title='Product Creation'>
+  <a-card :title="$t('product.add')">
     <div>
       <a-steps :current='parseInt($route.params.step) - 1'>
         <a-step v-for='item in steps' :key='item.title' :title='item.title' />
@@ -42,11 +42,11 @@ export default {
       current: 0,
       steps: [
         {
-          title: 'Basic Create Product',
+          title: this.$t('product.add.field'),
           content: 'First-content'
         },
         {
-          title: 'Features Added',
+          title: this.$t('features.assign'),
           content: 'Second-content'
         },
       ]

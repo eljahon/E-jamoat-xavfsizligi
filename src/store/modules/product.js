@@ -88,7 +88,7 @@ export default {
     },
     postProduct({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.post('/admin/products', payload).then(res => {
+        axiosInit.post(`/admin/products/${payload.id}`, payload.data).then(res => {
           resolve(res)
           console.log(res)
         })

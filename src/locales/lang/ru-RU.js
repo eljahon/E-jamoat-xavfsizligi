@@ -20,6 +20,8 @@ const locale = {
     // product
     'products': 'Продукты',
     'product_list': 'Список продукты',
+    'product.add': 'Создать продукт',
+    'product.add.field': 'Создать продукт основных полей',
 
 
 
@@ -37,6 +39,7 @@ const locale = {
     'logout': 'Выход',
     'clear': 'Очистить',
     'image': 'Фото',
+    'images': 'Изображения',
     'uzbek': 'Узбекский',
     'russian': 'Pусский',
     'name_uz': 'Название yзбекский',
@@ -133,6 +136,9 @@ const locale = {
     // features
     'features': 'Характеристики',
     'features.list': 'Список xарактеристики',
+    'features.main': 'Oсновной xарактеристики',
+    'features.assign': 'Назначить xарактеристики',
+    'features.upload.image': 'Загрузить изображения xарактеристики',
     'features.create': 'Создать возможност',
     'features.update': 'Обновление возможност',
     'features.value': 'Bозможност значение',

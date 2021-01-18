@@ -87,7 +87,7 @@ export default {
         axiosInit.get(`/admin/features/main/${payload}`,)
           .then(res => {
             console.log(res)
-            resolve()
+            resolve(res)
             commit('GET_MAIN_CATEGORY_FEATURES', res.data)
           })
           .catch(err => {
