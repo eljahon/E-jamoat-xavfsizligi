@@ -1,90 +1,76 @@
 <template>
   <div>
-    <a-divider>{{ $t('features.main') }}</a-divider>
-    <a-card v-if='features && features.length' style='margin-bottom: 10px; margin-top: 10px;' :title="ft.feature.name_ru + ' ' + (f +1)" size='small'
-            v-for='(ft, f) in features' :key='f'>
-<!--      <div slot='extra' :span='24' style='width: 300px; display: flex'>-->
-<!--        <a-button v-if='features.length > 1' style='margin-left: 10px' ghost type='danger' icon='delete' />-->
-<!--      </div>-->
-      <a-row v-if="ft.feature_id && (ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')">
-        <a-col v-for='(val, v) in ft.values' :key='v + val.id' :span='7' style='padding-left: 10px'>
-          <a-form-model-item :label="$t('value')">
-            <a-select style='width: 100%' v-model='val.id'>
-              <a-icon v-if='features[f].values.length > 1' slot='suffixIcon' type='delete'
-                      style='font-size: 15px; color: red' @click='removeValue(f,v)' />
-              <a-select-option v-for='vl in ft.feature.values' :key='vl.id' :value='vl.id'>
-                {{ vl.value_uz }} - {{ vl.value_ru }}
-              </a-select-option>
-            </a-select>
-          </a-form-model-item>
-        </a-col>
-        <a-col :span='2' style='padding-left: 10px'>
-          <a-form-model-item label=' '>
-            <a-button type='primary' icon='plus' @click='addValue(f)' />
-          </a-form-model-item>
-        </a-col>
-      </a-row>
-      <a-row
-        v-if="ft.feature_id && !(ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')">
-        <a-col :span='24'>
-          <a-form-model-item :label="$t('value')">
-            <a-input v-if="ft.feature.type === 'text'" v-model='ft.values[0].value'></a-input>
-            <a-input v-if="ft.feature.type === 'number'" v-model='ft.values[0].value'></a-input>
-            <a-input v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.values[0].value'></a-input>
-          </a-form-model-item>
-        </a-col>
-      </a-row>
+<!--    <a-divider>{{ $t('features.main') }}</a-divider>-->
+    <a-card :title="$t('features.main')" style='margin: 5px 10px' size='small'>
+      <a-button type='primary' slot='extra' @click='addProduct'>{{ $t('add') }}</a-button>
     </a-card>
-    <a-divider>{{ $t('features.upload.image') }}</a-divider>
-    <a-card :title="$t('images')">
-      <a-button type='primary' slot='extra' @click='addPhoto'>{{ $t('add_photo') }}</a-button>
-    </a-card>
-    <draggable
-      tag="a-row"
-      v-bind="dragOptions"
-      class="animated"
-      :list="images"
-    >
-      <a-col class="animated" v-for="(item, i) in images" :key="i + 1"
-             style="margin-top: 5px; margin-bottom: 5px; padding-left: 5px; padding-right: 5px" :span="8">
-        <a-tooltip>
-          <template slot="title">
-            {{ $t('delete') }}
-          </template>
-          <div v-if="images.length > 1" @click="removePhoto(i)" class="remove-image">
-            <a-icon type="delete" class="icon"/>
-          </div>
-        </a-tooltip>
-<!--        <a-checkbox class="status" v-model="item.status">Active</a-checkbox>-->
-        <a-form-model-item :label="$t('image') + ' ' + (i +1)" prop="image">
-          <a-upload
-            list-type="picture-card"
-            :custom-request="(e) => { uploadImage(e, i) }"
-            class="avatar-uploader"
-            :show-upload-list="false"
-            :before-upload="beforeUpload"
-          >
-            <div v-if="item.url" class="upload-image">
-              <img :src="item.url" alt="avatar"/>
-            </div>
-            <div class="upload-empty" v-else>
-              <a-icon v-if="!(item.loading && onUpload)" type="upload" style="font-size: 48px"/>
-              <a-progress v-if="item.loading && onUpload" :percent="progress"/>
-              <div v-if="!(item.loading && onUpload)" class="ant-upload-text">
-                {{ $t('upload_photo') }}
-              </div>
-            </div>
-          </a-upload>
-        </a-form-model-item>
-      </a-col>
-    </draggable>
-    <a-divider/>
-    <div>
-      <a-form-model-item label="SKU">
-        <a-input v-model='sku'></a-input>
-      </a-form-model-item>
-    </div>
     <a-row>
+      <a-col v-for="(product, i) in products" :key='i' :span='12' style='padding: 0 10px; margin: 10px 0'>
+        <a-card :title="$t('product') + ' ' + (i + 1)" size='small'>
+          <a-row>
+            <a-col v-for='(ft, f) in product.features' :key='f' :span='12' style='padding: 0 5px' size='small'>
+              <a-form-model-item :label="ft.feature.name_ru">
+                <a-select style='width: 100%' v-model='ft.values.id'>
+                  <a-select-option v-for='vl in ft.feature.values' :key='vl.id' :value='vl.id'>
+                    {{ vl.value_uz }} - {{ vl.value_ru }}
+                  </a-select-option>
+                </a-select>
+              </a-form-model-item>
+              <a-form-model-item v-if="ft.feature_id && !(ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')" :label="ft.feature.name_ru">
+                <a-input v-if="ft.feature.type === 'text'" v-model='ft.values.value'></a-input>
+                <a-input v-if="ft.feature.type === 'number'" v-model='ft.values.value'></a-input>
+                <a-input v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.values.value'></a-input>
+              </a-form-model-item>
+            </a-col>
+          </a-row>
+          <a-form-model-item label='Артикуль' style='padding: 0 5px'>
+            <a-input v-model='product.sku'></a-input>
+          </a-form-model-item>
+          <a-divider>{{ $t('features.upload.image') }}</a-divider>
+          <draggable
+            tag="a-row"
+            v-bind="dragOptions"
+            class="animated"
+            :list="product.images"
+          >
+            <a-col class="animated" v-for="(item, j) in product.images" :key="j + 1"
+                   style="padding-left: 5px; padding-right: 5px" :span="6">
+              <a-tooltip>
+                <template slot="title">
+                  {{ $t('delete') }}
+                </template>
+                <div v-if="product.images.length > 1 && item.url" @click="removePhoto(i, j)" class="remove-image">
+                  <a-icon type="delete" class="icon"/>
+                </div>
+              </a-tooltip>
+              <!--        <a-checkbox class="status" v-model="item.status">Active</a-checkbox>-->
+              <a-form-model-item :label="$t('image') + ' ' + (j +1)" prop="image">
+                <a-upload
+                  list-type="picture-card"
+                  :custom-request="(e) => { uploadImage(e, i, j) }"
+                  class="avatar-uploader"
+                  :show-upload-list="false"
+                  :before-upload="beforeUpload"
+                >
+                  <div v-if="item.url" class="upload-image">
+                    <img :src="item.url" alt="avatar"/>
+                  </div>
+                  <div class="upload-empty" v-else>
+                    <a-icon v-if="!(item.loading && onUpload)" type="upload" style="font-size: 48px"/>
+                    <a-progress v-if="item.loading && onUpload" :percent="progress"/>
+                    <div v-if="!(item.loading && onUpload)" class="ant-upload-text">
+                      {{ $t('upload_photo') }}
+                    </div>
+                  </div>
+                </a-upload>
+              </a-form-model-item>
+            </a-col>
+          </draggable>
+        </a-card>
+      </a-col>
+    </a-row>
+
+    <a-row style='margin: 20px 0'>
       <a-button type='primary' @click='saveProduct' :loading='loading'>
         {{ $t('save') }}
       </a-button>
@@ -105,103 +91,105 @@ export default {
   data() {
     return {
       loading: false,
-      features: [],
-      images: [
+      products: [
         {
-          loading: false,
-          url: null,
-          image: '',
-          status: true
+          images: [
+            {
+              loading: false,
+              url: null,
+              image: '',
+              status: true
+            }
+          ],
+          features: [],
+          sku: ''
         }
-      ],
-      sku: ''
+      ]
     }
   },
   methods: {
     ...mapActions(['getMainFeatures', 'postProduct']),
-    removeValue(f, v) {
-      this.features[f].values.splice(v, 1)
-    },
-    addValue(i) {
-      if (this.features[i].feature) {
-        if (this.features[i].feature.values.length - 1 >= this.features[i].values.length) {
-          this.features[i].values.push({
-            id: null,
-            value: null
-          })
-        }
-      }
-    },
-    uploadImage(e, i) {
+    uploadImage(e, productIndex, i) {
       console.log(e)
-      this.images[i].url = null
-      this.images[i].loading = true
+      this.products[productIndex].images[i].url = null
+      this.products[productIndex].images[i].loading = true
       this.$imageUp(e).then(res => {
         console.log(res)
-        this.images[i].image = res.image
-        this.images[i].url = res.image_url
+        this.products[productIndex].images[i].image = res.image
+        this.products[productIndex].images[i].url = res.image_url
+        this.products[productIndex].images.push({
+          loading: false,
+          url: null,
+          image: '',
+          status: true
+        })
       })
         .finally(() => {
-          this.images[i].loading = false
+          this.products[productIndex].images[i].loading = false
         })
     },
     beforeUpload(file) {
       return this.$beforeUpImage(file)
     },
-    addPhoto() {
-      this.images.push(
-        {
-          loading: false,
-          url: null,
-          image: '',
-          status: true,
-          order: null
-        }
-      )
+    addProduct () {
+      this.products.push({
+        images: [
+          {
+            loading: false,
+            url: null,
+            image: '',
+            status: true
+          }
+        ],
+        features: this.mainFeatures.map(e => {
+          return {
+            feature: e,
+            feature_id: e.id,
+            values: {
+              id: null,
+              value: null
+            }
+          }
+        }),
+        sku: ''
+      })
     },
-    removePhoto(i) {
-      this.images.splice(i, 1)
+    removePhoto(productIndex, i) {
+      this.products[productIndex].images.splice(i, 1)
     },
     saveProduct () {
-      let _form = {}
-      let f = []
-      // debugger
-      const _features = [...this.features]
-      for (let i = 0; i < _features.length; i++) {
-
-        for (let j = 0; j < _features[i].values.length; j++) {
-          f.push({
-            feature_id: _features[i].feature_id,
-            value_id: _features[i].values[j].id
+      console.log(this.products)
+      // eslint-disable-next-line no-unused-vars
+      let _products = []
+      _products = this.products.map(e => {
+        return {
+          features: e.features.map(f => {
+            return {
+              feature_id: f.feature_id,
+              value_id: f.values.id
+            }
+          }),
+          sku: e.sku,
+          attachments: e.images.filter(i => i.url).map(image => {
+            return image.image
           })
         }
-      }
-      _form.features = f
-      _form.attachments = this.images.map(e => {
-        return e.image
       })
-      _form.sku = this.sku
-      if (_form.sku !== '') {
-        this.loading = true
-        let products = []
-        products.push(_form)
-        this.postProduct({
-          id: this.$route.query.productGroupId,
-          data: {
-            products: products
-          }
-        }).then(res => {
-          this.$message.success('Product create')
-          this.$router.push({
-            name: 'ProductsList'
-          })
-        }).finally(() => {
-          this.loading = false
+      console.log(_products)
+      this.postProduct({
+        id: this.$route.query.productGroupId,
+        data: {
+          products: _products
+        }
+      }).then(res => {
+        this.$message.success('Product create')
+        this.$router.push({
+          name: 'ProductsList'
         })
-      } else if (_form.sku === '') {
-        this.$message.error('SKU was not selected')
-      }
-    }
+      }).finally(() => {
+        this.loading = false
+      })
+    },
   },
   computed: {
     ...mapGetters(['mainFeatures', 'onUpload', 'progress']),
@@ -216,19 +204,16 @@ export default {
   },
   mounted() {
     this.getMainFeatures(parseInt(this.$route.query.productGroupId)).then(res => {
-      const resFeatures = res.data
-      if (resFeatures && resFeatures.length) {
-        this.features = resFeatures.map(e => {
-          return {
-            feature: e,
-            feature_id: e.id,
-            values: [{
-              id: null,
-              value: null
-            }]
+      this.products[0].features = this.mainFeatures.map(e => {
+        return {
+          feature: e,
+          feature_id: e.id,
+          values: {
+            id: null,
+            value: null
           }
-        })
-      }
+        }
+      })
     })
   }
 }
@@ -272,7 +257,7 @@ export default {
 
 .upload-image {
   //height: 160px;
-  height: 180px;
+  height: 120px;
   width: 100%;
   object-fit: contain;
 
@@ -285,7 +270,7 @@ export default {
 }
 
 .upload-empty {
-  height: 180px;
+  height: 120px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -295,7 +280,7 @@ export default {
 
 .avatar-uploader > .ant-upload.ant-upload-select-picture-card {
   width: 100%;
-  height: 180px;
+  height: 120px;
 }
 
 .ant-upload-select-picture-card i {

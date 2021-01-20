@@ -19,6 +19,7 @@ const locale = {
 
     // product
     'products': 'Продукты',
+    'product': 'Продукт',
     'product_list': 'Список продукты',
     'product.add': 'Создать продукт',
     'product.add.field': 'Создать продукт основных полей',
