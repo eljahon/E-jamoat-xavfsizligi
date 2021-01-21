@@ -1,22 +1,25 @@
 <template>
   <div>
-<!--    <a-divider>{{ $t('features.main') }}</a-divider>-->
+    <!--    <a-divider>{{ $t('features.main') }}</a-divider>-->
     <a-card :title="$t('features.main')" style='margin: 5px 10px' size='small'>
       <a-button type='primary' slot='extra' @click='addProduct'>{{ $t('add') }}</a-button>
     </a-card>
     <a-row>
-      <a-col v-for="(product, i) in products" :key='i' :span='12' style='padding: 0 10px; margin: 10px 0'>
+      <a-col v-for='(product, i) in products' :key='i' :span='12' style='padding: 0 10px; margin: 10px 0'>
         <a-card :title="$t('product') + ' ' + (i + 1)" size='small'>
+          <a-icon v-if='products.length > 1' @click='removeProduct(i)' type="close" slot='extra' style='color: red; font-size: 20px'/>
           <a-row>
             <a-col v-for='(ft, f) in product.features' :key='f' :span='12' style='padding: 0 5px' size='small'>
-              <a-form-model-item :label="ft.feature.name_ru">
+              <a-form-model-item :label='ft.feature.name_ru'>
                 <a-select style='width: 100%' v-model='ft.values.id'>
                   <a-select-option v-for='vl in ft.feature.values' :key='vl.id' :value='vl.id'>
                     {{ vl.value_uz }} - {{ vl.value_ru }}
                   </a-select-option>
                 </a-select>
               </a-form-model-item>
-              <a-form-model-item v-if="ft.feature_id && !(ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')" :label="ft.feature.name_ru">
+              <a-form-model-item
+                v-if="ft.feature_id && !(ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')"
+                :label='ft.feature.name_ru'>
                 <a-input v-if="ft.feature.type === 'text'" v-model='ft.values.value'></a-input>
                 <a-input v-if="ft.feature.type === 'number'" v-model='ft.values.value'></a-input>
                 <a-input v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.values.value'></a-input>
@@ -28,37 +31,37 @@
           </a-form-model-item>
           <a-divider>{{ $t('features.upload.image') }}</a-divider>
           <draggable
-            tag="a-row"
-            v-bind="dragOptions"
-            class="animated"
-            :list="product.images"
+            tag='a-row'
+            v-bind='dragOptions'
+            class='animated'
+            :list='product.images'
           >
-            <a-col class="animated" v-for="(item, j) in product.images" :key="j + 1"
-                   style="padding-left: 5px; padding-right: 5px" :span="6">
+            <a-col class='animated' v-for='(item, j) in product.images' :key='j + 1'
+                   style='padding-left: 5px; padding-right: 5px' :span='6'>
               <a-tooltip>
-                <template slot="title">
+                <template slot='title'>
                   {{ $t('delete') }}
                 </template>
-                <div v-if="product.images.length > 1 && item.url" @click="removePhoto(i, j)" class="remove-image">
-                  <a-icon type="delete" class="icon"/>
+                <div v-if='product.images.length > 1 && item.url' @click='removePhoto(i, j)' class='remove-image'>
+                  <a-icon type='delete' class='icon' />
                 </div>
               </a-tooltip>
               <!--        <a-checkbox class="status" v-model="item.status">Active</a-checkbox>-->
-              <a-form-model-item :label="$t('image') + ' ' + (j +1)" prop="image">
+              <a-form-model-item :label="$t('image') + ' ' + (j +1)" prop='image'>
                 <a-upload
-                  list-type="picture-card"
-                  :custom-request="(e) => { uploadImage(e, i, j) }"
-                  class="avatar-uploader"
-                  :show-upload-list="false"
-                  :before-upload="beforeUpload"
+                  list-type='picture-card'
+                  :custom-request='(e) => { uploadImage(e, i, j) }'
+                  class='avatar-uploader'
+                  :show-upload-list='false'
+                  :before-upload='beforeUpload'
                 >
-                  <div v-if="item.url" class="upload-image">
-                    <img :src="item.url" alt="avatar"/>
+                  <div v-if='item.url' class='upload-image'>
+                    <img :src='item.url' alt='avatar' />
                   </div>
-                  <div class="upload-empty" v-else>
-                    <a-icon v-if="!(item.loading && onUpload)" type="upload" style="font-size: 48px"/>
-                    <a-progress v-if="item.loading && onUpload" :percent="progress"/>
-                    <div v-if="!(item.loading && onUpload)" class="ant-upload-text">
+                  <div class='upload-empty' v-else>
+                    <a-icon v-if='!(item.loading && onUpload)' type='upload' style='font-size: 48px' />
+                    <a-progress v-if='item.loading && onUpload' :percent='progress' />
+                    <div v-if='!(item.loading && onUpload)' class='ant-upload-text'>
                       {{ $t('upload_photo') }}
                     </div>
                   </div>
@@ -74,7 +77,7 @@
       <a-button type='primary' @click='saveProduct' :loading='loading'>
         {{ $t('save') }}
       </a-button>
-      <a-button style='margin-left: 10px' @click='$refs.ruleForm.resetFields()' type='primary' ghost>
+      <a-button style='margin-left: 10px' @click='clear' type='primary' ghost>
         {{ $t('clear') }}
       </a-button>
     </a-row>
@@ -84,6 +87,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
+import { findDuplicates } from '@/utils/util'
+
 export default {
   components: {
     draggable
@@ -131,7 +136,35 @@ export default {
     beforeUpload(file) {
       return this.$beforeUpImage(file)
     },
-    addProduct () {
+    removeProduct (i) {
+      this.products.splice(i, 1)
+    },
+    clear () {
+      this.products = [
+        {
+          images: [
+            {
+              loading: false,
+              url: null,
+              image: '',
+              status: true
+            }
+          ],
+          features: this.mainFeatures.map(e => {
+            return {
+              feature: e,
+              feature_id: e.id,
+              values: {
+                id: null,
+                value: null
+              }
+            }
+          }),
+          sku: ''
+        }
+      ]
+    },
+    addProduct() {
       this.products.push({
         images: [
           {
@@ -157,7 +190,14 @@ export default {
     removePhoto(productIndex, i) {
       this.products[productIndex].images.splice(i, 1)
     },
-    saveProduct () {
+    skuValidate () {
+      const _arr = this.products
+      for (let i = 0; i < _arr.length; i++) {
+        if (_arr[i].sku === '') return false
+      }
+      return true
+    },
+    saveProduct() {
       console.log(this.products)
       // eslint-disable-next-line no-unused-vars
       let _products = []
@@ -175,21 +215,44 @@ export default {
           })
         }
       })
+
+      const hasDuplicates = findDuplicates(_products, product => product.features, this.equalsFeatures)
+
+      // if (hasDuplicates) {
+      //   alert('Dub bor')
+      // }
+
       console.log(_products)
-      this.postProduct({
-        id: this.$route.query.productGroupId,
-        data: {
-          products: _products
-        }
-      }).then(res => {
-        this.$message.success('Product create')
-        this.$router.push({
-          name: 'ProductsList'
+      if (this.skuValidate() && !hasDuplicates) {
+        this.postProduct({
+          id: this.$route.query.productGroupId,
+          data: {
+            products: _products
+          }
+        }).then(res => {
+          this.$message.success('Продукт успешно создан')
+          this.$router.push({
+            name: 'ProductsList'
+          })
+        }).finally(() => {
+          this.loading = false
         })
-      }).finally(() => {
-        this.loading = false
-      })
+      } else if (!this.skuValidate()) this.$message.error('Артикуль не был выбран')
+      else if (hasDuplicates) this.$message.error('Некоторые продукты дублированы')
     },
+
+    equalsFeatures(arr1, arr2) {
+      if (arr1 === arr2) return true
+      if (arr1.length !== arr2.length) return false
+      for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i].value_id !== arr2[i].value_id) {
+          console.log('teng emas')
+          return false
+        }
+      }
+      return true;
+
+    }
   },
   computed: {
     ...mapGetters(['mainFeatures', 'onUpload', 'progress']),
@@ -199,7 +262,7 @@ export default {
         group: 'description',
         disabled: false,
         ghostClass: 'ghost'
-      };
+      }
     }
   },
   mounted() {

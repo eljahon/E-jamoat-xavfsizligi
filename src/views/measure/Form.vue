@@ -47,7 +47,8 @@ export default {
       rules: {
         name_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         name_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        symbol: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        symbol_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        symbol_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         status: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
       }
     }

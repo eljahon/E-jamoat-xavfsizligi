@@ -13,6 +13,7 @@
         :data-source="allBrands"
         :loading="loadBrand"
         :rowKey="item => item.id"
+        :pagination='paginationBrand'
         @change="changePagination"
         size="small"
       >

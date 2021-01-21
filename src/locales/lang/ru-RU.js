@@ -122,6 +122,7 @@ const locale = {
     'comment': 'Комментарий',
     'information': 'Информация',
     'value': 'Значение',
+    // 'color': 'Цвет',
 
     // courier
     'couriers': 'Курьеры',

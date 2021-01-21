@@ -103,8 +103,10 @@
                   <a-input v-model="f.value_ru"/>
                 </a-form-model-item>
               </a-col>
-              <a-col v-if="colorable" :span="2" style="padding-left: 10px; margin-top: 46px">
-                <verte picker="square" model="rgb" style="cursor: pointer" v-model="f.color" menuPosition="top"></verte>
+              <a-col v-if="colorable" :span="2" style="padding-left: 10px; margin-top: 2px">
+                <a-form-model-item :label="$t('color')">
+                  <verte picker="square" model="rgb" style="cursor: pointer" v-model="f.color" menuPosition="top"></verte>
+                </a-form-model-item>
               </a-col>
               <a-col :span="2" style="padding-left: 10px">
                 <a-button v-if="form.feature_values.length > 1" @click="removeFeatures(j)" style="margin-top: 43px"
@@ -121,13 +123,18 @@
         </a-col>
         <a-col :span="6" style="padding-left: 5px">
           <a-card :title="$t('categories')">
-            <a-form-model-item label="" prop="categories">
-              <a-tree
+            <a-form-model-item label="" :prop="$route.params.id ? 'category_id' : 'categories'">
+              <a-tree v-if='!$route.params.id'
                 v-model="form.categories"
-                checkable
+                :checkable='true'
                 :check-strictly="true"
                 :tree-data="treeData"
               />
+              <a-radio-group v-else v-model="form.category_id">
+                <a-radio v-for='ct in listCategory' :key='ct.id' :value="ct.id">
+                  {{ ct.name_uz }} {{ ct.name_ru }}
+                </a-radio>
+              </a-radio-group>
             </a-form-model-item>
           </a-card>
         </a-col>
@@ -210,11 +217,12 @@ export default {
         is_variant: [{required: true, message: this.$t('required'), trigger: 'change'}],
         is_required: [{required: true, message: this.$t('required'), trigger: 'change'}],
         categories: [{required: true, message: this.$t('required'), trigger: 'change'}],
+        category_id: [{required: true, message: this.$t('required'), trigger: 'change'}],
       }
     }
   },
   computed: {
-    ...mapGetters(['treeCategory']),
+    ...mapGetters(['treeCategory', 'listCategory']),
     treeData() {
       return treeDataMap(this.treeCategory)
     },
@@ -223,11 +231,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getTreeCategory', 'postFeatures', 'getFeaturesById', 'updateFeatures']),
+    ...mapActions(['getTreeCategory', 'postFeatures', 'getFeaturesById', 'updateFeatures', 'getListCategory']),
     saveData() {
       this.$refs.ruleForm.validate((valid) => {
+        console.log(valid)
         if (valid) {
           let _form = { ...this.form }
+          // debugger
           if (!this.multilanguage) {
             // eslint-disable-next-line camelcase
             let _feature_values = [..._form.feature_values]
@@ -241,7 +251,9 @@ export default {
             _form.feature_values = (this.form.type === 'dropdown' || this.form.type === 'radio' || this.form.type === 'checkbox') ? newList : undefined
           }
           if (this.validateFeatures(_form.feature_values)) {
-            _form.categories = this.form.categories.checked
+            if (!this.$route.params.id) {
+              _form.categories = this.form.categories.checked
+            }
             _form.order = parseInt(this.form.order)
             if (this.$route.params.id) {
               this.updateFeatures({
@@ -271,7 +283,6 @@ export default {
           }
         } else this.loading = true
       })
-      console.log('submit')
     },
     addFeatures() {
       this.form.feature_values.push({
@@ -284,6 +295,7 @@ export default {
       this.form.feature_values.splice(i, 1)
     },
     validateFeatures(array) {
+      // debugger
       if (this.form.type === 'dropdown' || this.form.type === 'radio' || this.form.type === 'checkbox') {
         for (var i = 0; i < array.length; i++) {
           if (array[i].value_ru === '' || array[i].value_uz === '') {
@@ -301,6 +313,8 @@ export default {
   },
   mounted() {
     if (this.$route.params.id) {
+      this.getListCategory()
+      this.multilanguage = true
       this.loadingPage = true
       this.getFeaturesById(this.$route.params.id).then(res => {
         console.log(res)
@@ -313,8 +327,8 @@ export default {
             color: e.color
           }
         })
-        this.form.categories = []
-        this.form.categories.push(_data.category_id)
+        this.form.category_id = _data.category_id
+        // this.form.categories.push(_data.category_id)
       })
       .finally(() => {
         this.loadingPage = false

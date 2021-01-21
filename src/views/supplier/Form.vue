@@ -69,12 +69,12 @@ export default {
         status: 10
       },
       rules: {
-        name: [{ required: true, message: 'Name uz Required', trigger: 'blur' }],
-        address_uz: [{ required: true, message: 'Address uz Required', trigger: 'blur' }],
-        address_ru: [{ required: true, message: 'Address ru Required', trigger: 'blur' }],
-        phone: [{ required: true, message: 'Phone Required', trigger: 'change' }, { validator: validatePhone, trigger: 'change' }],
+        name: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        address_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        address_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        phone: [{ required: true, message: this.$t('requiredField'), trigger: 'change' }, { validator: validatePhone, trigger: 'change' }],
         email: [{ validator: validateEmail, trigger: 'change' }],
-        status: [{ required: true, message: 'Status Required', trigger: 'blur' }]
+        status: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }]
       }
     }
   },

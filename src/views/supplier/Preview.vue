@@ -9,7 +9,7 @@
         <store/>
       </a-tab-pane>
       <a-tab-pane key="3" :tab="$t('supplier_store.product')">
-        Content of Tab Pane 3
+        <store-product/>
       </a-tab-pane>
     </a-tabs>
   </a-card>
@@ -18,9 +18,11 @@
 
 <script>
 import SupplierStore from '@/views/supplierStore/SupplierStoreList'
+import SupplierProduct from '@/views/supplierProduct/SupplierProductList'
 export default {
   components: {
-    'store': SupplierStore
+    'store': SupplierStore,
+    'store-product': SupplierProduct
   },
   data () {
     return {

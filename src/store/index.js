@@ -27,6 +27,7 @@ import notification from '@/store/modules/notification'
 import complaint from '@/store/modules/complaint'
 import searchHistory from '@/store/modules/search_history'
 import roles from '@/store/modules/roles'
+import supplierProduct from '@/store/modules/supplierProduct'
 // default router permission control
 import permission from './modules/permission'
 
@@ -58,6 +59,7 @@ export default new Vuex.Store({
     upload,
     supplier,
     supplierStore,
+    supplierProduct,
     features,
     stuff,
     widget,

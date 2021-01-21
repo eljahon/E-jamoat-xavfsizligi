@@ -2,6 +2,7 @@ import axiosInit from '@/utils/axios_init'
 export default {
   state: {
     supplierStores: [],
+    supplierStoresById: [],
     loadSupplierStore: false,
     pagination: {}
   },
@@ -13,6 +14,9 @@ export default {
   mutations: {
     GET_ALL_SUPPLIER_STORE(state, payload) {
       state.supplierStores = payload
+    },
+    GET_ALL_SUPPLIER_STORE_BY_ID(state, payload) {
+      state.supplierStoresById = payload
     },
     GET_LOAD_SUPPLIER_STORE(state, payload) {
       state.loadSupplierStore = payload
@@ -51,6 +55,20 @@ export default {
       return new Promise((resolve, reject) => {
         axiosInit.put(`/admin/supplier-store/${payload.id}`, payload.data)
           .then(res => {
+            resolve(res)
+            console.log(res)
+          })
+          .catch(error => {
+            reject(error)
+            console.log(error.message)
+          })
+      })
+    },
+    getByIdSupplierStore({ commit }, id) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/supplier-store/${id}`)
+          .then(res => {
+            commit('GET_ALL_SUPPLIER_STORE_BY_ID', res.data)
             resolve(res)
             console.log(res)
           })

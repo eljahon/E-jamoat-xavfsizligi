@@ -29,15 +29,16 @@ export default {
         commit('GET_LOAD_PRODUCT', true)
         // axios
         axiosInit.get('/admin/products', {
-          page: pagination.current
+          page: pagination.current,
+          name: payload.name ? payload.name : undefined
         })
           .then(res => {
-            resolve()
+            resolve(res)
             console.log(res)
             let page = { ...pagination }
             page.total = parseInt(res.count)
             commit('GET_PRODUCT_PAGINATION', page)
-            commit('GET_ALL_PRODUCT', res.products)
+            commit('GET_ALL_PRODUCT', res.data)
           })
           .catch(err => {
             notification.error({

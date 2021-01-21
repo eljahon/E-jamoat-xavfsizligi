@@ -1,13 +1,13 @@
 <template>
-  <a-modal width="700px" centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
+  <a-modal width="700px" :maskClosable='false' centered v-model="visible" @cancel="hide" :title="!editable ? $t('add_form') : $t('update_form')">
     <template slot="footer">
       <a-button key="back" @click="hide">{{ $t('cancel') }}</a-button>
       <a-button html-type="submit" v-if="!editable" type="primary" :loading="loading" @click="saveDate">{{ $t('add') }}</a-button>
       <a-button html-type="submit" v-if="editable" type="primary" :loading="loading" @click="updateData">{{ $t('update') }}</a-button>
     </template>
     <!-- FORM -->
-    <FormModel v-if="!editable" ref="measureCreate"/>
-    <FormModel v-if="editable" ref="measureEdit"/>
+    <FormModel v-if="!editable" ref="supplierCreate"/>
+    <FormModel v-if="editable" ref="supplierEdit"/>
   </a-modal>
 </template>
 <script>
@@ -29,6 +29,12 @@ export default {
       default: () => {
         return {}
       }
+    },
+    slug: {
+      type: String,
+      default: () => {
+        return ''
+      }
     }
   },
   data() {
@@ -38,7 +44,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllMeasures', 'postMeasure', 'updateMeasure']),
+    ...mapActions(['getAllSuppliers', 'postSupplier', 'updateSupplier']),
     hide() {
       this.visible = false
       this.clear()
@@ -46,15 +52,13 @@ export default {
     show(data) {
       if (this.editable) {
         console.log(data)
-        console.log(this.$refs.measureEdit)
         setTimeout(() => {
-          data.status === 10 ? this.$refs.measureEdit.status = true : this.$refs.measureEdit.status = false
-          this.$refs.measureEdit.id = data.id
-          this.$refs.measureEdit.form.name_uz = data.name_uz
-          this.$refs.measureEdit.form.name_ru = data.name_ru
-          this.$refs.measureEdit.form.symbol_ru = data.symbol_ru
-          this.$refs.measureEdit.form.symbol_uz = data.symbol_uz
-          this.$refs.measureEdit.form.status = data.status
+          this.$refs.supplierEdit.id = data.id
+          this.$refs.supplierEdit.form = { ...data }
+          this.$refs.supplierEdit.form.name = data.name_uz
+          this.$refs.supplierEdit.form.phone = data.phone
+          this.$refs.supplierEdit.form.id = undefined
+          this.$refs.supplierEdit.form.slug = undefined
         }, 10)
         this.visible = true
       }
@@ -64,20 +68,26 @@ export default {
     },
     clear() {
       if (this.editable) {
-        this.$refs.measureEdit.resetForm()
+        this.$refs.supplierEdit.resetForm()
       } else {
-        this.$refs.measureCreate.resetForm()
+        this.$refs.supplierCreate.resetForm()
       }
     },
     saveDate() {
-      this.$refs.measureCreate.validateForm().then(res => {
+      this.$refs.supplierCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postMeasure(res.data).then(res => {
-          this.getAllMeasures(this.params)
+        this.postSupplier(res.data).then(res => {
+          this.getAllSuppliers(this.params)
           console.log(res)
           this.hide()
         })
+          .catch(error => {
+            this.$notification.error({
+              message: 'Error Request or Response',
+              description: error.message,
+            })
+          })
           .finally(() => {
             this.loading = false
           })
@@ -86,16 +96,21 @@ export default {
       })
     },
     updateData() {
-      this.$refs.measureEdit.validateForm().then(res => {
+      this.$refs.supplierEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateMeasure({
+        this.updateSupplier({
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllMeasures(this.params)
-          this.hide()
+          this.getAllSuppliers(this.params)
           console.log(res)
+          this.hide()
+        }).catch(error => {
+          this.$notification.error({
+            message: 'Error Request or Response',
+            description: error.message,
+          })
         })
           .finally(() => {
             this.loading = false
@@ -106,4 +121,13 @@ export default {
 }
 </script>
 <style>
+
+.flag-icon {
+  min-width: 26px;
+  min-height: 26px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 4px black;
+  margin-right: 2px;
+  transform: translateY(-5px);
+}
 </style>
