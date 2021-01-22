@@ -53,6 +53,7 @@
 import supplierStoreCreate from './SupplierStoreCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
+  props: ['supplier'],
   components: {
     'supplier-store-create': supplierStoreCreate,
   },
@@ -90,6 +91,7 @@ export default {
           pageSize: 15,
           total: null,
         },
+        id: this.supplier,
         search: '',
       },
     }
@@ -122,6 +124,13 @@ export default {
     ...mapGetters(['allSupplierStores', 'loadSupplierStore', 'paginationSupplierStore']),
   },
   mounted() {
+    // this.$router.push({
+    //   name: 'supplierPreview',
+    //   params: {
+    //     id: this.supplier
+    //   },
+    //   query
+    // })
     this.getAllSupplierStores(this.params)
     this.getAllTreeLocationsList()
   },

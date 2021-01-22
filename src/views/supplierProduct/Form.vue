@@ -12,11 +12,25 @@
           />
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="1">
+      <a-col :span="11" :offset='1'>
+        <a-form-model-item :label="$t('supplier_store')" prop="supplier_store_id">
+          <a-select style="width: 100%" v-model='form.supplier_store_id'>
+            <a-select-option v-for='sup in allSupplierStores' :key='sup.id' :value="sup.id">
+              {{ sup.location }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="11">
         <a-form-model-item :label="$t('price')" prop="price">
           <a-input type='number' v-model="form.price" />
         </a-form-model-item>
       </a-col >
+      <a-col :span="11" :offset="1">
+        <a-form-model-item :label="$t('stock')" prop="stock">
+          <a-input type='number' v-model="form.stock" />
+        </a-form-model-item>
+      </a-col>
       <a-col :span="11">
         <a-form-model-item :label="$t('discount')" prop="discount">
           <a-input type='number' v-model="form.discount" />
@@ -32,16 +46,11 @@
           <a-input type='number' v-model="form.ball" />
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="1">
-        <a-form-model-item :label="$t('stock')" prop="stock">
-          <a-input type='number' v-model="form.stock" />
-        </a-form-model-item>
-      </a-col>
     </a-row>
   </a-form-model>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { AutoComplete } from 'ant-design-vue'
 import debounce from 'lodash/debounce'
 export default {
@@ -54,14 +63,15 @@ export default {
       id: null,
       status: true,
       products: [],
-      form: {
+        form: {
         product_id: '',
         price: null,
         discount: null,
         old_price: null,
         ball: null,
         stock: null,
-        supplier_store_id: null
+        supplier_store_id: null,
+        supplier_id: this.$route.params.id
       },
       rules: {
         product_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
@@ -79,6 +89,9 @@ export default {
     'form.phone': function (val) {
       console.log(val)
     }
+  },
+  computed: {
+    ...mapGetters(['allSupplierStores'])
   },
   methods: {
     ...mapActions(['getAllProduct']),
@@ -103,7 +116,11 @@ export default {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const _form = { ...this.form }
-            _form.phone = this.form.phone.replaceAll(' ', '')
+            // _form.phone = this.form.phone.replaceAll(' ', '')
+            _form.stock = parseInt(this.form.stock)
+            _form.product_id = parseInt(this.form.product_id)
+            _form.price = parseInt(this.form.price)
+            _form.supplier_id = parseInt(this.form.supplier_id)
             resolve({
               id: this.id ? this.id : undefined,
               data: _form

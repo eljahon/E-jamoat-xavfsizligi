@@ -6,10 +6,10 @@
         Content of Tab Pane 1
       </a-tab-pane>
       <a-tab-pane key="2" :tab="$t('supplier_store')">
-        <store/>
+        <store :supplier='$route.params.id'/>
       </a-tab-pane>
       <a-tab-pane key="3" :tab="$t('supplier_store.product')">
-        <store-product/>
+        <store-product :supplier='$route.params.id'/>
       </a-tab-pane>
     </a-tabs>
   </a-card>

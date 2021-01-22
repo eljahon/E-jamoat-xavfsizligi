@@ -17,9 +17,9 @@
         :pagination="paginationSupplierProduct"
         @change="changePagination"
       >
-        <template slot="phone" slot-scope="phone">
-          +998{{ phone }}
-        </template>
+<!--        <template slot="phone" slot-scope="phone">-->
+<!--          +998{{ phone }}-->
+<!--        </template>-->
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -59,6 +59,7 @@ import supplierCreate from './SupplierProductCreateWithUpdate'
 // import Preview from '@/views/supplier/Preview'
 import { mapActions, mapGetters } from 'vuex'
 export default {
+  props: ['supplier'],
   components: {
     'supplier-create': supplierCreate,
     // 'preview': Preview
@@ -70,13 +71,12 @@ export default {
       slug: null,
       columns: [
         {
-          title: this.$t('name'),
-          dataIndex: 'name',
+          title: this.$t('name_ru'),
+          dataIndex: 'name_ru',
         },
         {
-          title: this.$t('phone'),
-          dataIndex: 'phone',
-          scopedSlots: { customRender: 'phone' },
+          title: this.$t('name_uz'),
+          dataIndex: 'name_uz',
         },
         {
           title: this.$t('email'),
@@ -96,12 +96,13 @@ export default {
           pageSize: 15,
           total: null,
         },
+        id: this.supplier,
         search: '',
       },
     }
   },
   methods: {
-    ...mapActions(['getByIdSupplierStore', 'getAllSupplierProduct', 'deleteSupplierProduct']),
+    ...mapActions(['getAllSupplierProduct', 'deleteSupplierProduct', 'getAllSupplierStores']),
     editItem(item) {
       this.$refs.editSupplier.show(item)
     },
@@ -138,7 +139,8 @@ export default {
   },
   mounted() {
     this.getAllSupplierProduct(this.params)
-    this.getByIdSupplierStore(this.$route.params.id)
+    this.getAllSupplierStores(this.params)
+    // this.getByIdSupplierStore(this.$route.params.id)
   },
 }
 </script>

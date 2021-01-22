@@ -13,6 +13,7 @@
 <script>
 import FormModel from './Form'
 import { mapActions } from 'vuex'
+import errorMessage from '@/utils/errorMessage'
 export default {
   components: {
     FormModel
@@ -29,12 +30,6 @@ export default {
       default: () => {
         return {}
       }
-    },
-    slug: {
-      type: String,
-      default: () => {
-        return ''
-      }
     }
   },
   data() {
@@ -44,7 +39,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllSuppliers', 'postSupplier', 'updateSupplier']),
+    ...mapActions(['getAllSupplierProduct', 'postSupplierProduct', 'updateSupplierProduct']),
     hide() {
       this.visible = false
       this.clear()
@@ -77,16 +72,13 @@ export default {
       this.$refs.supplierCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postSupplier(res.data).then(res => {
-          this.getAllSuppliers(this.params)
+        this.postSupplierProduct(res.data).then(res => {
+          this.getAllSupplierProduct(this.params)
           console.log(res)
           this.hide()
         })
           .catch(error => {
-            this.$notification.error({
-              message: 'Error Request or Response',
-              description: error.message,
-            })
+            errorMessage(error)
           })
           .finally(() => {
             this.loading = false
@@ -103,14 +95,11 @@ export default {
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllSuppliers(this.params)
+          this.getAllSupplierProduct(this.params)
           console.log(res)
           this.hide()
         }).catch(error => {
-          this.$notification.error({
-            message: 'Error Request or Response',
-            description: error.message,
-          })
+          errorMessage(error)
         })
           .finally(() => {
             this.loading = false

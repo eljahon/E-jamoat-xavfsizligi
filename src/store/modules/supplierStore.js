@@ -1,8 +1,9 @@
 import axiosInit from '@/utils/axios_init'
+import errorMessage from '@/utils/errorMessage'
 export default {
   state: {
     supplierStores: [],
-    supplierStoresById: [],
+    // supplierStoresById: [],
     loadSupplierStore: false,
     pagination: {}
   },
@@ -15,9 +16,9 @@ export default {
     GET_ALL_SUPPLIER_STORE(state, payload) {
       state.supplierStores = payload
     },
-    GET_ALL_SUPPLIER_STORE_BY_ID(state, payload) {
-      state.supplierStoresById = payload
-    },
+    // GET_ALL_SUPPLIER_STORE_BY_ID(state, payload) {
+    //   state.supplierStoresById = payload
+    // },
     GET_LOAD_SUPPLIER_STORE(state, payload) {
       state.loadSupplierStore = payload
     },
@@ -31,20 +32,20 @@ export default {
         let { pagination } = payload
         commit('GET_LOAD_SUPPLIER_STORE', true)
         // axios
-        axiosInit.get('/admin/supplier-store',
+        axiosInit.get(`/admin/supplier-store${ payload.id ? '/list/' + payload.id : '' }`,
           {
-            page: pagination.current
+            page: !payload.id ? pagination.current : undefined
           }
         )
           .then(res => {
             resolve()
-            pagination.total = parseInt(res.links.total)
+            pagination.total = payload.id ? res.data.length : parseInt(res.links.total)
             commit('GET_SUPPLIER_STORE_PAGINATION', pagination)
             commit('GET_ALL_SUPPLIER_STORE', res.data)
           })
           .catch(error => {
             reject(error)
-            this.$message.error(error.message)
+            errorMessage(error)
           })
           .finally(() => {
             commit('GET_LOAD_SUPPLIER_STORE', false)
@@ -60,21 +61,7 @@ export default {
           })
           .catch(error => {
             reject(error)
-            console.log(error.message)
-          })
-      })
-    },
-    getByIdSupplierStore({ commit }, id) {
-      return new Promise((resolve, reject) => {
-        axiosInit.get(`/admin/supplier-store/${id}`)
-          .then(res => {
-            commit('GET_ALL_SUPPLIER_STORE_BY_ID', res.data)
-            resolve(res)
-            console.log(res)
-          })
-          .catch(error => {
-            reject(error)
-            console.log(error.message)
+            errorMessage(error)
           })
       })
     },
@@ -87,7 +74,7 @@ export default {
           })
           .catch(error => {
             reject(error)
-            console.log(error.message)
+            errorMessage(error)
           })
       })
     },
@@ -98,7 +85,7 @@ export default {
           console.log(res)
         })
           .catch(error => {
-            reject(error)
+            errorMessage(error)
           })
       })
     }

@@ -1,4 +1,5 @@
 import axiosInit from '@/utils/axios_init'
+import errorMessage from '@/utils/errorMessage'
 export default {
   state: {
     data: [],
@@ -27,20 +28,20 @@ export default {
         let { pagination } = payload
         commit('GET_LOAD_SUPPLIER_PRODUCT', true)
         // axios
-        axiosInit.get('/admin/supplier-product',
+        axiosInit.get(`/admin/supplier-product${ payload.id ? '/products/' + payload.id : '' }`,
           {
-            page: pagination.current
+            page: !payload.id ? pagination.current : undefined
           }
         )
           .then(res => {
-            resolve()
-            pagination.total = parseInt(res.links.total)
+            resolve(res)
+            pagination.total = payload.id ? res.data.length : parseInt(res.links.total)
             commit('GET_SUPPLIER_PRODUCT_PAGINATION', pagination)
             commit('GET_ALL_SUPPLIER_PRODUCT', res.data)
           })
           .catch(error => {
             reject(error)
-            this.$message.error(error.message)
+            errorMessage(error)
           })
           .finally(() => {
             commit('GET_LOAD_SUPPLIER_PRODUCT', false)
