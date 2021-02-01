@@ -72,7 +72,7 @@ export default {
     },
     deleteProduct({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/admin/products/${payload}`)
+        axiosInit.delete(`/admin/product-groups/${payload}`)
           .then(res => {
             resolve()
             console.log(res)

@@ -15,7 +15,6 @@
         :rowKey="item => item.id"
         :pagination='paginationBrand'
         @change="changePagination"
-        size="small"
       >
         <template slot="popular" slot-scope="is_popular">
           <a-tag v-if="is_popular" color="green">{{ $t('popular') }}</a-tag>
@@ -33,7 +32,7 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button size="small" style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editBrand(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editBrand(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -46,7 +45,6 @@
             <a-tooltip>
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
-                size="small"
                 style="margin: 0 2px"
                 type="danger"
                 icon="delete"
@@ -77,6 +75,11 @@ export default {
       slug: null,
       columns: [
         {
+          title: this.$t('image'),
+          align: 'center',
+          scopedSlots: { customRender: 'image' },
+        },
+        {
           title: this.$t('name'),
           dataIndex: 'name',
         },
@@ -93,11 +96,6 @@ export default {
           title: this.$t('status'),
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
-        },
-        {
-          title: this.$t('image'),
-          align: 'center',
-          scopedSlots: { customRender: 'image' },
         },
         {
           title: this.$t('action'),

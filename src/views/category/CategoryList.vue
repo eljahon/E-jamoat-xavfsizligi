@@ -34,7 +34,7 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button size="small" style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editCategory(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editCategory(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -48,7 +48,6 @@
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
                 style="margin: 0 2px"
-                size="small"
                 type="danger"
                 icon="delete"
               ></a-button>

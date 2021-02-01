@@ -15,21 +15,26 @@
         :rowKey="item => item.id"
         :pagination="paginationProduct"
         @change="changePagination"
-        bordered
       >
         <template slot="popular" slot-scope="is_popular">
           <a-tag v-if="is_popular" color="green">{{ $t('popular') }}</a-tag>
           <a-tag v-else color="red">{{ $t('popular.no') }}</a-tag>
         </template>
+        <template slot="image" slot-scope="image">
+          <div class="imagePreview">
+            <img v-if="image" :src="image" :alt="image">
+            <img v-else src="../../assets/upload.jpg" :alt="image">
+          </div>
+        </template>
         <template slot="status" slot-scope="status">
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
           <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
         </template>
-        <template slot="image" slot-scope="item">
-          <div class="imagePreview">
-            <img :src="item.logo_url">
-          </div>
-        </template>
+<!--        <template slot="image" slot-scope="item">-->
+<!--          <div class="imagePreview">-->
+<!--            <img :src="item.logo_url">-->
+<!--          </div>-->
+<!--        </template>-->
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -74,6 +79,12 @@ export default {
       loading: false,
       columns: [
         {
+          title: 'Image',
+          dataIndex: 'avatar',
+          align: 'center',
+          scopedSlots: { customRender: 'image' },
+        },
+        {
           title: this.$t('name_ru'),
           dataIndex: 'name_ru',
         },
@@ -82,11 +93,19 @@ export default {
           dataIndex: 'name_uz',
         },
         {
-          title: this.$t('status'),
-          dataIndex: 'status',
-          align: 'center',
-          scopedSlots: { customRender: 'status' },
+          title: this.$t('category'),
+          dataIndex: 'category_name',
         },
+        {
+          title: this.$t('measures'),
+          dataIndex: 'measure_name',
+        },
+        // {
+        //   title: this.$t('status'),
+        //   dataIndex: 'status',
+        //   align: 'center',
+        //   scopedSlots: { customRender: 'status' },
+        // },
         {
           title: this.$t('action'),
           key: 'action',
