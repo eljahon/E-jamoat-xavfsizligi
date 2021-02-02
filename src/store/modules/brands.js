@@ -32,6 +32,7 @@ export default {
           }
         )
           .then(res => {
+            console.log(res)
             resolve()
             if (payload) {
               let { pagination } = payload

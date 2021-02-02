@@ -15,15 +15,18 @@
         :loading="loadSupplierProduct"
         :rowKey="item => item.id"
         :pagination="paginationSupplierProduct"
+        :scroll="{ x: 1500 }"
         @change="changePagination"
       >
-<!--        <template slot="phone" slot-scope="phone">-->
-<!--          +998{{ phone }}-->
-<!--        </template>-->
+        <template slot="avatar" slot-scope="avatar">
+          <div class="imagePreview">
+            <img :src="avatar">
+          </div>
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button size="small" style="margin: 0 2px" type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" type="primary" @click="editItem(item)" icon="edit"></a-button>
 <!--            <a-button size="small" style="margin: 0 2px" type="default" @click="preview(item)" icon="eye"></a-button>-->
           </a-tooltip>
           <a-popconfirm
@@ -37,7 +40,6 @@
             <a-tooltip>
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
-                size="small"
                 style="margin: 0 2px"
                 type="danger"
                 icon="delete"
@@ -71,22 +73,56 @@ export default {
       slug: null,
       columns: [
         {
-          title: this.$t('name_ru'),
-          dataIndex: 'name_ru',
+          title: this.$t('image'),
+          dataIndex: 'avatar',
+          align: 'center',
+          scopedSlots: { customRender: 'avatar' }
         },
         {
-          title: this.$t('name_uz'),
-          dataIndex: 'name_uz',
+          title: this.$t('brands'),
+          dataIndex: 'brand_name',
         },
         {
-          title: this.$t('email'),
-          dataIndex: 'email',
+          title: this.$t('category'),
+          dataIndex: 'category_name',
+        },
+        {
+          title: this.$t('product'),
+          dataIndex: 'name',
+        },
+        {
+          title: this.$t('measures'),
+          dataIndex: 'measure_name',
+        },
+        {
+          title: this.$t('stock'),
+          dataIndex: 'stock',
+        },
+        {
+          title: this.$t('price'),
+          dataIndex: 'price',
+        },
+        {
+          title: this.$t('discount'),
+          dataIndex: 'discount',
+        },
+        {
+          title: this.$t('old_price'),
+          dataIndex: 'old_price',
+        },
+        {
+          title: this.$t('ball'),
+          dataIndex: 'ball',
+        },
+        {
+          title: this.$t('unicode'),
+          dataIndex: 'unicode',
         },
         {
           title: this.$t('action'),
           key: 'action',
           align: 'center',
-          width: '20%',
+          width: '10%',
           scopedSlots: { customRender: 'action' },
         },
       ],
@@ -147,5 +183,11 @@ export default {
 <style>
 .ant-table-row:hover {
   cursor: pointer;
+}
+.imagePreview img {
+  width: 80px;
+  height: 80px;
+  box-sizing: border-box;
+  object-fit: cover;
 }
 </style>

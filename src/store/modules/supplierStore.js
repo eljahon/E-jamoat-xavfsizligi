@@ -38,6 +38,7 @@ export default {
           }
         )
           .then(res => {
+            console.log(res)
             resolve()
             pagination.total = payload.id ? res.data.length : parseInt(res.links.total)
             commit('GET_SUPPLIER_STORE_PAGINATION', pagination)

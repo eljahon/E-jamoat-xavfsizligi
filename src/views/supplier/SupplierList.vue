@@ -20,6 +20,16 @@
         <template slot="phone" slot-scope="phone">
           +998{{ phone }}
         </template>
+        <template slot="store_count" slot-scope="store_count">
+          <a-button type='default' size='small'>{{ store_count }}</a-button>
+        </template>
+        <template slot="product_count" slot-scope="product_count">
+          <a-button type='default' size='small'>{{ product_count }}</a-button>
+        </template>
+        <template slot="status" slot-scope="status">
+          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -81,6 +91,27 @@ export default {
         {
           title: this.$t('email'),
           dataIndex: 'email',
+        },
+        {
+          title: this.$t('address'),
+          dataIndex: 'address_uz',
+        },
+        {
+          title: this.$t('store_count'),
+          dataIndex: 'store_count',
+          align: 'center',
+          scopedSlots: { customRender: 'store_count' }
+        },
+        {
+          title: this.$t('product_count'),
+          dataIndex: 'product_count',
+          align: 'center',
+          scopedSlots: { customRender: 'product_count' }
+        },
+        {
+          title: this.$t('status'),
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' },
         },
         {
           title: this.$t('action'),

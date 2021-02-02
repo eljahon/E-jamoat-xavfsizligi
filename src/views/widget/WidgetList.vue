@@ -142,7 +142,7 @@ export default {
     },
     getBrand(id) {
       for (var i = 0; i < this.allBrands.length; i++) {
-        if (id === this.allBrands[i].brand_id) return this.allBrands[i].name_ru
+        if (id === this.allBrands[i].brand_id) return this.allBrands[i].name
       }
     }
   },

@@ -38,6 +38,7 @@ export default {
           }
         )
           .then(res => {
+            console.log(res)
             resolve()
             pagination.total = parseInt(res.links.total)
             commit('GET_SUPPLIER_PAGINATION', pagination)

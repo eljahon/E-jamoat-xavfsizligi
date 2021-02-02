@@ -14,6 +14,9 @@
         <template slot="phone" slot-scope="phone">
           +{{ phone }}
         </template>
+        <template slot="product_count" slot-scope="product_count">
+          <a-button type='default' size='small'>{{ product_count }}</a-button>
+        </template>
         <template slot="second_phone" slot-scope="second_phone">
           +{{ second_phone }}
         </template>
@@ -76,6 +79,12 @@ export default {
         {
           title: this.$t('location'),
           dataIndex: 'location'
+        },
+        {
+          title: this.$t('product_count'),
+          dataIndex: 'product_count',
+          align: 'center',
+          scopedSlots: { customRender: 'product_count' },
         },
         {
           title: this.$t('action'),

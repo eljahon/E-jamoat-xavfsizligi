@@ -77,6 +77,11 @@ export default {
       loading: false,
       columns: [
         {
+          title: this.$t('image'),
+          align: 'center',
+          scopedSlots: { customRender: 'image' },
+        },
+        {
           title: this.$t('name_uz'),
           dataIndex: 'name_uz',
         },
@@ -97,11 +102,6 @@ export default {
           title: this.$t('status'),
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
-        },
-        {
-          title: this.$t('image'),
-          align: 'center',
-          scopedSlots: { customRender: 'image' },
         },
         {
           title: this.$t('action'),

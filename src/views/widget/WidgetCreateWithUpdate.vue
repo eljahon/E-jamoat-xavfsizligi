@@ -15,7 +15,7 @@
           <a-form-model-item :label="$t('brands')" prop="brand_id">
             <a-select style="width: 100%" v-model="form.brand_id">
               <a-select-option v-for="brand in allBrands" :key="brand.id" :value="brand.id">
-                {{ brand.name_uz }}
+                {{ brand.name }}
               </a-select-option>
             </a-select>
           </a-form-model-item>

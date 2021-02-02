@@ -26,7 +26,7 @@
         </template>
         <template slot="image" slot-scope="item">
           <div class="imagePreview">
-            <img :src="item.logo_url">
+            <img :src="item.logo">
           </div>
         </template>
         <template slot="action" slot-scope="item">
