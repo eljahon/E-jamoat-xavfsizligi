@@ -54,6 +54,27 @@ export default {
           })
       })
     },
+    getOrderById({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        commit('GET_LOAD_ORDER', true)
+        // axios
+        axiosInit.get(`/admin/orders/${payload}`)
+          .then(res => {
+            resolve(res.data)
+            // console.log(res)
+            // pagination.total = parseInt(res.count)
+            // commit('GET_ORDER_PAGINATION', pagination)
+            // commit('GET_ALL_ORDER', res.orders)
+          })
+          .catch(error => {
+            reject(error)
+            this.$message.error(error.message)
+          })
+          .finally(() => {
+            commit('GET_LOAD_ORDER', false)
+          })
+      })
+    },
     getAllStatus ({ commit }) {
       return new Promise((resolve, reject) => {
         axiosInit.get('/order-statuses')

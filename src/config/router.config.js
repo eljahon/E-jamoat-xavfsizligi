@@ -60,23 +60,18 @@ export const asyncRouterMap = [
             path: '/orders/orders_in_delivery',
             name: 'OrdersInDelivery',
             hideChildrenInMenu: true,
-            component: () => import('@/views/TestRouter'),
+            component: () => import('@/views/orders_delivered/OrderDeliveredList'),
             // redirect: '/main/features/list',
             meta: { title: 'orders_in_delivery', keepAlive: true, permission: [ 'form' ] },
-            children: [
-              // {
-              //   path: '/main/features/list',
-              //   name: 'FeaturesList',
-              //   component: () => import('@/views/features/FeaturesList'),
-              //   meta: { title: 'features.list', keepAlive: true, permission: [ 'form' ] }
-              // },
-              // {
-              //   path: '/main/features/create',
-              //   name: 'FeaturesCreate',
-              //   component: () => import('@/views/features/FeaturesCreateWithUpdate'),
-              //   meta: { title: 'features.create', keepAlive: true, permission: [ 'form' ] }
-              // }
-            ]
+            children: []
+          },
+          {
+            path: '/orders/orders_in_delivery/view/:id',
+            name: 'OrdersInDeliveryView',
+            hidden: true,
+            component: () => import('@/views/orders_delivered/View'),
+            meta: { title: 'orders_in_view', keepAlive: true, permission: [ 'form' ] },
+            children: []
           },
         ]
       },
