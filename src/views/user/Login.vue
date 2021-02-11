@@ -164,14 +164,9 @@ export default {
 
 <style lang="less" scoped>
 .user-layout-login {
+
   label {
     font-size: 14px;
-  }
-
-  .getCaptcha {
-    display: block;
-    width: 100%;
-    height: 40px;
   }
 
   .forge-password {
@@ -179,10 +174,9 @@ export default {
   }
 
   button.login-button {
-    padding: 0 15px;
+    padding: 0 20px;
     font-size: 16px;
-    height: 40px;
-    width: 100%;
+    //height: 40px;
   }
 
   .user-login-other {
