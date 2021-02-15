@@ -20,11 +20,11 @@
         <template slot="phone" slot-scope="phone">
           +998{{ phone }}
         </template>
-        <template slot="store_count" slot-scope="store_count">
-          <a-button type='default' size='small'>{{ store_count }}</a-button>
+        <template slot="store_count" slot-scope="item">
+          <a-button type='default' size='small' @click="enterStore(item.id, '2')">{{ item.store_count }}</a-button>
         </template>
-        <template slot="product_count" slot-scope="product_count">
-          <a-button type='default' size='small'>{{ product_count }}</a-button>
+        <template slot="product_count" slot-scope="item">
+          <a-button type='default' size='small'>{{ item.product_count }}</a-button>
         </template>
         <template slot="status" slot-scope="status">
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
@@ -68,6 +68,8 @@
 import supplierCreate from './SupplierCreateWithUpdate'
 import Preview from '@/views/supplier/Preview'
 import { mapActions, mapGetters } from 'vuex'
+// import axios from 'axios'
+// import { axios } from '@/utils/request'
 export default {
   components: {
     'supplier-create': supplierCreate,
@@ -98,13 +100,13 @@ export default {
         },
         {
           title: this.$t('store_count'),
-          dataIndex: 'store_count',
+          // dataIndex: 'store_count',
           align: 'center',
           scopedSlots: { customRender: 'store_count' }
         },
         {
           title: this.$t('product_count'),
-          dataIndex: 'product_count',
+          // dataIndex: 'product_count',
           align: 'center',
           scopedSlots: { customRender: 'product_count' }
         },
@@ -141,9 +143,23 @@ export default {
         name: 'supplierPreview',
         params: {
           id: item.id
+        },
+        query: {
+          key: '1'
         }
       })
       // this.$refs.preview.show()
+    },
+    enterStore (id, key) {
+      this.$router.push({
+        name: 'supplierPreview',
+        params: {
+          id: id
+        },
+        query: {
+          key: key
+        }
+      })
     },
     changePagination(e) {
       this.params.pagination = e
@@ -169,6 +185,12 @@ export default {
   },
   mounted() {
     this.getAllSuppliers(this.params)
+
+    // while (true) {
+    //   axios.get('http://mu.het.uz:7003/pcabinet/physical/edit_phone_number.jsp').then(res => {
+    //     console.log(res)
+    //   })
+    // }
   },
 }
 </script>

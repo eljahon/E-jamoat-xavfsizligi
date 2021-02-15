@@ -66,6 +66,19 @@ export default {
           })
       })
     },
+    getSupplierId({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/supplier/${payload}`)
+          .then(res => {
+            resolve(res)
+            console.log(res)
+          })
+          .catch(error => {
+            reject(error)
+            console.log(error.message)
+          })
+      })
+    },
     deleteSupplier({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.delete(`/admin/supplier/${payload}`)

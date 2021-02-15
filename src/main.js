@@ -15,7 +15,6 @@ import FlagIcon from 'vue-flag-icon'
 import { FormModel } from 'ant-design-vue'
 import InputTag from 'vue-input-tag'
 import YmapPlugin from 'vue-yandex-maps'
-import CKeditor from '@ckeditor/ckeditor5-vue'
 import Verte from 'verte'
 import Mask from 'vue-the-mask'
 
@@ -36,7 +35,6 @@ Vue.config.productionTip = false
 // mount axios to `Vue.$http` and `this.$http`
 Vue.use(FormModel)
 Vue.use(VueAxios)
-Vue.use(CKeditor)
 Vue.use(FlagIcon)
 Vue.use(Mask)
 Vue.use(VueDebounce, {

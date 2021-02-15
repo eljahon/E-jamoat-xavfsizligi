@@ -28,13 +28,59 @@
       <a-row>
         <a-col :span="24">
           <a-form-model-item :label="$t('content_uz')" prop="content_uz">
+            <editor
+              ref="uz"
+              v-model="form.content_uz"
+              api-key="43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf"
+              :init="{
+             height: 500,
+             menubar: 'insert',
+             selector: 'textarea',
+             a11y_advanced_options: true,
+             image_title: true,
+             automatic_uploads: true,
+             images_upload_handler: this.uploader,
+             plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste imagetools wordcount'
+             ],
+             toolbar:
+               'undo redo | formatselect | bold italic backcolor | \
+               alignleft aligncenter alignright alignjustify | image media | \
+               bullist numlist outdent indent | removeformat | help',
+          }"
+            />
             <!--          <a-input v-model="form.content_uz" />-->
-            <ckeditor :config="editorConfig" :editor="editor" v-model="form.content_uz" ></ckeditor>
+<!--            <ckeditor :config="editorConfig" :editor="editor" v-model="form.content_uz" ></ckeditor>-->
           </a-form-model-item>
         </a-col>
         <a-col :span="24">
           <a-form-model-item :label="$t('content_ru')" prop="content_ru">
-            <ckeditor :editor="editor" v-model="form.content_ru" ></ckeditor>
+            <editor
+              ref="uz"
+              v-model="form.content_ru"
+              api-key="43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf"
+              :init="{
+             height: 500,
+             menubar: 'insert',
+             selector: 'textarea',
+             a11y_advanced_options: true,
+             image_title: true,
+             automatic_uploads: true,
+             images_upload_handler: this.uploader,
+             plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste imagetools wordcount'
+             ],
+             toolbar:
+               'undo redo | formatselect | bold italic backcolor | \
+               alignleft aligncenter alignright alignjustify | image media | \
+               bullist numlist outdent indent | removeformat | help',
+          }"
+            />
+<!--            <ckeditor :editor="editor" v-model="form.content_ru" ></ckeditor>-->
           </a-form-model-item>
         </a-col>
       </a-row>
@@ -80,10 +126,10 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import uploadAdapter from '@/utils/ckUploadAdapter'
-// import Image from '@ckeditor/ckeditor5-image/src/image'
-// import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
+import Editor from '@tinymce/tinymce-vue'
+import storage from 'store'
+
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -92,16 +138,14 @@ function getBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
+
 export default {
+  components: {
+    'editor': Editor
+  },
   data() {
     return {
       loading: false,
-      ckEditor: null,
-      editor: ClassicEditor,
-      editorConfig: {
-        extraPlugins: [this.uploader],
-        language: 'ru'
-      },
       form: {
         title_uz: '',
         title_ru: '',
@@ -137,6 +181,52 @@ export default {
     hide() {
       this.visible = false
       this.clear()
+    },
+    uploader: function (blobInfo, success, failure, progress) {
+      let xhr, formData
+
+      xhr = new XMLHttpRequest()
+      xhr.withCredentials = false
+      xhr.open('POST', `${process.env.VUE_APP_API_BASE_URL}/admin/category/upload`)
+
+      xhr.upload.onprogress = function (e) {
+        progress((e.loaded / e.total) * 100)
+      }
+
+      xhr.onload = function () {
+        var json
+
+        if (xhr.status === 403) {
+          failure('HTTP Error: ' + xhr.status, { remove: true })
+          return
+        }
+
+        if (xhr.status < 200 || xhr.status >= 300) {
+          failure('HTTP Error: ' + xhr.status)
+          return
+        }
+
+        json = JSON.parse(xhr.responseText)
+        console.log('json', json)
+        console.log('xhr.responseText', xhr.responseText)
+
+        if (!json || typeof json.data.path !== 'string') {
+          failure('Invalid JSON: ' + xhr.responseText)
+          return undefined
+        }
+        success(json.data.full_url)
+      }
+
+      xhr.onerror = function () {
+        failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status)
+      }
+
+      formData = new FormData()
+      formData.append('image', blobInfo.blob(), blobInfo.filename())
+
+      console.log('formData', formData)
+      xhr.setRequestHeader('Authorization', storage.get(ACCESS_TOKEN))
+      xhr.send(formData)
     },
     show(data) {
       if (this.editable) {
@@ -192,12 +282,6 @@ export default {
             this.loading = false
           })
       })
-    },
-    uploader (editor) {
-      editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-        // eslint-disable-next-line
-        return new uploadAdapter(loader)
-      }
     },
     handleCancel() {
       this.previewVisible = false

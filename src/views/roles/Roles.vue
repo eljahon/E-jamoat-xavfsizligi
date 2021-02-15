@@ -1,10 +1,11 @@
 <template>
-  <a-card title='Role Create'>
-    <a-button slot='extra' type='primary'>{{ $t('save') }}</a-button>
+  <a-card :title="$route.params.id ? 'Role Update' : 'Role Create'">
+    <a-button v-if="!$route.params.id" slot='extra' type='primary' :loading='loading' @click='save'>{{ $t('save') }}</a-button>
+    <a-button v-else slot='extra' type='primary' :loading='loading' @click='update'>{{ $t('update') }}</a-button>
       <a-form-model-item style='margin: 0 12px' label='Role name'>
-        <a-input style='width: 100%;'></a-input>
+        <a-input style='width: 100%;' v-model='name'></a-input>
       </a-form-model-item>
-    <a-checkbox-group style='margin-top: 30px' @change='onChange'>
+    <a-checkbox-group style='margin-top: 30px' v-model='permissions'>
       <div style='display: flex; flex-wrap: wrap; flex: 1'>
         <a-card v-for='(per, i) in allPermissions' :key='per.name + i' :title='per.name'
                 style='width: 270px; margin: 10px 12px'
@@ -24,10 +25,57 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  data () {
+    return {
+      name: '',
+      permissions: [],
+      loading: false
+    }
+  },
   methods: {
-    ...mapActions(['getAllPermissions']),
-    onChange(checkedValues) {
-      console.log('checked = ', checkedValues)
+    ...mapActions(['getAllPermissions', 'saveRole', 'getRoleById', 'updateRole']),
+    // onChange(checkedValues) {
+    //   console.log('checked = ', checkedValues)
+    //   this.permissions = checkedValues
+    // },
+    save () {
+      this.loading = true
+      if (this.name && this.permissions.length > 1) {
+        this.saveRole({
+          name: this.name,
+          permissions: this.permissions
+        }).then(res => {
+          this.loading = false
+          this.$message.success('Created')
+        })
+        .catch(err => {
+          this.loading = false
+        })
+      } else {
+        this.loading = false
+        this.$message.error('Some fields not selected')
+      }
+    },
+    update () {
+      this.loading = true
+      if (this.name && this.permissions.length > 1) {
+        this.updateRole({
+          id: this.$route.params.id,
+          data: {
+            name: this.name,
+            permissions: this.permissions
+          }
+        }).then(res => {
+          this.loading = false
+          this.$message.success('Updated')
+        })
+        .catch(err => {
+          this.loading = false
+        })
+      } else {
+        this.loading = false
+        this.$message.error('Some fields not selected')
+      }
     },
     style(index) {
       if (index % 4 === 0) return 'margin-right: 10px; width: 270px'
@@ -40,6 +88,13 @@ export default {
   mounted() {
     this.getAllPermissions()
     console.log(this.allPermissions)
+    if (this.$route.params.id) {
+      this.getRoleById(this.$route.params.id).then(res => {
+        this.name = res.data.name
+        this.permissions = res.data.permissions
+        console.log(res)
+      })
+    }
   }
 }
 </script>

@@ -172,19 +172,25 @@ export const asyncRouterMap = [
             name: 'supplier',
             hideChildrenInMenu: true,
             component: RouteView,
-            redirect: '/supplier/list',
+            redirect: '/supplier_all/supplier/list',
             meta: { title: 'supplier', permission: [ 'form' ] },
             children: [
               {
-                path: '/supplier/list',
+                path: '/supplier_all/supplier/list',
                 name: 'supplierList',
                 component: () => import('@/views/supplier/SupplierList'),
                 meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
               },
               {
-                path: '/supplier/preview/:id',
+                path: '/supplier_all/supplier/preview/:id',
                 name: 'supplierPreview',
                 component: () => import('@/views/supplier/Preview'),
+                meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/supplier_all/supplier/product/create',
+                name: 'supplierProductCreate',
+                component: () => import('@/views/supplier/Create'),
                 meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
               }
             ]
@@ -456,8 +462,20 @@ export const asyncRouterMap = [
               {
                 path: '/users/role/list',
                 name: 'UserRoleList',
-                component: () => import('@/views/roles/Roles'),
+                component: () => import('@/views/roles/RoleList'),
                 meta: { title: 'roles.list', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/users/role/create',
+                name: 'UserRoleCreate',
+                component: () => import('@/views/roles/Roles'),
+                meta: { title: 'roles.create', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/users/role/update/:id',
+                name: 'UserRoleUpdate',
+                component: () => import('@/views/roles/Roles'),
+                meta: { title: 'roles.update', keepAlive: true, permission: [ 'form' ] }
               }
             ]
           },

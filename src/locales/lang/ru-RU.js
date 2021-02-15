@@ -199,6 +199,7 @@ const locale = {
 
     // supplier
     'supplier': 'Поставщики',
+    'suppliers': 'Поставщик',
     'supplier.list': 'Список поставщиков',
 
 

@@ -28,12 +28,12 @@
       <a-col :span="24">
         <a-form-model-item :label="$t('content_uz')" prop="content_uz">
 <!--          <a-input v-model="form.content_uz" />-->
-          <ckeditor :editor="editor" v-model="form.content_uz" ></ckeditor>
+<!--          <ckeditor :editor="editor" v-model="form.content_uz" ></ckeditor>-->
         </a-form-model-item>
       </a-col>
       <a-col :span="24">
         <a-form-model-item :label="$t('content_ru')" prop="content_ru">
-          <ckeditor :editor="editor" v-model="form.content_ru" ></ckeditor>
+<!--          <ckeditor :editor="editor" v-model="form.content_ru" ></ckeditor>-->
         </a-form-model-item>
       </a-col>
     </a-row>
@@ -52,13 +52,11 @@
   </a-form-model>
 </template>
 <script>
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 export default {
   data () {
     return {
       id: null,
       ckEditor: null,
-      editor: ClassicEditor,
       form: {
         title_uz: '',
         title_ru: '',

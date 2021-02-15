@@ -30,6 +30,13 @@ export default {
     getAllSupplierStores({ commit }, payload) {
       return new Promise((resolve, reject) => {
         let { pagination } = payload
+        if (!pagination) {
+          pagination = {
+            current: 1,
+            pageSize: 15,
+            total: null,
+          }
+        }
         commit('GET_LOAD_SUPPLIER_STORE', true)
         // axios
         axiosInit.get(`/admin/supplier-store${ payload.id ? '/list/' + payload.id : '' }`,
@@ -39,7 +46,7 @@ export default {
         )
           .then(res => {
             console.log(res)
-            resolve()
+            resolve(res)
             pagination.total = payload.id ? res.data.length : parseInt(res.links.total)
             commit('GET_SUPPLIER_STORE_PAGINATION', pagination)
             commit('GET_ALL_SUPPLIER_STORE', res.data)

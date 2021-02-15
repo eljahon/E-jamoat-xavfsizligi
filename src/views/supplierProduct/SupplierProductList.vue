@@ -138,7 +138,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllSupplierProduct', 'deleteSupplierProduct', 'getAllSupplierStores']),
+    ...mapActions(['getAllSupplierProduct', 'deleteSupplierProduct']),
     editItem(item) {
       this.$refs.editSupplier.show(item)
     },
@@ -167,7 +167,13 @@ export default {
       })
     },
     addItem () {
-      this.$refs.createSupplier.show()
+      this.$router.push({
+        name: 'supplierProductCreate',
+        query: {
+          supplierID: this.$route.params.id
+        }
+      })
+      // this.$refs.createSupplier.show()
     }
   },
   computed: {
@@ -175,7 +181,7 @@ export default {
   },
   mounted() {
     this.getAllSupplierProduct(this.params)
-    this.getAllSupplierStores(this.params)
+    // this.getAllSupplierStores(this.params)
     // this.getByIdSupplierStore(this.$route.params.id)
   },
 }

@@ -28,7 +28,7 @@ export default {
         let { pagination } = payload
         commit('GET_LOAD_SUPPLIER_PRODUCT', true)
         // axios
-        axiosInit.get(`/admin/supplier-product${ payload.id ? '/products/' + payload.id : '' }`,
+        axiosInit.get(`/admin/supplier-product${ payload.id ? '/products-not-in-supplier/' + payload.id : '' }`,
           {
             page: !payload.id ? pagination.current : undefined
           }
