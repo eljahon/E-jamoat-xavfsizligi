@@ -446,7 +446,13 @@ export const asyncRouterMap = [
                 path: '/users/user/list',
                 name: 'UserList',
                 component: () => import('@/views/users/UserList'),
-                meta: { title: 'users.list', keepAlive: true, permission: [ 'form' ] }
+                meta: { title: 'users.list', keepAlive: true, permission: ['form'] }
+              },
+              {
+                path: '/users/user/info/:id',
+                name: 'UserInfo',
+                component: () => import('@/views/users/Preview'),
+                meta: { title: 'users.preview', keepAlive: true, permission: [ 'form' ] }
               }
             ]
           },

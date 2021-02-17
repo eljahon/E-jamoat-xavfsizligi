@@ -101,6 +101,21 @@ export default {
             reject(err)
           })
       })
+    },
+    getUserById ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/user/${payload}`).then(res => {
+          resolve(res)
+        })
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
+          })
+      })
     }
   }
 }

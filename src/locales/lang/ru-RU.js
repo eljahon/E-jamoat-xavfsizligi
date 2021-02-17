@@ -139,6 +139,13 @@ const locale = {
     'ball': 'бал',
     'unicode': 'юникод',
     'stock': 'Акции',
+    'first_name': 'Имя',
+    'gender': 'Пол',
+    'birth_date': 'Дата рождения',
+    'landmark': 'Ориентир',
+    'info': 'Информация',
+    'addresses': 'Адреса',
+    'wishlists': 'Списки желаний',
 
     // courier
     'couriers': 'Курьеры',

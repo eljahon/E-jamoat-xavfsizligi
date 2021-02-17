@@ -27,6 +27,10 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
+            <a-button style="margin: 0 2px" type="default" @click="$router.push({ name: 'UserInfo', params: { id: item.id } })" icon="eye"></a-button>
+          </a-tooltip>
+          <a-tooltip>
+            <template slot="title">{{ $t('update') }}</template>
             <a-button style="margin: 0 2px" id="buttonUpdate" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
@@ -90,7 +94,7 @@ export default {
           title: this.$t('action'),
           key: 'action',
           align: 'center',
-          width: '12%',
+          width: '15%',
           scopedSlots: { customRender: 'action' },
         },
       ],
