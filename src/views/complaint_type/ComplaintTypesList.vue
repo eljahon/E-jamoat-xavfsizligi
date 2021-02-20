@@ -15,7 +15,6 @@
         :rowKey="item => item.id"
         :pagination="paginationComplaintTypes"
         @change="changePagination"
-        bordered
       >
         <template slot="action" slot-scope="item">
           <a-tooltip>
@@ -81,7 +80,7 @@ export default {
           title: this.$t('action'),
           key: 'action',
           align: 'center',
-          width: '20%',
+          width: '10%',
           scopedSlots: { customRender: 'action' },
         },
       ],

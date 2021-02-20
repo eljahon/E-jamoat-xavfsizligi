@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card size="small" :title="$t('supplier.product.list')" style="width: 100%">
-      <a-button size='small' type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
+      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
 <!--      <a-row style="margin: 10px 0">-->
 <!--        <a-col :span="16"></a-col>-->
 <!--        <a-col :span="8">-->
@@ -9,7 +9,7 @@
 <!--        </a-col>-->
 <!--      </a-row>-->
       <a-table
-        size="small"
+        size='middle'
         :columns="columns"
         :data-source="allSupplierProduct"
         :loading="loadSupplierProduct"
@@ -109,14 +109,6 @@ export default {
         {
           title: this.$t('old_price'),
           dataIndex: 'old_price',
-        },
-        {
-          title: this.$t('ball'),
-          dataIndex: 'ball',
-        },
-        {
-          title: this.$t('unicode'),
-          dataIndex: 'unicode',
         },
         {
           title: this.$t('action'),

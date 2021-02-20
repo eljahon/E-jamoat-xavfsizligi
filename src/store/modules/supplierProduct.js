@@ -28,7 +28,7 @@ export default {
         let { pagination } = payload
         commit('GET_LOAD_SUPPLIER_PRODUCT', true)
         // axios
-        axiosInit.get(`/admin/supplier-product${ payload.id ? '/products-not-in-supplier/' + payload.id : '' }`,
+        axiosInit.get(`/admin/supplier-product${ payload.id ? '/products/' + payload.id : '' }`,
           {
             page: !payload.id ? pagination.current : undefined
           }
@@ -78,6 +78,30 @@ export default {
     postSupplierProduct({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.post('/admin/supplier-product', payload).then(res => {
+          resolve(res)
+          console.log(res)
+        })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    getSupplierIsNotProduct({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/supplier-product/products-not-in-supplier/${payload.id}`, {
+          name: payload.search
+        }).then(res => {
+          resolve(res)
+          console.log(res)
+        })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    getProductVariants({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/features/variant/${payload}`).then(res => {
           resolve(res)
           console.log(res)
         })

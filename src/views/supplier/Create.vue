@@ -1,16 +1,19 @@
 <template>
-  <a-card title="Supplier product create">
+  <a-card :title="$t('supplier.product.create')">
     <a-form-model ref="ruleForm" :model="form" :rules="rules">
       <a-row>
         <a-col :span="11">
           <a-form-model-item :label="$t('product')" prop="product_id">
-            <a-auto-complete
-              v-model='form.product_id'
-              :data-source="products"
-              style='width: 100%'
-              placeholder='input here'
-              @search='getItems'
-            />
+            <a-spin :spinning='spinning'>
+              <a-auto-complete
+                :allowClear="true"
+                :data-source="products"
+                style='width: 100%'
+                :placeholder="$t('search_product')"
+                @search='getItems'
+                @select='selectProduct'
+              />
+            </a-spin>
           </a-form-model-item>
         </a-col>
         <a-col :span="11" :offset='1'>
@@ -49,15 +52,37 @@
         </a-col>
       </a-row>
     </a-form-model>
+    <h1 v-if="variants.length > 0"><strong>{{ $t('variants') }}</strong></h1>
+    <div v-if="variants.length > 0">
+      <div v-for="(v, j) in variants" :key="v.id">
+        <a-divider v-if="variants.length > 0" orientation="left">
+          {{ v.name_uz + ' - ' + v.name_ru }}
+        </a-divider>
+        <div class="variant">
+          <a-card size="small" v-for="(card, i) in v.variants" :key="i" :title="card.name" class="cardCustom">
+            <div slot="extra" class="extraButtons">
+              <a-button style="margin: 0 2px" size="small" type="primary" shape="circle" icon="edit" @click="updateVariant(v.values, j,i)"/>
+              <a-button style="margin: 0 2px" size="small" type="danger" shape="circle" icon="delete" @click="v.variants.splice(i, 1)"/>
+            </div>
+            <p>Price: {{ card.price }}</p>
+          </a-card>
+        </div>
+        <a-button type="primary" @click="addVariant(v.values, j)" style="margin: 15px 0px 15px 10px">{{ $t('add_variant') }}</a-button>
+      </div>
+    </div>
+    <variant @input="variantChange" ref="variant"/>
+    <a-button @click="validateForm" :loading='loading'>{{ $t('create_product') }}</a-button>
   </a-card>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { AutoComplete } from 'ant-design-vue'
+import Variant from '@/views/supplier/Variant'
 import debounce from 'lodash/debounce'
 export default {
   components: {
-    'a-auto-complete': AutoComplete
+    'a-auto-complete': AutoComplete,
+    'variant': Variant
   },
   data () {
     this.getItems = debounce(this.getItems, 1000)
@@ -65,16 +90,20 @@ export default {
       id: null,
       status: true,
       products: [],
+      loading: false,
+      productGrId: null,
+      spinning: false,
       form: {
-        product_id: '',
+        product_id: null,
         price: null,
         discount: null,
         old_price: null,
         ball: null,
         stock: null,
         supplier_store_id: null,
-        supplier_id: this.$route.params.id
+        supplier_id: this.$route.query.supplierID
       },
+      variants: [],
       rules: {
         product_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         price: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
@@ -96,25 +125,63 @@ export default {
     ...mapGetters(['allSupplierStores'])
   },
   methods: {
-    ...mapActions(['getAllProduct', 'getAllSupplierStores']),
-    getItems (e) {
+    ...mapActions(['getAllProduct', 'getAllSupplierStores', 'getSupplierIsNotProduct', 'getProductVariants', 'postSupplierProduct']),
+    variantChange (e) {
+      if (e.update) {
+        console.log(e.data)
+        const v = [...this.variants[e.index].variants];
+        v[e.child_id] = e.data
+        this.variants[e.index].variants = v
+        console.log(this.variants[e.index].variants[e.child_id])
+      } else {
+        this.variants[e.index].variants.push(e.data)
+      }
       console.log(e)
-      this.getAllProduct({
-        pagination: {
-          current: 1
-        },
-        name: e
+    },
+    addVariant (variant, index) {
+      this.$refs.variant.switchModal(true, variant, index)
+    },
+    updateVariant (variant, j, i) {
+      this.$refs.variant.form = { ...this.variants[j].variants[i] }
+      this.$refs.variant.switchModal(true, variant, j, i, true)
+    },
+    selectProduct (e) {
+      const _data = e.split(':')
+      console.log(_data)
+      this.getProductVariants(_data[1]).then(res => {
+        const _data = [ ...res.data ]
+        const newData = _data.map(e => {
+          return {
+            ...e,
+            variants: []
+          }
+        })
+        this.variants = newData
+      })
+      this.form.product_id = parseInt(_data[0])
+      this.productGrId = parseInt(_data[1])
+    },
+    getItems (e) {
+      if (e.length === 0) {
+        this.variants = []
+      }
+      console.log(e)
+      this.spinning = true
+      this.getSupplierIsNotProduct({
+        id: this.$route.query.supplierID,
+        search: e
       }).then(res => {
         this.products = res.data.map(e => {
           return {
-            text: e.name_uz + ' ' + e.name_ru,
-            value: e.id.toString()
+            text: e.name,
+            value: e.id.toString() + ':' + e.group_id.toString()
           }
         })
+      }).finally(() => {
+        this.spinning = false
       })
     },
     validateForm() {
-      return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const _form = { ...this.form }
@@ -123,14 +190,24 @@ export default {
             _form.product_id = parseInt(this.form.product_id)
             _form.price = parseInt(this.form.price)
             _form.supplier_id = parseInt(this.form.supplier_id)
-            resolve({
-              id: this.id ? this.id : undefined,
-              data: _form
+            if (this.variants.length > 0) {
+              let v = []
+              for (let i = 0; i < this.variants.length; i++) {
+                for (let j = 0; j < this.variants[i].variants.length; j++) {
+                  v.push(this.variants[i].variants[j])
+                }
+              }
+              _form.variants = v
+            } else _form.variants = []
+            this.loading = true
+            this.postSupplierProduct(_form).then(res => {
+              this.$router.go(-1)
+            }).finally(() => {
+              this.loading = false
             })
-            console.log(this.form)
-          } else reject(valid)
+            console.log(_form)
+          }
         })
-      })
     },
     resetForm () {
       this.form.email = ''
@@ -146,3 +223,17 @@ export default {
   }
 }
 </script>
+<style lang="less">
+.variant {
+  display: flex;
+  width: 100%;
+  .cardCustom {
+    width: 25%;
+    padding: 0 10px;
+    margin: 5px 10px;
+    .extraButtons {
+      display: flex;
+    }
+  }
+}
+</style>

@@ -9,14 +9,13 @@
         </a-col>
       </a-row>
       <a-table
-        size="small"
+        size="middle"
         :columns="columns"
         :data-source="allLocations"
         :loading="loadLocation"
         :rowKey="item => item.id"
         :pagination="paginationLocation"
         @change="changePagination"
-        bordered
       >
         <template slot="status" slot-scope="status">
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>

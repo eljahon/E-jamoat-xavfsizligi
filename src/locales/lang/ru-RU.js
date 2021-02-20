@@ -136,8 +136,8 @@ const locale = {
     'product_count': 'Количество продукты',
     'discount': 'Скидка',
     'old_price': 'Старая цена',
-    'ball': 'бал',
-    'unicode': 'юникод',
+    'ball': 'Балл',
+    'unicode': 'Юникод',
     'stock': 'Акции',
     'first_name': 'Имя',
     'gender': 'Пол',
@@ -146,7 +146,10 @@ const locale = {
     'info': 'Информация',
     'addresses': 'Адреса',
     'wishlists': 'Списки желаний',
-
+    'variants': 'Варианты',
+    'search_product': 'Искать продукты',
+    'create_product': 'Создать продукт',
+    'add_variant': 'Добавить вариант',
     // courier
     'couriers': 'Курьеры',
     'couriers.list': 'Список курьеров',
@@ -208,6 +211,8 @@ const locale = {
     'supplier': 'Поставщики',
     'suppliers': 'Поставщик',
     'supplier.list': 'Список поставщиков',
+    'supplier.product.create': 'Создание продукта поставщика',
+    'supplier.product.list': 'Список продуктов поставщика',
 
 
     // stuff

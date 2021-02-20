@@ -132,7 +132,7 @@
               />
               <a-radio-group v-else v-model="form.category_id">
                 <a-radio v-for='ct in listCategory' :key='ct.id' :value="ct.id">
-                  {{ ct.name_uz }} {{ ct.name_ru }}
+                  {{ ct.name_uz }}
                 </a-radio>
               </a-radio-group>
             </a-form-model-item>
@@ -150,12 +150,12 @@ function treeDataMap (category) {
   return category.map((c) => {
     if (!c.children) {
       return {
-        title: c.name_uz + ' ' + c.name_ru,
+        title: c.name_uz,
         key: c.id
       }
     } else {
       return {
-        title: c.name_uz + ' ' + c.name_ru,
+        title: c.name_uz,
         key: c.id,
         children: treeDataMap(c.children)
       }
