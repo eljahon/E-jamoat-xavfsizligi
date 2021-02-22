@@ -30,13 +30,13 @@ export default {
         // axios
         axiosInit.get(`/admin/supplier-product${ payload.id ? '/products/' + payload.id : '' }`,
           {
-            page: !payload.id ? pagination.current : undefined
+            page: pagination.current
           }
         )
           .then(res => {
             console.log(res)
             resolve(res)
-            pagination.total = payload.id ? res.data.length : parseInt(res.links.total)
+            pagination.total = parseInt(res.links.total)
             commit('GET_SUPPLIER_PRODUCT_PAGINATION', pagination)
             commit('GET_ALL_SUPPLIER_PRODUCT', res.data)
           })

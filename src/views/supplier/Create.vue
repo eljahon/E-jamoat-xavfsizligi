@@ -37,17 +37,22 @@
         </a-col>
         <a-col :span="11">
           <a-form-model-item :label="$t('discount')" prop="discount">
-            <a-input type='number' v-model="form.discount" />
+            <a-input type='number' :min='0' :max='100' v-model="form.discount" />
           </a-form-model-item>
         </a-col>
         <a-col :span="11" :offset="1">
-          <a-form-model-item :label="$t('old_price')" prop="old_price">
-            <a-input type='number' v-model="form.old_price" />
+          <a-form-model-item :label="$t('discount_price')">
+            <a-input type='number' disabled :value="Math.round((form.price * (1 - (form.discount / 100))) / 100) * 100"/>
           </a-form-model-item>
         </a-col>
         <a-col :span="11">
           <a-form-model-item :label="$t('ball')" prop="ball">
             <a-input type='number' v-model="form.ball" />
+          </a-form-model-item>
+        </a-col>
+        <a-col :span="11" :offset="1">
+          <a-form-model-item :label="$t('old_price')" prop="old_price">
+            <a-input type='number' v-model="form.old_price" />
           </a-form-model-item>
         </a-col>
       </a-row>
@@ -109,6 +114,16 @@ export default {
         price: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         stock: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         supplier_store_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        discount: [{
+          validator: (rule, value, callback) => {
+            if (value >= 0 && value <= 100) {
+              callback()
+            } else {
+              callback(new Error(this.$t('percentRequired')))
+            }
+          },
+          trigger: 'change'
+        }]
       }
     }
   },

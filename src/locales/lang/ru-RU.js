@@ -103,6 +103,7 @@ const locale = {
     'errorPhone': 'Ошибка телефона',
     'errorEmail': 'Электронная почта ошибки',
     'passwordLength': 'Пароль должен быть от 6 до 50',
+    'percentRequired': 'Требуется процент. Длина значения от 1 до 100',
     'passwordError': 'Пароль не равен паролю подтвердить',
     'head_setting': 'Настройки заголовка',
     'basic_setting': 'Базовые настройки',
@@ -150,6 +151,10 @@ const locale = {
     'search_product': 'Искать продукты',
     'create_product': 'Создать продукт',
     'add_variant': 'Добавить вариант',
+    'discount_price': 'Цена со скидкой',
+
+
+
     // courier
     'couriers': 'Курьеры',
     'couriers.list': 'Список курьеров',

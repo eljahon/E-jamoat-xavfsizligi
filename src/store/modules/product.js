@@ -36,7 +36,7 @@ export default {
             resolve(res)
             console.log(res)
             let page = { ...pagination }
-            page.total = parseInt(res.count)
+            page.total = parseInt(res.links.total)
             commit('GET_PRODUCT_PAGINATION', page)
             commit('GET_ALL_PRODUCT', res.data)
           })

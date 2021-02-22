@@ -51,19 +51,19 @@
     </a-card>
 
     <!-- MODALS -->
-    <supplier-create ref="createSupplier" :editable="false" :params="params"/>
-    <supplier-create ref="editSupplier" :editable="true" :params="params"/>
+<!--    <supplier-create ref="createSupplier" :editable="false" :params="params"/>-->
+<!--    <supplier-create ref="editSupplier" :editable="true" :params="params"/>-->
 <!--    <preview ref="preview"/>-->
   </div>
 </template>
 <script>
-import supplierCreate from './SupplierProductCreateWithUpdate'
+// import supplierCreate from './SupplierProductCreateWithUpdate'
 // import Preview from '@/views/supplier/Preview'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   props: ['supplier'],
   components: {
-    'supplier-create': supplierCreate,
+    // 'supplier-create': supplierCreate,
     // 'preview': Preview
   },
   data() {
@@ -132,7 +132,13 @@ export default {
   methods: {
     ...mapActions(['getAllSupplierProduct', 'deleteSupplierProduct']),
     editItem(item) {
-      this.$refs.editSupplier.show(item)
+      // this.$refs.editSupplier.show(item)
+      this.$router.push({
+        name: 'supplierProductCreate',
+        query: {
+          supplierID: this.$route.params.id
+        }
+      })
     },
     preview (item) {
       this.$router.push({
