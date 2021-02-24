@@ -2,11 +2,12 @@
 <!--  <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">-->
     <div class='userLayout'>
       <div class='left'>
-        <img class="logo" src="../assets/shop.png" alt='logo'>
-        <h1 class="logo_text">ZaytunShop</h1>
+        <img class="logo" src="../assets/z-logo.svg" alt='logo'>
       </div>
       <div class='right'>
-        <div class='header'>ZaytunShop</div>
+        <div class='header'>
+          <img class="logo2" src="../assets/z-logo.svg" alt='logo'>
+        </div>
           <div class='login'>
             <div class='desc'>
               Добро пожаловать
@@ -91,6 +92,9 @@ export default {
     justify-content: space-between;
     align-items: center;
     flex-flow: column;
+    .logo2 {
+      width: 200px;
+    }
     .header {
       font-size: 48px;
       color: rgba(0, 0, 0, 0.45);

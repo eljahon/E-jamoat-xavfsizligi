@@ -7,7 +7,7 @@
     :isMobile="isMobile"
     :handleMediaQuery="handleMediaQuery"
     :handleCollapse="handleCollapse"
-    logo="http://163.172.182.95:2500/storage/files/1896211312-1601381935-logo.png.webp"
+    :logo="logoRender"
     :i18nRender="i18nRender"
     v-bind="settings"
   >
@@ -34,7 +34,7 @@ import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
-// import LogoSvg from '../assets/logo.svg?inline'
+import LogoSvg from '../assets/z-favicon.svg?inline'
 
 export default {
   name: 'BasicLayout',

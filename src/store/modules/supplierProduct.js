@@ -109,6 +109,17 @@ export default {
             reject(error)
           })
       })
+    },
+    getSupplierProductWithId ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/supplier-product/${payload}`).then(res => {
+          resolve(res)
+          console.log(res)
+        })
+          .catch(error => {
+            reject(error)
+          })
+      })
     }
   }
 }

@@ -62,6 +62,7 @@ export default {
         this.updateRole({
           id: this.$route.params.id,
           data: {
+            id: parseInt(this.$route.params.id),
             name: this.name,
             permissions: this.permissions
           }

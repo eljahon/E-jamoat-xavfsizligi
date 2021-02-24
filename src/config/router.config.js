@@ -185,13 +185,19 @@ export const asyncRouterMap = [
                 path: '/supplier_all/supplier/preview/:id',
                 name: 'supplierPreview',
                 component: () => import('@/views/supplier/Preview'),
-                meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
+                meta: { title: 'supplier.product.preview', keepAlive: true, permission: [ 'form' ] }
               },
               {
                 path: '/supplier_all/supplier/product/create',
                 name: 'supplierProductCreate',
                 component: () => import('@/views/supplier/Create'),
-                meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
+                meta: { title: 'supplier.product.create', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/supplier_all/supplier/product/edit/:name/:id',
+                name: 'supplierProductUpdate',
+                component: () => import('@/views/supplier/Create'),
+                meta: { title: 'supplier.product.edit', keepAlive: true, permission: [ 'form' ] }
               }
             ]
           },

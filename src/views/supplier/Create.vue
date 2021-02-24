@@ -8,6 +8,7 @@
               <a-auto-complete
                 :allowClear="true"
                 :data-source="products"
+                v-model="form.product_id"
                 style='width: 100%'
                 :placeholder="$t('search_product')"
                 @search='getItems'
@@ -140,7 +141,7 @@ export default {
     ...mapGetters(['allSupplierStores'])
   },
   methods: {
-    ...mapActions(['getAllProduct', 'getAllSupplierStores', 'getSupplierIsNotProduct', 'getProductVariants', 'postSupplierProduct']),
+    ...mapActions(['getAllProduct', 'getAllSupplierStores', 'getSupplierIsNotProduct', 'getProductVariants', 'postSupplierProduct', 'getSupplierProductWithId']),
     variantChange (e) {
       if (e.update) {
         console.log(e.data)
@@ -235,6 +236,26 @@ export default {
     this.getAllSupplierStores({
       id: this.$route.query.supplierID
     })
+    if (this.$route.params.id) {
+      this.getSupplierProductWithId(this.$route.params.id).then(res => {
+        const _data = res.data
+        this.form.product_id = _data.product_id
+        console.log(res)
+      })
+    }
+    if (this.$route.params.name) {
+      this.getSupplierIsNotProduct({
+        id: this.$route.query.supplierID,
+        search: this.$route.params.name
+      }).then(res => {
+        this.products = res.data.map(e => {
+          return {
+            text: e.name,
+            value: e.id.toString() + ':' + e.group_id.toString()
+          }
+        })
+      })
+    }
   }
 }
 </script>

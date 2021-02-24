@@ -134,7 +134,11 @@ export default {
     editItem(item) {
       // this.$refs.editSupplier.show(item)
       this.$router.push({
-        name: 'supplierProductCreate',
+        name: 'supplierProductUpdate',
+        params: {
+          id: item.id,
+          name: item.name
+        },
         query: {
           supplierID: this.$route.params.id
         }
