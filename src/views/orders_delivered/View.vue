@@ -60,8 +60,8 @@
       >
         <template slot="image" slot-scope="image">
           <div class="imagePreview">
-            <img v-if="image" :src="image" :alt="image">
-            <img v-else src="../../assets/upload.jpg" :alt="image">
+            <img v-if="image" :src="image">
+            <img v-else :src="imagePlaceholder">
           </div>
         </template>
         <template slot="status" slot-scope="status">
@@ -76,11 +76,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import imagePlaceholder from '@/assets/upload.jpg'
 import moment from 'moment'
 export default {
   data() {
     return {
       order: null,
+      imagePlaceholder: imagePlaceholder,
       columns: [
         {
           title: 'Image',

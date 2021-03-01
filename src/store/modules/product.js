@@ -72,7 +72,7 @@ export default {
     },
     deleteProduct({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.delete(`/admin/product-groups/${payload}`)
+        axiosInit.delete(`/admin/products/${payload}`)
           .then(res => {
             resolve()
             console.log(res)
@@ -108,6 +108,52 @@ export default {
         axiosInit.post('/admin/product-groups', payload).then(res => {
           resolve(res.data.id)
           console.log(res)
+        })
+        .catch(err => {
+          notification.error({
+            message: 'Ошибка сети или сервер не работает',
+            description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+            duration: 5
+          })
+          reject(err)
+        })
+      })
+    },
+    updateProductGroup({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.put(`/admin/product-groups/${payload.id}`, payload.data).then(res => {
+          resolve(res.data.id)
+          console.log(res)
+        })
+        .catch(err => {
+          notification.error({
+            message: 'Ошибка сети или сервер не работает',
+            description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+            duration: 5
+          })
+          reject(err)
+        })
+      })
+    },
+    getProductGroupById({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/product-groups/update/${payload}`).then(res => {
+          resolve(res.data)
+        })
+        .catch(err => {
+          notification.error({
+            message: 'Ошибка сети или сервер не работает',
+            description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+            duration: 5
+          })
+          reject(err)
+        })
+      })
+    },
+    getProductsById({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/products/${payload}`).then(res => {
+          resolve(res.data)
         })
         .catch(err => {
           notification.error({

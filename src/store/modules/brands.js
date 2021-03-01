@@ -50,6 +50,25 @@ export default {
           })
       })
     },
+    getAllBrandsList({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        commit('GET_LOAD_BRAND', true)
+        // axios
+        axiosInit.get('/admin/brand/list')
+          .then(res => {
+            console.log(res)
+            resolve()
+            commit('GET_ALL_BRAND', res.data)
+          })
+          .catch(error => {
+            reject(error)
+            this.$message.error(error.message)
+          })
+          .finally(() => {
+            commit('GET_LOAD_BRAND', false)
+          })
+      })
+    },
     updateBrand({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.put(`/admin/brand/${payload.id}`, payload.data)

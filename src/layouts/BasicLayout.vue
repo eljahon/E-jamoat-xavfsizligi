@@ -7,7 +7,7 @@
     :isMobile="isMobile"
     :handleMediaQuery="handleMediaQuery"
     :handleCollapse="handleCollapse"
-    :logo="logoRender"
+    :logo="logo"
     :i18nRender="i18nRender"
     v-bind="settings"
   >
@@ -34,8 +34,8 @@ import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
-import LogoSvg from '../assets/z-favicon.svg?inline'
-
+import LogoSvg from '../assets/z-favicon.png?inline'
+import logo from '@/assets/zaytun_favicon.png'
 export default {
   name: 'BasicLayout',
   components: {
@@ -46,6 +46,7 @@ export default {
   },
   data () {
     return {
+      logo: logo,
       isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
       menus: [],
       collapsed: false,

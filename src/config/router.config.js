@@ -194,7 +194,7 @@ export const asyncRouterMap = [
                 meta: { title: 'supplier.product.create', keepAlive: true, permission: [ 'form' ] }
               },
               {
-                path: '/supplier_all/supplier/product/edit/:name/:id',
+                path: '/supplier_all/supplier/product/edit/:id',
                 name: 'supplierProductUpdate',
                 component: () => import('@/views/supplier/Create'),
                 meta: { title: 'supplier.product.edit', keepAlive: true, permission: [ 'form' ] }
@@ -245,6 +245,12 @@ export const asyncRouterMap = [
                 name: 'ProductsCreate',
                 component: () => import('@/views/products/ProductsCreateWithUpdate'),
                 meta: { title: 'Product Create', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/products/main/edit/:step',
+                name: 'ProductsEdit',
+                component: () => import('@/views/products/ProductsCreateWithUpdate'),
+                meta: { title: 'Product Edit', keepAlive: true, permission: [ 'form' ] }
               }
             ]
           }

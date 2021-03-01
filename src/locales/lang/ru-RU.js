@@ -23,6 +23,7 @@ const locale = {
     'product_list': 'Список продукты',
     'product.add': 'Создать продукт',
     'product.add.field': 'Создать продукт основных полей',
+    'product.update.field': 'Изменить продукт основных полей',
 
 
 
@@ -150,6 +151,7 @@ const locale = {
     'variants': 'Варианты',
     'search_product': 'Искать продукты',
     'create_product': 'Создать продукт',
+    'update_product': 'Изменить продукт',
     'add_variant': 'Добавить вариант',
     'discount_price': 'Цена со скидкой',
 
@@ -217,6 +219,7 @@ const locale = {
     'suppliers': 'Поставщик',
     'supplier.list': 'Список поставщиков',
     'supplier.product.create': 'Создание продукта поставщика',
+    'supplier.product.update': 'Обновить продукта поставщика',
     'supplier.product.list': 'Список продуктов поставщика',
 
 

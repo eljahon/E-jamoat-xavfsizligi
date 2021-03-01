@@ -7,7 +7,8 @@
     <a-row>
       <a-col v-for='(product, i) in products' :key='i' :span='12' style='padding: 0 10px; margin: 10px 0'>
         <a-card :title="$t('product') + ' ' + (i + 1)" size='small'>
-          <a-icon v-if='products.length > 1' @click='removeProduct(i)' type="close" slot='extra' style='color: red; font-size: 20px'/>
+          <a-icon v-if='products.length > 1' @click='removeProduct(i)' type='close' slot='extra'
+                  style='color: red; font-size: 20px' />
           <a-row>
             <a-col v-for='(ft, f) in product.features' :key='f' :span='12' style='padding: 0 5px' size='small'>
               <a-form-model-item :label='ft.feature.name_ru'>
@@ -75,7 +76,7 @@
 
     <a-row style='margin: 20px 0'>
       <a-button type='primary' @click='saveProduct' :loading='loading'>
-        {{ $t('save') }}
+        {{ $route.name !== 'ProductsEdit' ? $t('save') : $t('update') }}
       </a-button>
       <a-button style='margin-left: 10px' @click='clear' type='primary' ghost>
         {{ $t('clear') }}
@@ -113,7 +114,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getMainFeatures', 'postProduct']),
+    ...mapActions(['getMainFeatures', 'postProduct', 'getProductsById', 'updateProduct']),
     uploadImage(e, productIndex, i) {
       console.log(e)
       this.products[productIndex].images[i].url = null
@@ -136,10 +137,10 @@ export default {
     beforeUpload(file) {
       return this.$beforeUpImage(file)
     },
-    removeProduct (i) {
+    removeProduct(i) {
       this.products.splice(i, 1)
     },
-    clear () {
+    clear() {
       this.products = [
         {
           images: [
@@ -190,7 +191,7 @@ export default {
     removePhoto(productIndex, i) {
       this.products[productIndex].images.splice(i, 1)
     },
-    skuValidate () {
+    skuValidate() {
       const _arr = this.products
       for (let i = 0; i < _arr.length; i++) {
         if (_arr[i].sku === '') return false
@@ -203,6 +204,7 @@ export default {
       let _products = []
       _products = this.products.map(e => {
         return {
+          id: (e.id ? e.id : undefined),
           features: e.features.map(f => {
             return {
               feature_id: f.feature_id,
@@ -224,25 +226,44 @@ export default {
 
       console.log(_products)
       if (this.skuValidate() && !hasDuplicates) {
-        this.postProduct({
-          id: this.$route.query.productGroupId,
-          data: {
-            products: _products
-          }
-        }).then(res => {
-          this.$message.success('Продукт успешно создан')
-          this.$router.push({
-            name: 'ProductsList'
+        if (this.$route.name === 'ProductsEdit') {
+          this.updateProduct({
+            id: this.$route.query.productGroupId,
+            data: {
+              products: _products
+            }
+          }).then(res => {
+            this.$message.success('Продукт успешно oбновлен')
+            this.$router.push({
+              name: 'ProductsList'
+            })
+          }).finally(() => {
+            this.loading = false
           })
-        }).finally(() => {
-          this.loading = false
-        })
-      } else if (!this.skuValidate()) this.$message.error('Артикуль не был выбран')
-      else if (hasDuplicates) this.$message.error('Некоторые продукты дублированы')
+        } else {
+          this.postProduct({
+            id: this.$route.query.productGroupId,
+            data: {
+              products: _products
+            }
+          }).then(res => {
+            this.$message.success('Продукт успешно создан')
+            this.$router.push({
+              name: 'ProductsList'
+            })
+          }).finally(() => {
+            this.loading = false
+          })
+        }
+      } else if (!this.skuValidate()) {
+        this.$message.error('Артикуль не был выбран')
+      } else if (hasDuplicates) this.$message.error('Некоторые продукты дублированы')
     },
-
     equalsFeatures(arr1, arr2) {
-      if (arr1 === arr2) return true
+      // if (arr1 === arr2 || arr1.length !== 0 && arr2.length !== 0) return true
+      if (arr1?.length === 0 && arr2?.length === 0) {
+        return false
+      }
       if (arr1.length !== arr2.length) return false
       for (let i = 0; i < arr1.length; i++) {
         if (arr1[i].value_id !== arr2[i].value_id) {
@@ -250,7 +271,7 @@ export default {
           return false
         }
       }
-      return true;
+      return true
 
     }
   },
@@ -278,6 +299,25 @@ export default {
         }
       })
     })
+    if (this.$route.name === 'ProductsEdit') {
+      this.getProductsById(this.$route.query.productGroupId).then(res => {
+        this.products = res.map(p => {
+          return {
+            id: p.id,
+            sku: p.sku,
+            features: p.product_feature_values,
+            images: p.attachments.map(e => {
+              return {
+                loading: false,
+                url: e,
+                image: e,
+                status: true
+              }
+            })
+          }
+        })
+      })
+    }
   }
 }
 </script>

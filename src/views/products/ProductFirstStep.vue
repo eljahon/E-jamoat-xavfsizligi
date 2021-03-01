@@ -57,12 +57,58 @@
         </a-col>
         <a-col :span="24">
           <a-form-model-item :label="$t('content_uz')" prop="content_uz">
-            <a-input type="textarea" v-model="form.content_uz" />
+            <editor
+              ref="uz"
+              v-model="form.content_uz"
+              api-key="43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf"
+              :init="{
+             height: 500,
+             menubar: 'insert',
+             selector: 'textarea',
+             a11y_advanced_options: true,
+             image_title: true,
+             automatic_uploads: true,
+             images_upload_handler: this.uploader,
+             plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste imagetools wordcount'
+             ],
+             toolbar:
+               'undo redo | formatselect | bold italic backcolor | \
+               alignleft aligncenter alignright alignjustify | image media | \
+               bullist numlist outdent indent | removeformat | help',
+          }"
+            />
+<!--            <a-input type="textarea" v-model="form.content_uz" />-->
           </a-form-model-item>
         </a-col>
         <a-col :span="24">
           <a-form-model-item :label="$t('content_ru')" prop="content_ru">
-            <a-input type="textarea" v-model="form.content_ru" />
+            <editor
+              ref="uz"
+              v-model="form.content_ru"
+              api-key="43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf"
+              :init="{
+             height: 500,
+             menubar: 'insert',
+             selector: 'textarea',
+             a11y_advanced_options: true,
+             image_title: true,
+             automatic_uploads: true,
+             images_upload_handler: this.uploader,
+             plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste imagetools wordcount'
+             ],
+             toolbar:
+               'undo redo | formatselect | bold italic backcolor | \
+               alignleft aligncenter alignright alignjustify | image media | \
+               bullist numlist outdent indent | removeformat | help',
+          }"
+            />
+<!--            <a-input type="textarea" v-model="form.content_ru" />-->
           </a-form-model-item>
         </a-col>
       </a-row>
@@ -75,37 +121,37 @@
           :style="style(f)"
         >
           <div v-if="ft.feature.type === 'dropdown' || ft.feature.type === 'checkbox'" style="width: 100%">
-            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+            <a-form-model-item :label="ft.feature.name_ru">
               <a-select style="width: 100%" v-model="ft.value.id">
                 <a-select-option v-for='vl in ft.feature.values' :key='vl.id' :value='vl.id'>
-                  {{ vl.value_uz }} - {{ vl.value_ru }}
+                  {{ vl.value_ru }}
                 </a-select-option>
               </a-select>
             </a-form-model-item>
           </div>
           <div v-if="ft.feature.type === 'radio'" style="width: 100%">
-            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+            <a-form-model-item :label="ft.feature.name_ru">
               <a-radio-group name="radioGroup" v-model="ft.value.id">
                 <a-radio v-for='vl in ft.feature.values' :key="'radio' + vl" :value="vl.id">
-                  {{ vl.value_uz }} - {{ vl.value_ru }}
+                  {{ vl.value_ru }}
                 </a-radio>
               </a-radio-group>
             </a-form-model-item>
           </div>
           <div v-if="!(ft.feature.type === 'radio' || ft.feature.type === 'dropdown' || ft.feature.type === 'checkbox')" style="width: 100%">
-            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+            <a-form-model-item :label="ft.feature.name_ru">
               <a-input v-if="ft.feature.type === 'text'" v-model='ft.value.value'></a-input>
               <a-input v-if="ft.feature.type === 'number'" v-model='ft.value.value'></a-input>
               <a-input v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.value.value'></a-input>
             </a-form-model-item>
           </div>
           <div v-if="ft.feature.type === 'date'" style="width: 100%">
-            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+            <a-form-model-item :label="ft.feature.name_ru">
               <a-date-picker :placeholder="$t('select_data')" v-model='ft.value.value' valueFormat="YYYY-MM-DD" format="YYYY-MM-DD"/>
             </a-form-model-item>
           </div>
           <div v-if="ft.feature.type === 'datetime'" style="width: 100%">
-            <a-form-model-item :label="ft.feature.name_ru + ' ' + ft.feature.name_uz">
+            <a-form-model-item :label="ft.feature.name_ru">
               <a-row>
                 <a-col :span="11"><a-date-picker :placeholder="$t('select_data')" v-model='ft.value.value' valueFormat="YYYY-MM-DD" format="YYYY-MM-DD"/></a-col>
                 <a-col :span="11" :offset='2'><a-time-picker valueFormat="HH:mm" format="HH:mm" /></a-col>
@@ -116,7 +162,7 @@
       </a-row>
       <a-row>
         <a-button type="primary" html-type="submit" :loading='loading'>
-          {{ $t('save') }}
+          {{ $route.name === 'ProductsEdit' ? $t('update') : $t('save') }}
         </a-button>
         <a-button style="margin-left: 10px" @click="$refs.ruleForm.resetFields()" type="primary" ghost>
           {{ $t('clear') }}
@@ -128,7 +174,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import Editor from '@tinymce/tinymce-vue'
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 export default {
+  components: {
+    'editor': Editor
+  },
   data() {
     return {
       loading: false,
@@ -161,28 +213,29 @@ export default {
       this.form.status = val ? 10 : 0
     },
     'form.category_id': function (val) {
-      console.log(val)
-      this.getCategoryFeatures(val).then(res => {
-        this.form.features = res.data.map(e => {
-          return {
-            feature: e,
-            feature_id: e.id,
-            value: {
-              id: null,
-              value: null
+      if (val) {
+        this.getCategoryFeatures(val).then(res => {
+          this.form.features = res.data.map(e => {
+            return {
+              feature: e,
+              feature_id: e.id,
+              value: {
+                id: null,
+                value: null
+              }
             }
-          }
+          })
+          console.log(res)
+          console.log(this.form.features)
         })
-        console.log(res)
-        console.log(this.form.features)
-      })
+      }
     }
   },
   computed: {
     ...mapGetters(['allBrands', 'listCategory', 'allMeasures', 'categoryFeatures']),
   },
   methods: {
-    ...mapActions(['postProduct', 'updateProduct', 'postProductGroup', 'getAllProduct', 'getCategoryFeatures', 'getAllMeasures', 'getListCategory', 'getAllBrands']),
+    ...mapActions(['updateProductGroup', 'postProduct', 'updateProduct', 'postProductGroup', 'getAllProduct', 'getCategoryFeatures', 'getAllMeasures', 'getListCategory', 'getAllBrandsList', 'getProductGroupById']),
     saveData () {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
@@ -199,22 +252,88 @@ export default {
             }
           }
           _form.features = f
-          this.postProductGroup(_form).then((res) => {
-            this.$message.success('Success')
-            this.$router.push({
-              name: 'ProductsCreate',
-              params: {
-                step: 2
-              },
-              query: {
-                productGroupId: res
-              }
-            }).finally(() => {
-              this.loading = false
+          if (this.$route.name === 'ProductsEdit') {
+            this.updateProductGroup({
+              id: this.$route.query.group_id,
+              data: _form
+            }).then((res) => {
+              this.$message.success('Updated Successfully')
+              this.$router.push({
+                name: 'ProductsEdit',
+                params: {
+                  step: 2
+                },
+                query: {
+                  productGroupId: res
+                }
+              }).finally(() => {
+                this.loading = false
+              })
             })
-          })
+          } else {
+            this.postProductGroup(_form).then((res) => {
+              this.$message.success('Created Successfully')
+              this.$router.push({
+                name: 'ProductsCreate',
+                params: {
+                  step: 2
+                },
+                query: {
+                  productGroupId: res
+                }
+              }).finally(() => {
+                this.loading = false
+              })
+            })
+          }
         }
       })
+    },
+    uploader: function (blobInfo, success, failure, progress) {
+      let xhr, formData
+
+      xhr = new XMLHttpRequest()
+      xhr.withCredentials = false
+      xhr.open('POST', `${process.env.VUE_APP_API_BASE_URL}/admin/category/upload`)
+
+      xhr.upload.onprogress = function (e) {
+        progress((e.loaded / e.total) * 100)
+      }
+
+      xhr.onload = function () {
+        var json
+
+        if (xhr.status === 403) {
+          failure('HTTP Error: ' + xhr.status, { remove: true })
+          return
+        }
+
+        if (xhr.status < 200 || xhr.status >= 300) {
+          failure('HTTP Error: ' + xhr.status)
+          return
+        }
+
+        json = JSON.parse(xhr.responseText)
+        console.log('json', json)
+        console.log('xhr.responseText', xhr.responseText)
+
+        if (!json || typeof json.data.path !== 'string') {
+          failure('Invalid JSON: ' + xhr.responseText)
+          return undefined
+        }
+        success(json.data.full_url)
+      }
+
+      xhr.onerror = function () {
+        failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status)
+      }
+
+      formData = new FormData()
+      formData.append('image', blobInfo.blob(), blobInfo.filename())
+
+      console.log('formData', formData)
+      xhr.setRequestHeader('Authorization', storage.get(ACCESS_TOKEN))
+      xhr.send(formData)
     },
     changeFt (val, f) {
       this.form.features[f].feature_id = val
@@ -258,10 +377,28 @@ export default {
     }
   },
   mounted () {
-    this.getAllBrands()
+    this.getAllBrandsList()
     this.getAllMeasures()
     this.getListCategory()
     this.$store.commit('GET_CATEGORY_FEATURES', [])
+    if (this.$route.query.group_id) {
+      this.getProductGroupById(this.$route.query.group_id).then(res => {
+        console.log(res)
+        const _form = this.form
+        _form.brand_id = res.brand_id
+        _form.category_id = res.category_id
+        _form.content_ru = res.content_ru
+        _form.content_uz = res.content_uz
+        _form.description = res.description
+        _form.keywords = res.keywords
+        _form.measure_id = res.measure_id
+        _form.name_ru = res.name_ru
+        _form.name_uz = res.name_uz
+        setTimeout(() => {
+          _form.features = res.features
+        }, 1000)
+      })
+    }
   }
 }
 </script>

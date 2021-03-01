@@ -44,7 +44,7 @@
             placement="topRight"
             slot="extra"
             :title="$t('deleteMsg')"
-            @confirm="removeItem(item)"
+            @confirm="removeProduct(item.id)"
             :okText="$t('yes')"
             :cancelText="$t('no')"
           >
@@ -85,12 +85,8 @@ export default {
           scopedSlots: { customRender: 'image' },
         },
         {
-          title: this.$t('name_ru'),
-          dataIndex: 'name_ru',
-        },
-        {
-          title: this.$t('name_uz'),
-          dataIndex: 'name_uz',
+          title: this.$t('name'),
+          dataIndex: 'name',
         },
         {
           title: this.$t('category'),
@@ -127,7 +123,20 @@ export default {
   methods: {
     ...mapActions(['getAllProduct', 'deleteProduct']),
     editItem(item) {
-      this.$refs.editItem.show(item)
+      this.$router.push({
+        name: 'ProductsEdit',
+        params: {
+          step: 1
+        },
+        query: {
+          group_id: item.group_id
+        }
+      })
+    },
+    removeProduct(i) {
+      this.deleteProduct(i).then(res => {
+        this.getAllProduct(this.params)
+      })
     },
     changePagination(e) {
       this.params.pagination = e
@@ -136,7 +145,7 @@ export default {
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllProduct(this.params)
     },
     removeItem (item) {
       this.deleteProduct(item.id).then(res => {

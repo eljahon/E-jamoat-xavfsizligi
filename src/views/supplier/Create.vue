@@ -1,5 +1,5 @@
 <template>
-  <a-card :title="$t('supplier.product.create')">
+  <a-card :title="$route.params.id ? $t('supplier.product.update') : $t('supplier.product.create')">
     <a-form-model ref="ruleForm" :model="form" :rules="rules">
       <a-row>
         <a-col :span="11">
@@ -8,7 +8,7 @@
               <a-auto-complete
                 :allowClear="true"
                 :data-source="products"
-                v-model="form.product_id"
+                :defaultValue="defValue"
                 style='width: 100%'
                 :placeholder="$t('search_product')"
                 @search='getItems'
@@ -77,7 +77,7 @@
       </div>
     </div>
     <variant @input="variantChange" ref="variant"/>
-    <a-button @click="validateForm" :loading='loading'>{{ $t('create_product') }}</a-button>
+    <a-button @click="validateForm" :loading='loading'>{{ $route.params.id ? $t('update_product') : $t('create_product') }}</a-button>
   </a-card>
 </template>
 <script>
@@ -93,6 +93,7 @@ export default {
   data () {
     this.getItems = debounce(this.getItems, 1000)
     return {
+      defValue: 'salom',
       id: null,
       status: true,
       products: [],
@@ -141,7 +142,7 @@ export default {
     ...mapGetters(['allSupplierStores'])
   },
   methods: {
-    ...mapActions(['getAllProduct', 'getAllSupplierStores', 'getSupplierIsNotProduct', 'getProductVariants', 'postSupplierProduct', 'getSupplierProductWithId']),
+    ...mapActions(['getAllProduct', 'getAllSupplierStores', 'getSupplierIsNotProduct', 'getProductVariants', 'postSupplierProduct', 'getSupplierProductWithId', 'updateSupplierProduct']),
     variantChange (e) {
       if (e.update) {
         console.log(e.data)
@@ -216,11 +217,31 @@ export default {
               _form.variants = v
             } else _form.variants = []
             this.loading = true
-            this.postSupplierProduct(_form).then(res => {
-              this.$router.go(-1)
-            }).finally(() => {
-              this.loading = false
-            })
+            if (this.$route.params.id) {
+              this.updateSupplierProduct({
+                id: this.$route.params.id,
+                data: _form
+              }).then(res => {
+                // this.$router.go(-1)
+                this.$router.push({
+                  name: 'supplierPreview',
+                  params: {
+                    id: this.$route.query.supplierID
+                  },
+                  query: {
+                    key: 3
+                  }
+                })
+              }).finally(() => {
+                this.loading = false
+              })
+            } else {
+              this.postSupplierProduct(_form).then(res => {
+                this.$router.go(-1)
+              }).finally(() => {
+                this.loading = false
+              })
+            }
             console.log(_form)
           }
         })
@@ -236,24 +257,40 @@ export default {
     this.getAllSupplierStores({
       id: this.$route.query.supplierID
     })
+  },
+  created() {
     if (this.$route.params.id) {
       this.getSupplierProductWithId(this.$route.params.id).then(res => {
-        const _data = res.data
-        this.form.product_id = _data.product_id
-        console.log(res)
-      })
-    }
-    if (this.$route.params.name) {
-      this.getSupplierIsNotProduct({
-        id: this.$route.query.supplierID,
-        search: this.$route.params.name
-      }).then(res => {
-        this.products = res.data.map(e => {
-          return {
-            text: e.name,
-            value: e.id.toString() + ':' + e.group_id.toString()
+        this.$router.push({
+          name: 'supplierProductUpdate',
+          params: {
+            id: this.$route.params.id
+          },
+          query: {
+            supplierID: this.$route.query.supplierID,
+            prodcuct_id: res.data.product_id,
+            product_name: res.data.product_name
           }
         })
+        // form: {
+        //   product_id: null,
+        //     price: null,
+        //     discount: null,
+        //     old_price: null,
+        //     ball: null,
+        //     stock: null,
+        //     supplier_store_id: null,
+        //     supplier_id: this.$route.query.supplierID
+        // },
+        const _data = res.data
+        const _form = this.form
+        _form.product_id = _data.product_id
+        _form.price = _data.price
+        _form.discount = _data.discount
+        _form.old_price = _data.old_price
+        _form.ball = _data.ball
+        _form.stock = _data.stock
+        _form.supplier_store_id = _data.supplier_store_id
       })
     }
   }

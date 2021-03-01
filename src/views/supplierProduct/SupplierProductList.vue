@@ -136,13 +136,15 @@ export default {
       this.$router.push({
         name: 'supplierProductUpdate',
         params: {
-          id: item.id,
-          name: item.name
+          id: item.id
         },
         query: {
           supplierID: this.$route.params.id
         }
       })
+      setTimeout(() => {
+        document.location.reload()
+      }, 1000)
     },
     preview (item) {
       this.$router.push({
