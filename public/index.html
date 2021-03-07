@@ -34,94 +34,69 @@
       background: #0066FF;
     }
     .first-loading-wrp {
+      z-index: 9999999;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       min-height: 100vh;
-      background-color: #0066FF;
+      background-color: #ffffff;
       height: 100%
+    }
+    /* bouncing balls */
+
+    .bouncer {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      width: 100px;
+      height: 100px;
+    }
+
+    .bouncer div {
+      width: 20px;
+      height: 20px;
+      background-color: #0066FF;
+      border-radius: 50%;
+      animation: bouncer 0.5s cubic-bezier(0.19, 0.57, 0.3, 0.98) infinite alternate;
+      /* use https://cubic-bezier.com/ to customize the curve */
+    }
+
+    .bouncer div:nth-child(2) {
+      animation-delay: 0.1s;
+      opacity: 0.8;
+    }
+
+    .bouncer div:nth-child(3) {
+      animation-delay: 0.2s;
+      opacity: 0.6;
+    }
+
+    .bouncer div:nth-child(4) {
+      animation-delay: 0.3s;
+      opacity: 0.4;
+    }
+
+    @keyframes bouncer {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-100px);
+      }
     }
 
     .first-loading-wrp h1 {
       font-family: "Allerta Stencil";
-      color: #ffffff;
-      font-size: 64px;
-      margin-bottom: 150px;
-    }
-    .fancy-spinner {
-      display: -webkit-box;
-      display: flex;
-      -webkit-box-pack: center;
-              justify-content: center;
-      -webkit-box-align: center;
-              align-items: center;
-      width: 10rem;
-      height: 10rem;
-      margin-bottom: 100px;
-    }
-    .fancy-spinner div {
-      position: absolute;
-      width: 6rem;
-      height: 6rem;
-      border-radius: 50%;
-    }
-    .fancy-spinner div.ring {
-      border-width: 0.5rem;
-      border-style: solid;
-      border-color: transparent;
-      -webkit-animation: 2s fancy infinite alternate;
-              animation: 2s fancy infinite alternate;
-    }
-    .fancy-spinner div.ring:nth-child(1) {
-      border-left-color: #ffffff;
-      border-right-color: #ffffff;
-    }
-    .fancy-spinner div.ring:nth-child(2) {
-      border-top-color: #ffffff;
-      border-bottom-color: #ffffff;
-      -webkit-animation-delay: 1s;
-              animation-delay: 1s;
-    }
-    .fancy-spinner div.dot {
-      width: 1rem;
-      height: 1rem;
-      background: #ffffff;
-    }
-    .multi-ripple {
-      width: 5.6rem;
-      height: 5.6rem;
-      margin: 2rem;
-      margin-bottom: 20px;
-    }
-
-    .multi-ripple div {
-      position: absolute;
-      width: 4rem;
-      height: 4rem;
-      border-radius: 50%;
-      border: 0.5rem solid #979fd0;
-      animation: 1.5s ripple infinite;
-    }
-
-    .multi-ripple div:nth-child(2) {
-       animation-delay: 0.5s;
-    }
-    @keyframes ripple {
-      from {
-        transform: scale(0);
-        opacity: 1;
-      }
-
-      to {
-        transform: scale(1);
-        opacity: 0;
-      }
+      color: #0066FF;
+      font-size: 72px;
+      margin-bottom: 200px;
     }
     .footertitle {
+      margin-top: 120px;
       font-family: "Allerta Stencil";
       font-size: 18px;
-      color: #ffffff;
+      color: #0066FF;
     }
   </style>
   <!-- require cdn assets css -->
@@ -137,8 +112,10 @@
   </noscript>
   <div id="app">
     <div class="first-loading-wrp">
-      <h1>Admin App</h1>
-      <div class="multi-ripple">
+      <h1>Zaytun</h1>
+      <div class="bouncer">
+        <div></div>
+        <div></div>
         <div></div>
         <div></div>
       </div>
