@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if='topPages && topPages.length && topClients && topClients.length && topData && topData.length && topPages && topPages.length'>
+    <div v-if='topPages && topPages.length && topClients && topClients.length && topData && topData.length && topPages && topPages.length && charts'>
       <a-row type="flex" v-if='topData && topData.length'>
         <a-col style="margin: 15px 0; padding: 0 10px" :xs='24' :sm='12' :md='6' :lg='3' v-for='item in topData' :key='item.name'>
           <div class='topData'>
@@ -10,6 +10,27 @@
           </div>
         </a-col>
       </a-row>
+      <a-row v-if='charts'>
+        <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px'>
+          <a-card>
+            <bar title='Birnima' :head-title='charts.chart_one.chart[0].name' :data='charts.chart_one.chart[0].data' :labels='charts.chart_one.days'></bar>
+          </a-card>
+        </a-col>
+        <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px; padding-left: 5px'>
+          <a-card>
+            <line-chart title='Birnima' :head-title='charts.chart_one.chart[1].name' :data='charts.chart_one.chart[1].data' :labels='charts.chart_one.days'></line-chart>
+          </a-card>
+        </a-col>
+        <a-col :sm="24" :md="12" :xl="8" style='padding-left: 5px'>
+          <a-card>
+            <bar title='Birnima' :head-title='charts.chart_one.chart[2].name' :data='charts.chart_one.chart[2].data' :labels='charts.chart_one.days'></bar>
+          </a-card>
+        </a-col>
+
+      </a-row>
+
+
+
       <a-row>
         <a-col :sm='24' :md='12' :lg='12' style='padding-right: 5px; padding-top: 10px'>
           <a-card style='box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;'>
@@ -39,7 +60,13 @@
 
 <script>
 import { mapActions } from 'vuex'
+import bar from '@/components/charts/barChart'
+import LineChart from '@/components/charts/lineChart'
 export default {
+  components: {
+    LineChart,
+    'bar': bar
+  },
   data () {
     return {
       columns: [
@@ -89,6 +116,7 @@ export default {
           dataIndex: 'count'
         },
       ],
+      charts: null,
       topData: [],
       topProducts: [],
       topClients: [],
@@ -96,13 +124,14 @@ export default {
     }
   },
    methods: {
-    ...mapActions(['getDashboardTopData', 'getDashboardTopProducts', 'getDashboardTopClients', 'getDashboardTopPages'])
+    ...mapActions(['getDashboardTopData', 'getDashboardTopProducts', 'getDashboardTopClients', 'getDashboardTopPages', 'getDashboardAllCharts'])
    },
    mounted() {
-    this.getDashboardTopData().then(res => { this.topData = res })
+     this.getDashboardTopData().then(res => { this.topData = res })
      this.getDashboardTopProducts().then(res => { this.topProducts = res })
      this.getDashboardTopClients().then(res => { this.topClients = res })
      this.getDashboardTopPages().then(res => { this.topPages = res })
+     this.getDashboardAllCharts().then(res => { this.charts = res })
    }
 }
 </script>

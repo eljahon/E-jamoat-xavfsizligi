@@ -5,8 +5,8 @@
         <a-step v-for='item in steps' :key='item.title' :title='item.title' />
       </a-steps>
       <div class='steps-content'>
-        <div v-if="$route.params.step == '1'"><first-step/></div>
-        <div v-if="$route.params.step == '2'"><second-step/></div>
+        <div v-if="$route.params.step === '1'"><first-step/></div>
+        <div v-if="$route.params.step === '2'"><second-step/></div>
 <!--        <div v-else>-->
 <!--          {{ steps[current].content }}-->
 <!--        </div>-->

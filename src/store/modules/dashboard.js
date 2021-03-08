@@ -60,6 +60,19 @@ export default {
             errorMessage(error)
           })
       })
-    }
+    },
+    getDashboardAllCharts({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get('/admin/dashboard/charts')
+          .then(res => {
+            resolve(res.data)
+            console.log(res)
+          })
+          .catch(error => {
+            reject(error)
+            errorMessage(error)
+          })
+      })
+    },
   }
 }
