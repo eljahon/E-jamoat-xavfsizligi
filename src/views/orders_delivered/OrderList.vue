@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card size="small" :title="$t('order.delevered.list')" style="width: 100%">
+    <a-card :title="$t('order.delevered.list')" style="width: 100%">
 <!--      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>-->
 <!--      <a-row style="margin: 10px 0">-->
 <!--        <a-col :span="16"></a-col>-->
@@ -9,11 +9,11 @@
 <!--        </a-col>-->
 <!--      </a-row>-->
       <a-table
-        size="small"
+        size="middle"
         :columns="columns"
-        :data-source="allOrderDelivereds"
-        :loading="loadOrderDelivereds"
-        :pagination='paginationOrderDelivereds'
+        :data-source="allOrder"
+        :loading="loadOrder"
+        :pagination='paginationOrder'
         :rowKey="item => item.id"
         @change="changePagination"
       >
@@ -29,41 +29,16 @@
             <template slot="title">{{ $t('view') }}</template>
             <a-button size="small" style="margin: 0 2px" id="buttonUpdate" type="default" @click="viewItem(item)" icon="eye"></a-button>
           </a-tooltip>
-<!--          <a-popconfirm-->
-<!--            placement="topRight"-->
-<!--            slot="extra"-->
-<!--            :title="$t('deleteMsg')"-->
-<!--            @confirm="removeItem(item)"-->
-<!--            :okText="$t('yes')"-->
-<!--            :cancelText="$t('no')"-->
-<!--          >-->
-<!--            <a-tooltip>-->
-<!--              <template slot="title">{{ $t('delete') }}</template>-->
-<!--              <a-button-->
-<!--                size="small"-->
-<!--                style="margin: 0 2px"-->
-<!--                type="danger"-->
-<!--                icon="delete"-->
-<!--              ></a-button>-->
-<!--            </a-tooltip>-->
-<!--          </a-popconfirm>-->
         </template>
       </a-table>
     </a-card>
 
-    <!-- MODALS -->
-    <measure-create ref="createMeasure" :editable="false" :params="params"/>
-    <measure-create ref="editMeasure" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import measureCreate from './OrderDeliveredCreateWithUpdate'
 import moment from 'moment'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  components: {
-    'measure-create': measureCreate,
-  },
   data() {
     return {
       visible: false,
@@ -105,6 +80,7 @@ export default {
         },
       ],
       params: {
+        type: this.$route.path.split('/')[2].toString(),
         pagination: {
           current: 1,
           pageSize: 15,
@@ -114,13 +90,18 @@ export default {
       },
     }
   },
+  watch: {
+    'params.type': function(val) {
+      console.log(val)
+    }
+  },
   methods: {
     moment,
-    ...mapActions(['getAllOrderDelivered', 'deleteMeasure']),
+    ...mapActions(['getAllOrder']),
     viewItem(item) {
       console.log(item)
       this.$router.push({
-        name: 'OrdersInDeliveryView',
+        name: 'OrdersView',
         params: {
           id: item.id
         }
@@ -129,17 +110,17 @@ export default {
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllOrderDelivered(this.params)
+      this.getAllOrder(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllOrderDelivered(this.params)
+      this.getAllOrder(this.params)
     },
     removeItem (item) {
       console.log(item)
       this.deleteMeasure(item.id).then(res => {
-        this.getAllOrderDelivered(this.params)
+        this.getAllOrder(this.params)
       })
     },
     addItem () {
@@ -147,10 +128,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allOrderDelivereds', 'loadOrderDelivereds', 'paginationOrderDelivereds']),
+    ...mapGetters(['allOrder', 'loadOrder', 'paginationOrder']),
   },
   mounted() {
-    this.getAllOrderDelivered(this.params)
+    this.getAllOrder(this.params)
   },
 }
 </script>

@@ -81,6 +81,19 @@ export default {
             reject(error)
           })
       })
-    }
+    },
+    getAllMeasureList({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/measure/list`)
+          .then(res => {
+            resolve(res.data)
+            console.log(res.data)
+          })
+          .catch(error => {
+            reject(error)
+            console.log(error.message)
+          })
+      })
+    },
   }
 }

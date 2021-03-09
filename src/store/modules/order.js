@@ -1,26 +1,28 @@
 import axiosInit from '@/utils/axios_init'
+import notification from 'ant-design-vue/lib/notification'
 export default {
   state: {
-    orders: [],
-    loadOrder: false,
+    data: [],
+    loading: false,
+    // loadingById: false,
     status: [],
     pagination: {}
   },
   getters: {
-    allOrders: (state) => state.orders,
+    allOrder: (state) => state.data,
     orderStatus: (state) => state.status,
-    loadOrder: (state) => state.loadOrder,
+    loadOrder: (state) => state.loading,
     paginationOrder: (state) => state.pagination
   },
   mutations: {
     GET_ALL_ORDER(state, payload) {
-      state.orders = payload
+      state.data = payload
     },
     GET_ALL_ORDER_STATUS(state, payload) {
       state.status = payload
     },
     GET_LOAD_ORDER(state, payload) {
-      state.loadOrder = payload
+      state.loading = payload
     },
     GET_ORDER_PAGINATION(state, payload) {
       state.pagination = payload
@@ -29,25 +31,28 @@ export default {
   actions: {
     getAllOrder({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        let { pagination, search } = payload
+        let { pagination } = payload
         commit('GET_LOAD_ORDER', true)
         // axios
-        axiosInit.get('/orders', {
-          limit: pagination.pageSize,
-          offset: (pagination.current - 1) * pagination.pageSize,
-          vendor_id: '5f50b5b8ac4f380011954421',
-          search: search
-        })
+        axiosInit.get(`/admin/orders${payload.type === 'main' ? '' : '/' + payload.type}`,
+          {
+            page: pagination.current
+          }
+        )
           .then(res => {
-            resolve()
             console.log(res)
-            pagination.total = parseInt(res.count)
+            resolve()
+            pagination.total = parseInt(res.links.total)
             commit('GET_ORDER_PAGINATION', pagination)
-            commit('GET_ALL_ORDER', res.orders)
+            commit('GET_ALL_ORDER', res.data)
           })
-          .catch(error => {
-            reject(error)
-            this.$message.error(error.message)
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
           })
           .finally(() => {
             commit('GET_LOAD_ORDER', false)

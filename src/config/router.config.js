@@ -50,30 +50,32 @@ export const asyncRouterMap = [
             path: '/orders/main',
             name: 'OrdersMain',
             hideChildrenInMenu: true,
-            component: () => import('@/views/TestRouter'),
+            component: () => import('@/views/orders_delivered/OrderList'),
             // redirect: '/main/category/list',
             meta: { title: 'allOrder', keepAlive: true, permission: ['form'] },
-            children: [
-              // {
-              //   path: '/main/category/list',
-              //   name: 'CategoryList',
-              //   component: () => import('@/views/category/CategoryList'),
-              //   meta: { title: 'categories', keepAlive: true, permission: ['form'] }
-              // }
-            ]
+            children: []
           },
           {
-            path: '/orders/orders_in_delivery',
+            path: '/orders/delivered',
             name: 'OrdersInDelivery',
             hideChildrenInMenu: true,
-            component: () => import('@/views/orders_delivered/OrderDeliveredList'),
+            component: () => import('@/views/orders_delivered/OrderList'),
             // redirect: '/main/features/list',
             meta: { title: 'orders_in_delivery', keepAlive: true, permission: [ 'form' ] },
             children: []
           },
           {
-            path: '/orders/orders_in_delivery/view/:id',
-            name: 'OrdersInDeliveryView',
+            path: '/orders/cancelled',
+            name: 'OrdersCancelled',
+            hideChildrenInMenu: true,
+            component: () => import('@/views/orders_delivered/OrderList'),
+            // redirect: '/main/features/list',
+            meta: { title: 'orders_cancelled', keepAlive: true, permission: [ 'form' ] },
+            children: []
+          },
+          {
+            path: '/orders/view/:id',
+            name: 'OrdersView',
             hidden: true,
             component: () => import('@/views/orders_delivered/View'),
             meta: { title: 'orders_in_view', keepAlive: true, permission: [ 'form' ] },
@@ -499,7 +501,7 @@ export const asyncRouterMap = [
                 path: '/users/role/update/:id',
                 name: 'UserRoleUpdate',
                 component: () => import('@/views/roles/Roles'),
-                meta: { title: 'roles.update', keepAlive: true, permission: [ 'form' ] }
+                meta: { title: 'roles.edit', keepAlive: true, permission: [ 'form' ] }
               }
             ]
           },

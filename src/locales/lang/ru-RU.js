@@ -35,6 +35,7 @@ const locale = {
     'update': 'Изменить',
     'action': 'Действия',
     'search': 'Поиск',
+    'search.name': 'Имя поиска',
     'slug': 'Слизняк',
     'popular': 'Популярный',
     'popular.no': 'Не популярный',
@@ -154,7 +155,15 @@ const locale = {
     'update_product': 'Изменить продукт',
     'add_variant': 'Добавить вариант',
     'discount_price': 'Цена со скидкой',
-
+    'filters': 'Фильтры',
+    'index': 'Индекс',
+    'list': 'Список',
+    'get': 'Получать',
+    'create': 'Создавать',
+    'destroy': 'Разрушать',
+    'parentList': 'Родительский список',
+    'withTree': 'С деревом',
+    'permissions': 'Разрешения',
 
 
     // courier
@@ -165,6 +174,7 @@ const locale = {
     'car_model': 'Модель машины',
 
     // brands
+    'brand': 'Бренд',
     'brands': 'Бренды',
     'brands.list': 'Список брендов',
 
@@ -202,6 +212,7 @@ const locale = {
     'region': 'Область',
 
     // measures
+    'measure': 'Единица измерение',
     'measures': 'Единица измерение',
     'measures.list': 'Список мер',
 
@@ -235,7 +246,12 @@ const locale = {
     // role
     'roles': 'Роли',
     'roles.list': 'Список ролей',
-
+    'roles.create': 'Создать роль',
+    'roles.edit': 'Изменить роль',
+    'roles.name': 'Имя роли',
+    'role.created': 'Роль успешно создана',
+    'role.updated': 'Роль успешно обновлена',
+    'guard_name': 'Сторожить',
     // supplier store
     'supplier_store': 'Магазин-поставщик',
     'supplier_store.list': 'Список магазинов поставщиков',
@@ -302,6 +318,7 @@ const locale = {
     'orders': 'Заказы',
     'allOrder': 'Все заказы',
     'orders_in_delivery': 'Заказы в доставке',
+    'orders_cancelled': 'Отмененные заказы',
     'preview_order': 'Информация о заказы',
     'delivered': 'Доставлен',
     'finished': 'Завершен',

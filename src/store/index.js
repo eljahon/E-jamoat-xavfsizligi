@@ -28,7 +28,7 @@ import complaint from '@/store/modules/complaint'
 import searchHistory from '@/store/modules/search_history'
 import roles from '@/store/modules/roles'
 import supplierProduct from '@/store/modules/supplierProduct'
-import orderDelivered from '@/store/modules/order-delivered'
+// import orderDelivered from '@/store/modules/order-delivered'
 import dashboard from '@/store/modules/dashboard'
 
 // default router permission control
@@ -71,7 +71,7 @@ export default new Vuex.Store({
     roles,
     notification,
     searchHistory,
-    orderDelivered
+    // orderDelivered
   },
   state: {
 

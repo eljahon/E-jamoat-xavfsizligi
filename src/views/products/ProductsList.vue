@@ -2,10 +2,34 @@
   <div>
     <a-card :title="$t('product_list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="() => { $router.push({ name: 'ProductsCreate', params: { step: 1 } }) }">{{ $t('add') }}</a-button>
-      <a-row style="margin: 10px 0">
-        <a-col :span="16"></a-col>
-        <a-col :span="8">
-          <a-input v-debounce="search" :placeholder="$t('search')" />
+      <a-divider>{{ $t('filters') }}</a-divider>
+      <a-row style="margin: 20px 0">
+        <a-col style='padding-right: 5px' :span="4">
+          <a-input v-debounce="search" :placeholder="$t('search.name')" />
+        </a-col>
+        <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
+          <a-select allowClear show-search :placeholder="$t('category')" :filter-option="filterOption" style="width: 100%" @change="filterCategory">
+            <a-select-option v-for='c in category' :key='c.id' :value='c.id'>{{ c.name_uz }}</a-select-option>
+          </a-select>
+        </a-col>
+        <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
+          <a-select allowClear show-search :placeholder="$t('brand')" :filter-option="filterOption" style="width: 100%" @change="filterBrand">
+            <a-select-option v-for='b in allBrands' :key='b.id' :value='b.id'>{{ b.name }}</a-select-option>
+          </a-select>
+        </a-col>
+        <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
+          <a-input v-debounce="search" :placeholder="$t('supplier')" />
+        </a-col>
+        <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
+          <a-select allowClear show-search :placeholder="$t('measure')" :filter-option="filterOption" style="width: 100%" @change="filterMeasure">
+            <a-select-option v-for='m in measure' :key='m.id' :value='m.id'>{{ m.name_uz }}</a-select-option>
+          </a-select>
+        </a-col>
+        <a-col style='padding-left: 5px' :span="4">
+          <a-select allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
+            <a-select-option :value='10'>{{ $t('active') }}</a-select-option>
+            <a-select-option :value='0'>{{ $t('inactive') }}</a-select-option>
+          </a-select>
         </a-col>
       </a-row>
       <a-table
@@ -93,15 +117,18 @@ export default {
           dataIndex: 'category_name',
         },
         {
+          title: this.$t('brand'),
+          dataIndex: 'brand_name',
+        },
+        {
           title: this.$t('measures'),
           dataIndex: 'measure_name',
         },
-        // {
-        //   title: this.$t('status'),
-        //   dataIndex: 'status',
-        //   align: 'center',
-        //   scopedSlots: { customRender: 'status' },
-        // },
+        {
+          title: this.$t('status'),
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' },
+        },
         {
           title: this.$t('action'),
           key: 'action',
@@ -110,6 +137,8 @@ export default {
           scopedSlots: { customRender: 'action' },
         },
       ],
+      category: [],
+      measure: [],
       params: {
         pagination: {
           current: 1,
@@ -117,11 +146,16 @@ export default {
           total: null,
         },
         search: '',
+        category: null,
+        brand: null,
+        supplier: null,
+        measure: null,
+        status: null
       },
     }
   },
   methods: {
-    ...mapActions(['getAllProduct', 'deleteProduct']),
+    ...mapActions(['getAllProduct', 'deleteProduct', 'getListCategory', 'getAllBrandsList', 'getAllSuppliersList', 'getAllMeasureList']),
     editItem(item) {
       this.$router.push({
         name: 'ProductsEdit',
@@ -154,13 +188,42 @@ export default {
     },
     addItem () {
       this.$refs.createBrand.show()
+    },
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
+    },
+    filterCategory (e) {
+      this.params.category = e
+      this.getAllProduct(this.params)
+    },
+    filterBrand (e) {
+      this.params.brand = e
+      this.getAllProduct(this.params)
+    },
+    filterMeasure (e) {
+      this.params.measure = e
+      this.getAllProduct(this.params)
+    },
+    filterStatus (e) {
+      this.params.status = e
+      this.getAllProduct(this.params)
     }
   },
   computed: {
-    ...mapGetters(['allProduct', 'loadProduct', 'paginationProduct']),
+    ...mapGetters(['allProduct', 'loadProduct', 'paginationProduct', 'allBrands', 'allSuppliersList']),
   },
   mounted() {
     this.getAllProduct(this.params)
+    this.getListCategory().then(res => {
+      this.category = res
+    })
+    this.getAllBrandsList()
+    this.getAllSuppliersList()
+    this.getAllMeasureList().then(res => {
+      this.measure = res
+    })
   },
 }
 </script>

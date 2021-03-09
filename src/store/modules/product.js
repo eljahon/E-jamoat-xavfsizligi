@@ -30,7 +30,12 @@ export default {
         // axios
         axiosInit.get('/admin/products', {
           page: pagination.current,
-          name: payload.name ? payload.name : undefined
+          name: payload.search ? payload.search : undefined,
+          category: payload.category ? payload.category : undefined,
+          brand: payload.brand ? payload.brand : undefined,
+          supplier: payload.supplier ? payload.supplier : undefined,
+          measure: payload.measure ? payload.measure : undefined,
+          status: payload.status ? payload.status : undefined,
         })
           .then(res => {
             resolve(res)

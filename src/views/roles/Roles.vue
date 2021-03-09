@@ -1,8 +1,8 @@
 <template>
-  <a-card :title="$route.params.id ? 'Role Update' : 'Role Create'">
+  <a-card :title="$route.params.id ? $t('roles.edit') : $t('roles.create')">
     <a-button v-if="!$route.params.id" slot='extra' type='primary' :loading='loading' @click='save'>{{ $t('save') }}</a-button>
     <a-button v-else slot='extra' type='primary' :loading='loading' @click='update'>{{ $t('update') }}</a-button>
-      <a-form-model-item style='margin: 0 12px' label='Role name'>
+      <a-form-model-item style='margin: 0 12px' :label="$t('roles.name')">
         <a-input style='width: 100%;' v-model='name'></a-input>
       </a-form-model-item>
     <a-checkbox-group style='margin-top: 30px' v-model='permissions'>
@@ -12,7 +12,7 @@
         >
           <a-row v-for='(item, j) in per.items' :key='item.name + j'>
             <a-col :span='24'>
-              <a-checkbox :value='item.name'>{{ item.name }}</a-checkbox>
+              <a-checkbox :value='item.name'>{{ $t(item.name.split('.')[2]) }}</a-checkbox>
             </a-col>
           </a-row>
         </a-card>
@@ -46,14 +46,15 @@ export default {
           permissions: this.permissions
         }).then(res => {
           this.loading = false
-          this.$message.success('Created')
+          this.$message.success(this.$t('role.created'))
+          this.$router.push({ name: 'UserRoleList' })
         })
         .catch(err => {
           this.loading = false
         })
       } else {
         this.loading = false
-        this.$message.error('Some fields not selected')
+        this.$message.error('Некоторые поля не выбраны')
       }
     },
     update () {
@@ -68,14 +69,15 @@ export default {
           }
         }).then(res => {
           this.loading = false
-          this.$message.success('Updated')
+          this.$message.success(this.$t('role.updated'))
+          this.$router.push({ name: 'UserRoleList' })
         })
         .catch(err => {
           this.loading = false
         })
       } else {
         this.loading = false
-        this.$message.error('Some fields not selected')
+        this.$message.error('Некоторые поля не выбраны')
       }
     },
     style(index) {
