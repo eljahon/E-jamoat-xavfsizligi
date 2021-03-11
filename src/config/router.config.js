@@ -50,28 +50,49 @@ export const asyncRouterMap = [
             path: '/orders/main',
             name: 'OrdersMain',
             hideChildrenInMenu: true,
-            component: () => import('@/views/orders_delivered/OrderList'),
-            // redirect: '/main/category/list',
+            component: RouteView,
+            redirect: '/orders/main/list',
             meta: { title: 'allOrder', keepAlive: true, permission: ['form'] },
-            children: []
+            children: [
+              {
+                path: '/orders/main/list',
+                name: 'OrdersMain',
+                component: () => import('@/views/orders_delivered/OrderList'),
+                meta: { title: 'allOrder', keepAlive: true, permission: ['form'] }
+              }
+            ]
           },
           {
             path: '/orders/delivered',
             name: 'OrdersInDelivery',
             hideChildrenInMenu: true,
             component: () => import('@/views/orders_delivered/OrderList'),
-            // redirect: '/main/features/list',
+            // redirect: '/orders/delivered/list',
             meta: { title: 'orders_in_delivery', keepAlive: true, permission: [ 'form' ] },
-            children: []
+            children: [
+              // {
+              //   path: '/orders/delivered/list',
+              //   name: 'OrdersInDeliveryList',
+              //   component: () => import('@/views/orders_delivered/OrderList'),
+              //   meta: { title: 'orders_in_delivery', keepAlive: true, permission: ['form'] }
+              // }
+            ]
           },
           {
             path: '/orders/cancelled',
             name: 'OrdersCancelled',
             hideChildrenInMenu: true,
-            component: () => import('@/views/orders_delivered/OrderList'),
-            // redirect: '/main/features/list',
+            component: RouteView,
+            redirect: '/orders/cancelled/list',
             meta: { title: 'orders_cancelled', keepAlive: true, permission: [ 'form' ] },
-            children: []
+            children: [
+              {
+                path: '/orders/cancelled/list',
+                name: 'OrdersCancelledList',
+                component: () => import('@/views/orders_delivered/OrderList'),
+                meta: { title: 'orders_cancelled', keepAlive: true, permission: ['form'] }
+              }
+            ]
           },
           {
             path: '/orders/view/:id',
