@@ -1,13 +1,9 @@
 <template>
   <div>
-    <a-card :title="$t('order.delevered.list')" style="width: 100%">
-<!--      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>-->
-<!--      <a-row style="margin: 10px 0">-->
-<!--        <a-col :span="16"></a-col>-->
-<!--        <a-col :span="8">-->
-<!--          <a-input v-debounce="search" :placeholder="$t('search')" />-->
-<!--        </a-col>-->
-<!--      </a-row>-->
+    <a-card :title="$t('order_list')" style="width: 100%">
+      <a-row>
+          
+      </a-row>
       <a-table
         size="middle"
         :columns="columns"

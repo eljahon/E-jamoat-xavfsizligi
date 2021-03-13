@@ -164,6 +164,11 @@ const locale = {
     'parentList': 'Родительский список',
     'withTree': 'С деревом',
     'permissions': 'Разрешения',
+    'start_time': 'Начальное время',
+    'end_time': 'Время окончания',
+    'buy.products': 'Купить продукцию',
+    'amount': 'Количество',
+    'sold': 'Продал',
 
 
     // courier

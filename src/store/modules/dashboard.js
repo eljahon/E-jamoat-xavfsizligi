@@ -11,7 +11,10 @@ export default {
   actions: {
     getDashboardTopData({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.get('/admin/dashboard')
+        axiosInit.get('/admin/dashboard', {
+          to: payload.to,
+          from: payload.from
+        })
           .then(res => {
             resolve(res.data)
             console.log(res)
@@ -24,7 +27,10 @@ export default {
     },
     getDashboardTopProducts({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.get('/admin/dashboard/leader-products')
+        axiosInit.get('/admin/dashboard/leader-products', {
+          to: payload.to,
+          from: payload.from
+        })
           .then(res => {
             resolve(res.data)
             console.log(res)
@@ -37,7 +43,10 @@ export default {
     },
     getDashboardTopClients({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.get('/admin/dashboard/leader-clients')
+        axiosInit.get('/admin/dashboard/leader-clients', {
+          to: payload.to,
+          from: payload.from
+        })
           .then(res => {
             resolve(res.data)
             console.log(res)
@@ -50,7 +59,10 @@ export default {
     },
     getDashboardTopPages({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.get('/admin/dashboard/top-pages')
+        axiosInit.get('/admin/dashboard/top-pages', {
+          to: payload.to,
+          from: payload.from
+        })
           .then(res => {
             resolve(res.data)
             console.log(res)
@@ -63,7 +75,10 @@ export default {
     },
     getDashboardAllCharts({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.get('/admin/dashboard/charts')
+        axiosInit.get('/admin/dashboard/charts', {
+          to: payload.to,
+          from: payload.from
+        })
           .then(res => {
             resolve(res.data)
             console.log(res)
