@@ -22,7 +22,7 @@ export default {
     }
   },
   actions: {
-    getAllDeliveryTypes({ commit }, payload) {
+    getAllDeliveryTypes ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         let { pagination } = payload
         commit('GET_LOAD_DELIVERY_TYPES', true)
@@ -47,7 +47,7 @@ export default {
           })
       })
     },
-    updateDeliveryType({ commit }, payload) {
+    updateDeliveryType ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.put(`/admin/delivery-type/${payload.id}`, payload.data)
           .then(res => {
@@ -60,7 +60,7 @@ export default {
           })
       })
     },
-    deleteDeliveryTypes({ commit }, payload) {
+    deleteDeliveryTypes ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.delete(`/admin/delivery-type/${payload}`)
           .then(res => {
@@ -73,9 +73,20 @@ export default {
           })
       })
     },
-    postDeliveryTypes({ commit }, payload) {
+    postDeliveryTypes ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.post('/admin/delivery-type', payload).then(res => {
+          resolve(res)
+          console.log(res)
+        })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    getDeliveryTypesList ({ commit }) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get('/admin/delivery-type/list').then(res => {
           resolve(res)
           console.log(res)
         })

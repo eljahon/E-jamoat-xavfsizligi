@@ -40,7 +40,12 @@ export default {
         // axios
         axiosInit.get('/admin/features',
           {
-            page: pagination.current
+            page: pagination.current,
+            name: payload.search ? payload.search : undefined,
+            status: payload.status,
+            type: payload.type ? payload.type : undefined,
+            filter_type: payload.filter_type ? payload.filter_type : undefined,
+            category: payload.category ? payload.category : undefined
           }
         )
           .then(res => {

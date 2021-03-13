@@ -2,10 +2,31 @@
   <div>
     <a-card :title="$t('features.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="() => { $router.push({ name: 'FeaturesCreate' }) }">{{ $t('add') }}</a-button>
-      <a-row style="margin: 10px 0">
-        <a-col :span="16"></a-col>
-        <a-col :span="8">
-          <a-input v-debounce="search" :placeholder="$t('search')" />
+      <a-divider>{{ $t('filters') }}</a-divider>
+      <a-row style="margin: 20px 0">
+        <a-col style='padding-right: 5px' :span="4">
+          <a-input v-debounce="search" :placeholder="$t('search.name')" />
+        </a-col>
+        <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
+          <a-select allowClear show-search :placeholder="$t('category')" :filter-option="filterOption" style="width: 100%" @change="filterCategory">
+            <a-select-option v-for='c in category' :key='c.id' :value='c.id'>{{ c.name_uz }}</a-select-option>
+          </a-select>
+        </a-col>
+        <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
+          <a-select allowClear show-search :placeholder="$t('type')" :filter-option="filterOption" style="width: 100%" @change="filterType">
+            <a-select-option v-for='type in types' :key='type' :value='type'>{{ type }}</a-select-option>
+          </a-select>
+        </a-col>
+        <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
+          <a-select allowClear show-search :placeholder="$t('filter_type')" :filter-option="filterOption" style="width: 100%" @change="filterTypeFilter">
+            <a-select-option v-for='type in types' :key='type' :value='type'>{{ type }}</a-select-option>
+          </a-select>
+        </a-col>
+        <a-col style='padding-left: 5px' :span="4">
+          <a-select allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
+            <a-select-option :value='10'>{{ $t('active') }}</a-select-option>
+            <a-select-option :value='0'>{{ $t('inactive') }}</a-select-option>
+          </a-select>
         </a-col>
       </a-row>
       <a-table
@@ -72,6 +93,7 @@ export default {
     return {
       visible: false,
       loading: false,
+      category: [],
       columns: [
         {
           title: this.$t('name_ru'),
@@ -95,6 +117,9 @@ export default {
           scopedSlots: { customRender: 'action' },
         },
       ],
+      types: [
+        'dropdown', 'radio', 'checkbox', 'text', 'number', 'date', 'datetime', 'textarea'
+      ],
       params: {
         pagination: {
           current: 1,
@@ -102,11 +127,15 @@ export default {
           total: null,
         },
         search: '',
+        status: 10,
+        category: null,
+        type: null,
+        filter_type: null
       },
     }
   },
   methods: {
-    ...mapActions(['getAllFeatures', 'deleteFeatures']),
+    ...mapActions(['getAllFeatures', 'deleteFeatures', 'getListCategory']),
     editItem(item) {
       this.$router.push({
         name: 'FeaturesEdit',
@@ -123,16 +152,35 @@ export default {
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllFeatures(this.params)
+    },
+    filterStatus (value) {
+      console.log(value)
+      this.params.status = value
+      this.getAllFeatures(this.params)
+    },
+    filterCategory (e) {
+      this.params.category = e
+      this.getAllFeatures(this.params)
+    },
+    filterType (e) {
+      this.params.type = e
+      this.getAllFeatures(this.params)
+    },
+    filterTypeFilter (e) {
+      this.params.filter_type = e
+      this.getAllFeatures(this.params)
+    },
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
     },
     removeItem (item) {
       console.log(item)
       this.deleteFeatures(item.id).then(res => {
         this.getAllFeatures(this.params)
       })
-    },
-    addItem () {
-      this.$refs.createBrand.show()
     }
   },
   computed: {
@@ -140,6 +188,9 @@ export default {
   },
   mounted() {
     this.getAllFeatures(this.params)
+    this.getListCategory().then(res => {
+      this.category = res
+    })
   },
 }
 </script>

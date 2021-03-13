@@ -39,7 +39,9 @@ export default {
         // axios
         axiosInit.get('/admin/category',
           {
-          page: pagination.current
+          page: pagination.current,
+          name: pagination.search ? pagination.search : undefined,
+          status: pagination.status
         }
         )
           .then(res => {

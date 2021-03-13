@@ -69,14 +69,7 @@ export const asyncRouterMap = [
             component: () => import('@/views/orders_delivered/OrderList'),
             // redirect: '/orders/delivered/list',
             meta: { title: 'orders_in_delivery', keepAlive: true, permission: [ 'form' ] },
-            children: [
-              // {
-              //   path: '/orders/delivered/list',
-              //   name: 'OrdersInDeliveryList',
-              //   component: () => import('@/views/orders_delivered/OrderList'),
-              //   meta: { title: 'orders_in_delivery', keepAlive: true, permission: ['form'] }
-              // }
-            ]
+            children: []
           },
           {
             path: '/orders/cancelled',
@@ -191,45 +184,37 @@ export const asyncRouterMap = [
       },
       // supplier
       {
-        path: '/supplier_all',
-        redirect: '/supplier_all/supplier',
+        path: '/supplier',
+        name: 'supplier',
+        redirect: '/supplier/list',
         component: RouteView,
+        hideChildrenInMenu: true,
         meta: { title: 'supplier', icon: 'scan', permission: ['form'] },
         children: [
           {
-            path: '/supplier_all/supplier',
-            name: 'supplier',
-            hideChildrenInMenu: true,
-            component: RouteView,
-            redirect: '/supplier_all/supplier/list',
-            meta: { title: 'supplier', permission: [ 'form' ] },
-            children: [
-              {
-                path: '/supplier_all/supplier/list',
-                name: 'supplierList',
-                component: () => import('@/views/supplier/SupplierList'),
-                meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
-              },
-              {
-                path: '/supplier_all/supplier/preview/:id',
-                name: 'supplierPreview',
-                component: () => import('@/views/supplier/Preview'),
-                meta: { title: 'supplier.product.preview', keepAlive: true, permission: [ 'form' ] }
-              },
-              {
-                path: '/supplier_all/supplier/product/create',
-                name: 'supplierProductCreate',
-                component: () => import('@/views/supplier/Create'),
-                meta: { title: 'supplier.product.create', keepAlive: true, permission: [ 'form' ] }
-              },
-              {
-                path: '/supplier_all/supplier/product/edit/:id',
-                name: 'supplierProductUpdate',
-                component: () => import('@/views/supplier/Create'),
-                meta: { title: 'supplier.product.edit', keepAlive: true, permission: [ 'form' ] }
-              }
-            ]
+            path: '/supplier/list',
+            name: 'supplierList',
+            component: () => import('@/views/supplier/SupplierList'),
+            meta: { title: 'supplier.list', keepAlive: true, permission: [ 'form' ] }
           },
+          {
+            path: '/supplier/preview/:id',
+            name: 'supplierPreview',
+            component: () => import('@/views/supplier/Preview'),
+            meta: { title: 'supplier.product.preview', keepAlive: true, permission: [ 'form' ] }
+          },
+          {
+            path: '/supplier/product/create',
+            name: 'supplierProductCreate',
+            component: () => import('@/views/supplier/Create'),
+            meta: { title: 'supplier.product.create', keepAlive: true, permission: [ 'form' ] }
+          },
+          {
+            path: '/supplier/product/edit/:id',
+            name: 'supplierProductUpdate',
+            component: () => import('@/views/supplier/Create'),
+            meta: { title: 'supplier.product.edit', keepAlive: true, permission: [ 'form' ] }
+          }
           // {
           //   path: '/supplier_all/supplierStore',
           //   name: 'supplierStore',
@@ -251,37 +236,29 @@ export const asyncRouterMap = [
       // products
       {
         path: '/products',
-        redirect: '/products/main',
+        name: 'products',
+        hideChildrenInMenu: true,
+        redirect: '/products/list',
         component: RouteView,
         meta: { title: 'products', icon: 'shop', permission: ['form'] },
         children: [
           {
-            path: '/products/main',
-            name: 'Products',
-            hideChildrenInMenu: true,
-            component: RouteView,
-            redirect: '/products/main/list',
-            meta: { title: 'products', icon: 'shop', permission: [ 'form' ] },
-            children: [
-              {
-                path: '/products/main/list',
-                name: 'ProductsList',
-                component: () => import('@/views/products/ProductsList'),
-                meta: { title: 'product_list', keepAlive: true, permission: [ 'form' ] }
-              },
-              {
-                path: '/products/main/create/:step',
-                name: 'ProductsCreate',
-                component: () => import('@/views/products/ProductsCreateWithUpdate'),
-                meta: { title: 'Product Create', keepAlive: true, permission: [ 'form' ] }
-              },
-              {
-                path: '/products/main/edit/:step',
-                name: 'ProductsEdit',
-                component: () => import('@/views/products/ProductsCreateWithUpdate'),
-                meta: { title: 'Product Edit', keepAlive: true, permission: [ 'form' ] }
-              }
-            ]
+            path: '/products/list',
+            name: 'ProductsList',
+            component: () => import('@/views/products/ProductsList'),
+            meta: { title: 'product_list', keepAlive: true, permission: [ 'form' ] }
+          },
+          {
+            path: '/products/create/:step',
+            name: 'ProductsCreate',
+            component: () => import('@/views/products/ProductsCreateWithUpdate'),
+            meta: { title: 'Product Create', keepAlive: true, permission: [ 'form' ] }
+          },
+          {
+            path: '/products/edit/:step',
+            name: 'ProductsEdit',
+            component: () => import('@/views/products/ProductsCreateWithUpdate'),
+            meta: { title: 'Product Edit', keepAlive: true, permission: [ 'form' ] }
           }
         ]
       },

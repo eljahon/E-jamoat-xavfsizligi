@@ -28,7 +28,9 @@ export default {
         // axios
         axiosInit.get('/admin/brand',
           {
-            page: payload ? payload.pagination.current : undefined
+            page: payload ? payload.pagination.current : undefined,
+            name: payload.search ? payload.search : undefined,
+            status: payload.status
           }
         )
           .then(res => {

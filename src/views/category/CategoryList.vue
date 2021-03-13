@@ -1,13 +1,20 @@
 <template>
   <div>
-    <a-card size="small" :title="$t('category_list')" style="width: 100%">
+    <a-card :title="$t('category_list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addCategory">{{ $t('add') }}</a-button>
-      <a-row style="margin: 10px 0">
-        <a-col :span="16"></a-col>
-        <a-col :span="8">
-          <a-input v-debounce="search" :placeholder="$t('search')" />
+      <a-divider>{{ $t('filters') }}</a-divider>
+      <a-row style='margin: 20px 0'>
+        <a-col :span='6' style='padding-right: 10px'>
+          <a-input v-debounce="search" :placeholder="$t('name')"></a-input>
+        </a-col>
+        <a-col :span='6' style='padding: 0 10px'>
+          <a-select allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
+            <a-select-option :value='10'>{{ $t('active') }}</a-select-option>
+            <a-select-option :value='0'>{{ $t('inactive') }}</a-select-option>
+          </a-select>
         </a-col>
       </a-row>
+
       <a-table
         :columns="columns"
         :data-source="allCategory"
@@ -117,6 +124,7 @@ export default {
           total: null,
         },
         search: '',
+        status: 10
       },
     }
   },
@@ -133,6 +141,11 @@ export default {
       this.getAllCategory(this.params)
     },
     search(value) {
+      console.log(value)
+      this.params.search = value
+      this.getAllCategory(this.params)
+    },
+    filterStatus (value) {
       console.log(value)
       this.params.search = value
       this.getAllCategory(this.params)

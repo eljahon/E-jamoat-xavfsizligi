@@ -1,8 +1,25 @@
 <template>
   <div>
     <a-card :title="$t('order_list')" style="width: 100%">
-      <a-row>
-          
+      <a-divider>{{ $t('filters') }}</a-divider>
+      <a-row style='margin: 20px 0'>
+         <a-col :span='6' style='padding-right: 10px'>
+           <a-input v-debounce="searchUsername" :placeholder="$t('username')"></a-input>
+         </a-col>
+         <a-col :span='6' style='padding: 0 10px'>
+           <a-input v-debounce="searchUuid" placeholder='Uuid'></a-input>
+         </a-col>
+         <a-col :span='6' style='padding: 0 10px'>
+           <a-select allowClear show-search :placeholder="$t('delivery_type')" :filter-option="filterOption" style="width: 100%" @change="filterDeliveryTypes">
+             <a-select-option v-for='dt in delivery_types' :key='dt.id' :value='dt.id'>{{ dt.name_uz }}</a-select-option>
+           </a-select>
+         </a-col>
+         <a-col :span='6' style='padding-left: 10px'>
+           <a-select allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
+             <a-select-option :value='10'>{{ $t('active') }}</a-select-option>
+             <a-select-option :value='0'>{{ $t('inactive') }}</a-select-option>
+           </a-select>
+         </a-col>
       </a-row>
       <a-table
         size="middle"
@@ -82,8 +99,12 @@ export default {
           pageSize: 15,
           total: null,
         },
-        search: '',
+        username: '',
+        uuid: '',
+        status: 10,
+        delivery_type: null
       },
+      delivery_types: []
     }
   },
   watch: {
@@ -93,7 +114,7 @@ export default {
   },
   methods: {
     moment,
-    ...mapActions(['getAllOrder']),
+    ...mapActions(['getAllOrder', 'getDeliveryTypesList']),
     viewItem(item) {
       console.log(item)
       this.$router.push({
@@ -102,32 +123,41 @@ export default {
           id: item.id
         }
       })
-      // this.$refs.editMeasure.show(item)
     },
     changePagination(e) {
       this.params.pagination = e
       this.getAllOrder(this.params)
     },
-    search(value) {
-      console.log(value)
-      this.params.search = value
+    searchUsername (value) {
+      this.params.username = value
       this.getAllOrder(this.params)
     },
-    removeItem (item) {
-      console.log(item)
-      this.deleteMeasure(item.id).then(res => {
-        this.getAllOrder(this.params)
-      })
+    searchUuid (value) {
+      this.params.uuid = value
+      this.getAllOrder(this.params)
     },
-    addItem () {
-      this.$refs.createMeasure.show()
-    }
+    filterStatus (value) {
+      this.params.status = value
+      this.getAllOrder(this.params)
+    },
+    filterDeliveryTypes (value) {
+      this.params.delivery_type = value
+      this.getAllOrder(this.params)
+    },
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
+    },
   },
   computed: {
     ...mapGetters(['allOrder', 'loadOrder', 'paginationOrder']),
   },
   mounted() {
     this.getAllOrder(this.params)
+    this.getDeliveryTypesList().then(res => {
+      this.delivery_types = res.data
+    })
   },
 }
 </script>

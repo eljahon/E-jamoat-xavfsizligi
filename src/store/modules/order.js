@@ -36,7 +36,11 @@ export default {
         // axios
         axiosInit.get(`/admin/orders${payload.type === 'main' ? '' : '/' + payload.type}`,
           {
-            page: pagination.current
+            page: pagination.current,
+            status: payload.status ? payload.status : undefined,
+            username: payload.username ? payload.username : undefined,
+            uuid: payload.uuid ? payload.uuid : undefined,
+            delivery_type: payload.delivery_type ? payload.delivery_type : undefined
           }
         )
           .then(res => {

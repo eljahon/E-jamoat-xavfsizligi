@@ -2,10 +2,16 @@
   <div>
     <a-card size="small" :title="$t('brands.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addBrand">{{ $t('add') }}</a-button>
-      <a-row style="margin: 10px 0">
-        <a-col :span="16"></a-col>
-        <a-col :span="8">
-          <a-input v-debounce="search" :placeholder="$t('search')" />
+      <a-divider>{{ $t('filters') }}</a-divider>
+      <a-row style='margin: 20px 0'>
+        <a-col :span='6' style='padding-right: 10px'>
+          <a-input v-debounce="search" :placeholder="$t('name')"></a-input>
+        </a-col>
+        <a-col :span='6' style='padding-left: 10px'>
+          <a-select allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
+            <a-select-option :value='10'>{{ $t('active') }}</a-select-option>
+            <a-select-option :value='0'>{{ $t('inactive') }}</a-select-option>
+          </a-select>
         </a-col>
       </a-row>
       <a-table
@@ -112,6 +118,7 @@ export default {
           total: null,
         },
         search: '',
+        status: 10
       },
     }
   },
@@ -127,7 +134,11 @@ export default {
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllCategory(this.params)
+      this.getAllBrands(this.params)
+    },
+    filterStatus (value) {
+      this.params.status = value
+      this.getAllBrands(this.params)
     },
     removeBrand (item) {
       console.log(item)
