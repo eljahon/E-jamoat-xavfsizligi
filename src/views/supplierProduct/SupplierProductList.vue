@@ -90,14 +90,14 @@ export default {
           title: this.$t('product'),
           dataIndex: 'name',
         },
-        {
-          title: this.$t('measures'),
-          dataIndex: 'measure_name',
-        },
-        {
-          title: this.$t('stock'),
-          dataIndex: 'stock',
-        },
+        // {
+        //   title: this.$t('measures'),
+        //   dataIndex: 'measure_name',
+        // },
+        // {
+        //   title: this.$t('stock'),
+        //   dataIndex: 'stock',
+        // },
         {
           title: this.$t('price'),
           dataIndex: 'price',
@@ -106,10 +106,10 @@ export default {
           title: this.$t('discount'),
           dataIndex: 'discount',
         },
-        {
-          title: this.$t('old_price'),
-          dataIndex: 'old_price',
-        },
+        // {
+        //   title: this.$t('old_price'),
+        //   dataIndex: 'old_price',
+        // },
         {
           title: this.$t('action'),
           key: 'action',

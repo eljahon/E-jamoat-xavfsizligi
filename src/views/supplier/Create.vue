@@ -8,7 +8,7 @@
               <a-auto-complete
                 :allowClear="true"
                 :data-source="products"
-                :defaultValue="defValue"
+                v-model='product_name'
                 style='width: 100%'
                 :placeholder="$t('search_product')"
                 @search='getItems'
@@ -32,13 +32,16 @@
           </a-form-model-item>
         </a-col >
         <a-col :span="11" :offset="1">
-          <a-form-model-item :label="$t('stock')" prop="stock">
-            <a-input type='number' v-model="form.stock" />
+          <a-form-model-item :label="$t('ball')" prop="ball">
+            <a-input type='number' v-model="form.ball" />
           </a-form-model-item>
+<!--          <a-form-model-item :label="$t('stock')" prop="stock">-->
+<!--            <a-input type='number' v-model="form.stock" />-->
+<!--          </a-form-model-item>-->
         </a-col>
         <a-col :span="11">
           <a-form-model-item :label="$t('discount')" prop="discount">
-            <a-input type='number' :min='0' :max='100' v-model="form.discount" />
+            <a-input type='number' :min='0' :max='99' v-model="form.discount" />
           </a-form-model-item>
         </a-col>
         <a-col :span="11" :offset="1">
@@ -46,16 +49,14 @@
             <a-input type='number' disabled :value="Math.round((form.price * (1 - (form.discount / 100))) / 100) * 100"/>
           </a-form-model-item>
         </a-col>
-        <a-col :span="11">
-          <a-form-model-item :label="$t('ball')" prop="ball">
-            <a-input type='number' v-model="form.ball" />
-          </a-form-model-item>
-        </a-col>
-        <a-col :span="11" :offset="1">
-          <a-form-model-item :label="$t('old_price')" prop="old_price">
-            <a-input type='number' v-model="form.old_price" />
-          </a-form-model-item>
-        </a-col>
+<!--        <a-col :span="11">-->
+<!--          -->
+<!--        </a-col>-->
+<!--        <a-col :span="11" :offset="1">-->
+<!--          <a-form-model-item :label="$t('old_price')" prop="old_price">-->
+<!--            <a-input type='number' v-model="form.old_price" />-->
+<!--          </a-form-model-item>-->
+<!--        </a-col>-->
       </a-row>
     </a-form-model>
     <h1 v-if="variants.length > 0"><strong>{{ $t('variants') }}</strong></h1>
@@ -93,7 +94,7 @@ export default {
   data () {
     this.getItems = debounce(this.getItems, 1000)
     return {
-      defValue: 'salom',
+      product_name: '',
       id: null,
       status: true,
       products: [],
@@ -104,9 +105,9 @@ export default {
         product_id: null,
         price: null,
         discount: null,
-        old_price: null,
+        // old_price: null,
         ball: null,
-        stock: null,
+        // stock: null,
         supplier_store_id: null,
         supplier_id: this.$route.query.supplierID
       },
@@ -114,7 +115,7 @@ export default {
       rules: {
         product_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         price: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        stock: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        // stock: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         supplier_store_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         discount: [{
           validator: (rule, value, callback) => {
@@ -202,10 +203,8 @@ export default {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
             const _form = { ...this.form }
-            // _form.phone = this.form.phone.replaceAll(' ', '')
-            _form.stock = parseInt(this.form.stock)
             _form.product_id = parseInt(this.form.product_id)
-            _form.price = parseInt(this.form.price)
+            _form.old_price = parseInt(this.form.price)
             _form.supplier_id = parseInt(this.form.supplier_id)
             if (this.variants.length > 0) {
               let v = []
@@ -257,8 +256,6 @@ export default {
     this.getAllSupplierStores({
       id: this.$route.query.supplierID
     })
-  },
-  created() {
     if (this.$route.params.id) {
       this.getSupplierProductWithId(this.$route.params.id).then(res => {
         this.$router.push({
@@ -268,28 +265,17 @@ export default {
           },
           query: {
             supplierID: this.$route.query.supplierID,
-            prodcuct_id: res.data.product_id,
-            product_name: res.data.product_name
+            prodcuct_id: res.data.product_id
           }
         })
-        // form: {
-        //   product_id: null,
-        //     price: null,
-        //     discount: null,
-        //     old_price: null,
-        //     ball: null,
-        //     stock: null,
-        //     supplier_store_id: null,
-        //     supplier_id: this.$route.query.supplierID
-        // },
         const _data = res.data
         const _form = this.form
+        this.product_name = _data.product_name
         _form.product_id = _data.product_id
-        _form.price = _data.price
+        // _form.price = _data.price
         _form.discount = _data.discount
-        _form.old_price = _data.old_price
+        _form.price = _data.old_price
         _form.ball = _data.ball
-        _form.stock = _data.stock
         _form.supplier_store_id = _data.supplier_store_id
       })
     }

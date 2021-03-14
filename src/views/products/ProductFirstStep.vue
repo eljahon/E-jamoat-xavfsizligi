@@ -273,7 +273,7 @@ export default {
               this.$router.push({
                 name: 'ProductsEdit',
                 params: {
-                  step: 2
+                  step: '2'
                 },
                 query: {
                   productGroupId: res

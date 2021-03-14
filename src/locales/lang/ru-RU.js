@@ -169,6 +169,8 @@ const locale = {
     'buy.products': 'Купить продукцию',
     'amount': 'Количество',
     'sold': 'Продал',
+    'is_main': 'Oсновной',
+    'no_is_main': 'Hет основного',
 
 
     // courier
