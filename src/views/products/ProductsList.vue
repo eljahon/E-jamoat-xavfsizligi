@@ -8,9 +8,18 @@
           <a-input v-debounce="search" :placeholder="$t('search.name')" />
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
-          <a-select allowClear show-search :placeholder="$t('category')" :filter-option="filterOption" style="width: 100%" @change="filterCategory">
-            <a-select-option v-for='c in category' :key='c.id' :value='c.id'>{{ c.name_uz }}</a-select-option>
-          </a-select>
+          <a-tree-select
+            v-model='params.category'
+            :treeData='category'
+            style='width: 100%'
+            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+            :placeholder="$t('category')"
+            @change='filterCategory'
+            allow-clear
+          />
+<!--          <a-select allowClear show-search :placeholder="$t('category')" :filter-option="filterOption" style="width: 100%" @change="filterCategory">-->
+<!--            <a-select-option v-for='c in category' :key='c.id' :value='c.id'>{{ c.name_uz }}</a-select-option>-->
+<!--          </a-select>-->
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
           <a-select allowClear show-search :placeholder="$t('brand')" :filter-option="filterOption" style="width: 100%" @change="filterBrand">
@@ -93,9 +102,11 @@
 <script>
 import Create from './ProductsCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
+import { TreeSelect } from 'ant-design-vue'
 export default {
   components: {
     'create': Create,
+    'a-tree-select': TreeSelect
   },
   data() {
     return {
@@ -160,10 +171,26 @@ export default {
       this.$router.push({
         name: 'ProductsEdit',
         params: {
-          step: 1
+          step: '1'
         },
         query: {
           group_id: item.group_id
+        }
+      })
+    },
+    treeDataMap (category) {
+      return category.map((c) => {
+        if (!c.children) {
+          return {
+            title: c.name_uz + ' - ' + c.name_ru,
+            value: c.id
+          }
+        } else {
+          return {
+            title: c.name_uz + ' - ' + c.name_ru,
+            value: c.id,
+            children: this.treeDataMap(c.children)
+          }
         }
       })
     },
@@ -217,7 +244,7 @@ export default {
   mounted() {
     this.getAllProduct(this.params)
     this.getListCategory().then(res => {
-      this.category = res
+      this.category = this.treeDataMap(res)
     })
     this.getAllBrandsList()
     this.getAllSuppliersList()
