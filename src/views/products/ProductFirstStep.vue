@@ -25,16 +25,24 @@
         </a-col>
         <a-col :span='8' style='padding-right: 10px'>
           <a-form-model-item :label="$t('categories')" prop='category_id'>
-            <a-select style='width: 100%' v-model='form.category_id'>
-              <a-select-option v-for='(c, i) in listCategory' :key="'category' + i" :value='c.id'>
-                {{ c.name_ru }}
-              </a-select-option>
-            </a-select>
+            <a-tree-select
+              v-model='form.category_id'
+              :treeData='treeCategory'
+              style='width: 100%'
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              :placeholder="$t('category')"
+              allow-clear
+            />
+<!--            <a-select style='width: 100%' v-model='form.category_id'>-->
+<!--              <a-select-option v-for='(c, i) in listCategory' :key="'category' + i" :value='c.id'>-->
+<!--                {{ c.name_ru }}-->
+<!--              </a-select-option>-->
+<!--            </a-select>-->
           </a-form-model-item>
         </a-col>
         <a-col :span='8' style='padding: 0 10px'>
           <a-form-model-item :label="$t('brands')" prop='brand_id'>
-            <a-select style='width: 100%' v-model='form.brand_id'>
+            <a-select style='width: 100%' v-model='form.brand_id' show-search :filter-option='filterOption'>
               <a-select-option v-for='(b, i) in allBrands' :key="'brand' + i" :value='b.id'>
                 {{ b.name }}
               </a-select-option>
@@ -43,7 +51,7 @@
         </a-col>
         <a-col :span='8' style='padding-left: 10px'>
           <a-form-model-item :label="$t('measures')" prop='measure_id'>
-            <a-select style='width: 100%' v-model='form.measure_id'>
+            <a-select style='width: 100%' v-model='form.measure_id' show-search :filter-option='filterOption'>
               <a-select-option v-for='(m, i) in allMeasures' :key="'measure' + i" :value='m.id'>
                 {{ m.name_ru }}
               </a-select-option>
@@ -56,62 +64,62 @@
 <!--            <a-input type='textarea' v-model='form.description' />-->
           </a-form-model-item>
         </a-col>
-        <a-col :span='24'>
-          <a-form-model-item :label="$t('content_uz')" prop='content_uz'>
-            <editor
-              ref='uz'
-              v-model='form.content_uz'
-              api-key='43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf'
-              :init="{
-             height: 500,
-             menubar: 'insert',
-             selector: 'textarea',
-             a11y_advanced_options: true,
-             image_title: true,
-             automatic_uploads: true,
-             images_upload_handler: this.uploader,
-             plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste imagetools wordcount'
-             ],
-             toolbar:
-               'undo redo | formatselect | bold italic backcolor | \
-               alignleft aligncenter alignright alignjustify | image media | \
-               bullist numlist outdent indent | removeformat | help',
-          }"
-            />
-            <!--            <a-input type="textarea" v-model="form.content_uz" />-->
-          </a-form-model-item>
-        </a-col>
-        <a-col :span='24'>
-          <a-form-model-item :label="$t('content_ru')" prop='content_ru'>
-            <editor
-              ref='uz'
-              v-model='form.content_ru'
-              api-key='43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf'
-              :init="{
-             height: 500,
-             menubar: 'insert',
-             selector: 'textarea',
-             a11y_advanced_options: true,
-             image_title: true,
-             automatic_uploads: true,
-             images_upload_handler: this.uploader,
-             plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste imagetools wordcount'
-             ],
-             toolbar:
-               'undo redo | formatselect | bold italic backcolor | \
-               alignleft aligncenter alignright alignjustify | image media | \
-               bullist numlist outdent indent | removeformat | help',
-          }"
-            />
-            <!--            <a-input type="textarea" v-model="form.content_ru" />-->
-          </a-form-model-item>
-        </a-col>
+<!--        <a-col :span='24'>-->
+<!--          <a-form-model-item :label="$t('content_uz')" prop='content_uz'>-->
+<!--            <editor-->
+<!--              ref='uz'-->
+<!--              v-model='form.content_uz'-->
+<!--              api-key='43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf'-->
+<!--              :init="{-->
+<!--             height: 500,-->
+<!--             menubar: 'insert',-->
+<!--             selector: 'textarea',-->
+<!--             a11y_advanced_options: true,-->
+<!--             image_title: true,-->
+<!--             automatic_uploads: true,-->
+<!--             images_upload_handler: this.uploader,-->
+<!--             plugins: [-->
+<!--                'advlist autolink lists link image charmap print preview anchor',-->
+<!--                'searchreplace visualblocks code fullscreen',-->
+<!--                'insertdatetime media table paste imagetools wordcount'-->
+<!--             ],-->
+<!--             toolbar:-->
+<!--               'undo redo | formatselect | bold italic backcolor | \-->
+<!--               alignleft aligncenter alignright alignjustify | image media | \-->
+<!--               bullist numlist outdent indent | removeformat | help',-->
+<!--          }"-->
+<!--            />-->
+<!--            &lt;!&ndash;            <a-input type="textarea" v-model="form.content_uz" />&ndash;&gt;-->
+<!--          </a-form-model-item>-->
+<!--        </a-col>-->
+<!--        <a-col :span='24'>-->
+<!--          <a-form-model-item :label="$t('content_ru')" prop='content_ru'>-->
+<!--            <editor-->
+<!--              ref='uz'-->
+<!--              v-model='form.content_ru'-->
+<!--              api-key='43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf'-->
+<!--              :init="{-->
+<!--             height: 500,-->
+<!--             menubar: 'insert',-->
+<!--             selector: 'textarea',-->
+<!--             a11y_advanced_options: true,-->
+<!--             image_title: true,-->
+<!--             automatic_uploads: true,-->
+<!--             images_upload_handler: this.uploader,-->
+<!--             plugins: [-->
+<!--                'advlist autolink lists link image charmap print preview anchor',-->
+<!--                'searchreplace visualblocks code fullscreen',-->
+<!--                'insertdatetime media table paste imagetools wordcount'-->
+<!--             ],-->
+<!--             toolbar:-->
+<!--               'undo redo | formatselect | bold italic backcolor | \-->
+<!--               alignleft aligncenter alignright alignjustify | image media | \-->
+<!--               bullist numlist outdent indent | removeformat | help',-->
+<!--          }"-->
+<!--            />-->
+<!--            &lt;!&ndash;            <a-input type="textarea" v-model="form.content_ru" />&ndash;&gt;-->
+<!--          </a-form-model-item>-->
+<!--        </a-col>-->
       </a-row>
       <a-divider v-if='form.features.length > 0'>{{ $t('features') }}</a-divider>
       <a-row>
@@ -182,13 +190,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import Editor from '@tinymce/tinymce-vue'
-import storage from 'store'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+// import Editor from '@tinymce/tinymce-vue'
+// import storage from 'store'
+// import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { TreeSelect } from 'ant-design-vue'
 
 export default {
   components: {
-    'editor': Editor
+    // 'editor': Editor,
+    'a-tree-select': TreeSelect
   },
   data() {
     return {
@@ -244,7 +254,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allBrands', 'listCategory', 'allMeasures', 'categoryFeatures'])
+    ...mapGetters(['allBrands', 'listCategory', 'allMeasures', 'categoryFeatures']),
+    treeCategory () {
+      return this.treeDataMap(this.listCategory)
+    }
   },
   methods: {
     ...mapActions(['updateProductGroup', 'postProduct', 'updateProduct', 'postProductGroup', 'getAllProduct', 'getCategoryFeatures', 'getAllMeasures', 'getListCategory', 'getAllBrandsList', 'getProductGroupById']),
@@ -288,7 +301,7 @@ export default {
               this.$router.push({
                 name: 'ProductsCreate',
                 params: {
-                  step: 2
+                  step: '2'
                 },
                 query: {
                   productGroupId: res
@@ -301,52 +314,73 @@ export default {
         }
       })
     },
-    uploader: function(blobInfo, success, failure, progress) {
-      let xhr, formData
-
-      xhr = new XMLHttpRequest()
-      xhr.withCredentials = false
-      xhr.open('POST', `${process.env.VUE_APP_API_BASE_URL}/admin/category/upload`)
-
-      xhr.upload.onprogress = function(e) {
-        progress((e.loaded / e.total) * 100)
-      }
-
-      xhr.onload = function() {
-        var json
-
-        if (xhr.status === 403) {
-          failure('HTTP Error: ' + xhr.status, { remove: true })
-          return
+    treeDataMap (category) {
+      return category.map((c) => {
+        if (!c.children) {
+          return {
+            title: c.name_uz + ' - ' + c.name_ru,
+            value: c.id
+          }
+        } else {
+          return {
+            title: c.name_uz + ' - ' + c.name_ru,
+            value: c.id,
+            children: this.treeDataMap(c.children)
+          }
         }
-
-        if (xhr.status < 200 || xhr.status >= 300) {
-          failure('HTTP Error: ' + xhr.status)
-          return
-        }
-
-        json = JSON.parse(xhr.responseText)
-        console.log('json', json)
-        console.log('xhr.responseText', xhr.responseText)
-
-        if (!json || typeof json.data.path !== 'string') {
-          failure('Invalid JSON: ' + xhr.responseText)
-          return undefined
-        }
-        success(json.data.full_url)
-      }
-
-      xhr.onerror = function() {
-        failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status)
-      }
-
-      formData = new FormData()
-      formData.append('image', blobInfo.blob(), blobInfo.filename())
-
-      console.log('formData', formData)
-      xhr.setRequestHeader('Authorization', storage.get(ACCESS_TOKEN))
-      xhr.send(formData)
+      })
     },
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
+    },
+    // uploader: function(blobInfo, success, failure, progress) {
+    //   let xhr, formData
+    //
+    //   xhr = new XMLHttpRequest()
+    //   xhr.withCredentials = false
+    //   xhr.open('POST', `${process.env.VUE_APP_API_BASE_URL}/admin/category/upload`)
+    //
+    //   xhr.upload.onprogress = function(e) {
+    //     progress((e.loaded / e.total) * 100)
+    //   }
+    //
+    //   xhr.onload = function() {
+    //     var json
+    //
+    //     if (xhr.status === 403) {
+    //       failure('HTTP Error: ' + xhr.status, { remove: true })
+    //       return
+    //     }
+    //
+    //     if (xhr.status < 200 || xhr.status >= 300) {
+    //       failure('HTTP Error: ' + xhr.status)
+    //       return
+    //     }
+    //
+    //     json = JSON.parse(xhr.responseText)
+    //     console.log('json', json)
+    //     console.log('xhr.responseText', xhr.responseText)
+    //
+    //     if (!json || typeof json.data.path !== 'string') {
+    //       failure('Invalid JSON: ' + xhr.responseText)
+    //       return undefined
+    //     }
+    //     success(json.data.full_url)
+    //   }
+    //
+    //   xhr.onerror = function() {
+    //     failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status)
+    //   }
+    //
+    //   formData = new FormData()
+    //   formData.append('image', blobInfo.blob(), blobInfo.filename())
+    //
+    //   console.log('formData', formData)
+    //   xhr.setRequestHeader('Authorization', storage.get(ACCESS_TOKEN))
+    //   xhr.send(formData)
+    // },
     changeFt(val, f) {
       this.form.features[f].feature_id = val
       for (let i = 0; i < this.categoryFeatures.length; i++) {
@@ -399,8 +433,8 @@ export default {
         const _form = this.form
         _form.brand_id = res.brand_id
         _form.category_id = res.category_id
-        _form.content_ru = res.content_ru
-        _form.content_uz = res.content_uz
+        // _form.content_ru = res.content_ru
+        // _form.content_uz = res.content_uz
         _form.description = res.description
         _form.keywords = res.keywords
         _form.measure_id = res.measure_id

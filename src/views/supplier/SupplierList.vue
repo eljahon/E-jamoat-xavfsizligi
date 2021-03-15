@@ -24,7 +24,7 @@
           <a-button type='default' size='small' @click="enterStore(item.id, '2')">{{ item.store_count }}</a-button>
         </template>
         <template slot="product_count" slot-scope="item">
-          <a-button type='default' size='small'>{{ item.product_count }}</a-button>
+          <a-button type='default' size='small' @click="enterStore(item.id, '3')">{{ item.product_count }}</a-button>
         </template>
         <template slot="status" slot-scope="status">
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>

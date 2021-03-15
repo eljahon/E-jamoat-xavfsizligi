@@ -15,7 +15,7 @@
         :loading="loadSupplierProduct"
         :rowKey="item => item.id"
         :pagination="paginationSupplierProduct"
-        :scroll="{ x: 1500 }"
+        :scroll="{ x: 1000 }"
         @change="changePagination"
       >
         <template slot="avatar" slot-scope="avatar">
