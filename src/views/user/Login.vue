@@ -12,20 +12,22 @@
             <a-input
               size="large"
               type="text"
-              placeholder="phone"
+              addon-before="+998"
+              :placeholder="$t('phone')"
+              v-mask="'## ### ## ##'"
               v-decorator="[
                 'username',
-                {rules: [{ required: true, message: 'Login invalid' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+                {rules: [{ required: true, message: 'Phone invalid' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
-              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <a-icon slot="prefix" type="phone" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </a-input>
           </a-form-item>
 
           <a-form-item>
             <a-input-password
               size="large"
-              placeholder="password"
+              :placeholder="$t('password')"
               v-decorator="[
                 'password',
                 {rules: [{ required: true, message: 'Password invalid' }], validateTrigger: 'blur'}
@@ -43,7 +45,7 @@
           class="login-button"
           :loading="state.loginBtn"
           :disabled="state.loginBtn"
-        >Login</a-button>
+        >{{ $t('enter') }}</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -124,7 +126,7 @@ export default {
           console.log('login form', values)
           const loginParams = { ...values }
           delete loginParams.username
-          loginParams[!state.loginType ? 'email' : 'phone'] = values.username
+          loginParams[!state.loginType ? 'email' : 'phone'] = values.username.replace(' ', '')
           loginParams.password = values.password
           Login(loginParams)
             .then((res) => this.loginSuccess(res))

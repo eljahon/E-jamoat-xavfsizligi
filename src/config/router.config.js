@@ -252,13 +252,13 @@ export const asyncRouterMap = [
             path: '/products/create/:step',
             name: 'ProductsCreate',
             component: () => import('@/views/products/ProductsCreateWithUpdate'),
-            meta: { title: 'Product Create', keepAlive: true, permission: [ 'form' ] }
+            meta: { title: 'product.add', keepAlive: true, permission: [ 'form' ] }
           },
           {
             path: '/products/edit/:step',
             name: 'ProductsEdit',
             component: () => import('@/views/products/ProductsCreateWithUpdate'),
-            meta: { title: 'Product Edit', keepAlive: true, permission: [ 'form' ] }
+            meta: { title: 'product.edit', keepAlive: true, permission: [ 'form' ] }
           }
         ]
       },

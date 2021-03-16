@@ -258,16 +258,16 @@ export default {
     })
     if (this.$route.params.id) {
       this.getSupplierProductWithId(this.$route.params.id).then(res => {
-        this.$router.push({
-          name: 'supplierProductUpdate',
-          params: {
-            id: this.$route.params.id
-          },
-          query: {
-            supplierID: this.$route.query.supplierID,
-            prodcuct_id: res.data.product_id
-          }
-        })
+        // this.$router.push({
+        //   name: 'supplierProductUpdate',
+        //   params: {
+        //     id: this.$route.params.id
+        //   },
+        //   query: {
+        //     supplierID: this.$route.query.supplierID,
+        //     prodcuct_id: res.data.product_id
+        //   }
+        // })
         const _data = res.data
         const _form = this.form
         this.product_name = _data.product_name

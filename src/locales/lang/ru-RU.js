@@ -22,6 +22,7 @@ const locale = {
     'product': 'Продукт',
     'product_list': 'Список продукты',
     'product.add': 'Создать продукт',
+    'product.edit': 'Изменить продукт',
     'product.add.field': 'Создать продукт основных полей',
     'product.update.field': 'Изменить продукт основных полей',
 
@@ -171,6 +172,7 @@ const locale = {
     'sold': 'Продал',
     'is_main': 'Oсновной',
     'no_is_main': 'Hет основного',
+    'enter': 'Войти',
 
 
     // courier
@@ -239,6 +241,7 @@ const locale = {
     'supplier.product.create': 'Создание продукта поставщика',
     'supplier.product.update': 'Обновить продукта поставщика',
     'supplier.product.list': 'Список продуктов поставщика',
+    'supplier.product.preview': 'Предварительный просмотр продукции поставщика',
 
 
     // stuff

@@ -29,7 +29,7 @@
               v-model='form.category_id'
               :treeData='treeCategory'
               style='width: 100%'
-              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
               :placeholder="$t('category')"
               allow-clear
             />

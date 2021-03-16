@@ -142,9 +142,6 @@ export default {
           supplierID: this.$route.params.id
         }
       })
-      setTimeout(() => {
-        document.location.reload()
-      }, 1000)
     },
     preview (item) {
       this.$router.push({

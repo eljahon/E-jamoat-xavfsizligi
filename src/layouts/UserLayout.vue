@@ -1,22 +1,22 @@
 <template>
 <!--  <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">-->
     <div class='userLayout'>
-      <div class='left'>
-        <img class="logo" src="../assets/z-logo.svg" alt='logo'>
-      </div>
       <div class='right'>
         <div class='header'>
           <img class="logo2" src="../assets/z-logo.svg" alt='logo'>
         </div>
-          <div class='login'>
-            <div class='desc'>
-              Добро пожаловать
-            </div>
-            <router-view />
+        <div class='login'>
+          <div class='desc'>
+            Добро пожаловать
           </div>
-          <div class='copyright'>
-            Inspired Artisans Copyright &copy; 2021
-          </div>
+          <router-view />
+        </div>
+        <div class='copyright'>
+          Inspired Artisans Copyright &copy; 2021
+        </div>
+      </div>
+      <div class='left'>
+        <img class="logo" src="../assets/z-logo.svg" alt='logo'>
       </div>
     </div>
 <!--  </div>-->
@@ -70,7 +70,7 @@ export default {
   height: 100vh;
   width: 100%;
   .left {
-    width: 50%;
+    width: 65%;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
     display: flex;
     flex-flow: column;
@@ -87,7 +87,7 @@ export default {
     }
   }
   .right {
-    width: 50%;
+    width: 35%;
     display: flex;
     justify-content: space-between;
     align-items: center;
