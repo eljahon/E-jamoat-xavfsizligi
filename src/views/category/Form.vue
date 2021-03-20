@@ -146,14 +146,10 @@ export default {
       return new Promise((resolve, reject) => {
         this.$refs.ruleForm.validate((valid) => {
           if (valid) {
-            if (this.form.image) {
-              resolve({
-                id: this.edit ? this.item.id : undefined,
-                data: this.form
-              })
-            } else {
-              this.$message.error('Поле изображения обязательное')
-            }
+            resolve({
+              id: this.edit ? this.item.id : undefined,
+              data: this.form
+            })
           } else reject(valid)
         })
       })
