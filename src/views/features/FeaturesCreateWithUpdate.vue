@@ -32,7 +32,7 @@
               <a-col style="padding-right: 5px" :span="8">
                 <a-form-model-item :label="$t('features')">
                   <a-select style="width: 100%" v-model="form.parent_id" :filter-option="filterOption" show-search>
-                    <a-select-option v-for="(parent, p) in parentFeatures" :key="'parent' + p" :value="parent">
+                    <a-select-option v-for="(parent, p) in parentFeatures" :key="'parent' + p" :value="parent.id">
                       {{ parent.name_uz }} - {{ parent.name_ru }}
                     </a-select-option>
                   </a-select>
@@ -199,7 +199,7 @@ export default {
         color: '',
         type: null,
         filter_type: '',
-        order: '',
+        order: null,
         status: 10,
         is_filter: false,
         is_main: false,
