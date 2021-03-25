@@ -122,10 +122,11 @@
 <!--        </a-col>-->
       </a-row>
       <a-divider v-if='form.features.length > 0'>{{ $t('features') }}</a-divider>
-      <a-row>
+      <a-row v-for="parent in form.features" :key="parent.id">
+        <h1 class="parent_title">{{ parent.parent.name_uz }} | {{ parent.parent.name_ru }}:</h1>
         <a-col
           :span='8'
-          v-for='(ft, f) in form.features'
+          v-for='(ft, f) in parent.child'
           :key='f'
           :style='style(f)'
         >
@@ -237,14 +238,20 @@ export default {
     'form.category_id': function(val) {
       if (val) {
         this.getCategoryFeatures(val).then(res => {
+          console.log(res)
           this.form.features = res.data.map(e => {
             return {
-              feature: e,
-              feature_id: e.id,
-              value: {
-                id: null,
-                value: null
-              }
+              parent: e,
+              child: e.children.map(child => {
+                return {
+                  feature: child,
+                  feature_id: child.id,
+                  value: {
+                    id: null,
+                    value: null
+                  }
+                }
+              })
             }
           })
           console.log(res)
@@ -268,12 +275,14 @@ export default {
           let _form = { ...this.form }
           let f = []
           for (let i = 0; i < _form.features.length; i++) {
-            if (_form.features[i].value.id || _form.features[i].value.value) {
-              f.push({
-                feature_id: _form.features[i].feature_id,
-                value_id: _form.features[i].value.id,
-                value: _form.features[i].value.value
-              })
+            for (let j = 0; j < _form.features[i].child.length; j++) {
+              if (_form.features[i].child[j].value.id || _form.features[i].child[j].value.value) {
+                f.push({
+                  feature_id: _form.features[i].child[j].feature_id,
+                  value_id: _form.features[i].child[j].value.id,
+                  value: _form.features[i].child[j].value.value
+                })
+              }
             }
           }
           _form.features = f
@@ -449,4 +458,10 @@ export default {
 }
 </script>
 <style>
+.parent_title {
+  font-size: 20px;
+  font-weight: 500;
+  padding-left: 10px;
+  background-color: #e9e9e9;
+}
 </style>

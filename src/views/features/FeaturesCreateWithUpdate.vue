@@ -140,9 +140,14 @@
                 :tree-data="treeData"
               />
               <a-radio-group v-else v-model="form.category_id">
-                <a-radio v-for='ct in listCategory' :key='ct.id' :value="ct.id">
-                  {{ ct.name_uz }}
-                </a-radio>
+                <div v-for='ct in listCategory' :key='ct.id'>
+                  <a-tooltip placement="top">
+                    <template slot="title">
+                      <span>{{ ct.name_uz }} | {{ ct.name_ru }}</span>
+                    </template>
+                    <a-radio :value="ct.id">{{ ct.name_uz | shortName }}</a-radio>
+                  </a-tooltip>
+                </div>
               </a-radio-group>
             </a-form-model-item>
           </a-card>
@@ -238,6 +243,12 @@ export default {
     },
     isHaveFtValue () {
       return this.form.type && (this.form.type !== 'text') && (this.form.type !== 'number') && (this.form.type !== 'textarea') && (this.form.type !== 'date') && (this.form.type !== 'datetime')
+    }
+  },
+  filters: {
+    shortName (val) {
+      if (val.length > 20) return val.slice(0, 30) + '...'
+      else return val
     }
   },
   methods: {

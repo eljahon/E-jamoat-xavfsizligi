@@ -54,10 +54,10 @@
           <a-tag v-if='is_popular' color='green'>{{ $t('popular') }}</a-tag>
           <a-tag v-else color='red'>{{ $t('popular.no') }}</a-tag>
         </template>
-        <template slot='status' slot-scope='status'>
-          <a-tag v-if='status === 10' color='blue'>{{ $t('active') }}</a-tag>
-          <a-tag v-else color='red'>{{ $t('inactive') }}</a-tag>
-        </template>
+<!--        <template slot='status' slot-scope='status'>-->
+<!--          <a-tag v-if='status === 10' color='blue'>{{ $t('active') }}</a-tag>-->
+<!--          <a-tag v-else color='red'>{{ $t('inactive') }}</a-tag>-->
+<!--        </template>-->
         <template slot='is_main' slot-scope='is_main'>
           <a-tag v-if='is_main' color='blue'>{{ $t('is_main') }}</a-tag>
           <a-tag v-else color='red'>{{ $t('no_is_main') }}</a-tag>
@@ -123,17 +123,21 @@ export default {
           dataIndex: 'name_uz'
         },
         {
+          title: this.$t('category'),
+          dataIndex: 'category_name'
+        },
+        {
           title: this.$t('is_main'),
           dataIndex: 'is_main',
           align: 'center',
           scopedSlots: { customRender: 'is_main' }
         },
-        {
-          title: this.$t('status'),
-          dataIndex: 'status',
-          align: 'center',
-          scopedSlots: { customRender: 'status' }
-        },
+        // {
+        //   title: this.$t('status'),
+        //   dataIndex: 'status',
+        //   align: 'center',
+        //   scopedSlots: { customRender: 'status' }
+        // },
         {
           title: this.$t('action'),
           key: 'action',
@@ -229,7 +233,10 @@ export default {
     ...mapGetters(['allFeatures', 'loadFeatures', 'paginationFeatures'])
   },
   mounted() {
-    this.getAllFeatures(this.params)
+    this.getAllFeatures(this.params).then(res => {
+      console.log(res)
+      console.log(this.allFeatures)
+    })
     this.getTreeCategory().then(res => {
       this.category = this.treeDataMap(res)
     })

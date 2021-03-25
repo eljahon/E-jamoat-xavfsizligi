@@ -49,7 +49,8 @@ export default {
           }
         )
           .then(res => {
-            resolve()
+            resolve(res.data)
+            console.log(res)
             pagination.total = parseInt(res.links.total)
             commit('GET_FEATURES_PAGINATION', pagination)
             commit('GET_ALL_FEATURES', res.data)
