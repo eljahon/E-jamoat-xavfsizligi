@@ -21,7 +21,7 @@
                 </a-form-model-item>
               </a-col>
               <a-col style="padding-left: 5px" :span="8">
-                <a-form-model-item :label="$t('type')" prop="type">
+                <a-form-model-item :label="$t('type')">
                   <a-select style="width: 100%" v-model="form.type">
                     <a-select-option v-for="(t, i) in types" :key="'key' + i" :value="t">
                       {{ t }}
@@ -30,7 +30,16 @@
                 </a-form-model-item>
               </a-col>
               <a-col style="padding-right: 5px" :span="8">
-                <a-form-model-item :label="$t('filter_type')" prop="filter_type">
+                <a-form-model-item :label="$t('features')">
+                  <a-select style="width: 100%" v-model="form.parent_id" :filter-option="filterOption" show-search>
+                    <a-select-option v-for="(parent, p) in parentFeatures" :key="'parent' + p" :value="parent">
+                      {{ parent.name_uz }} - {{ parent.name_ru }}
+                    </a-select-option>
+                  </a-select>
+                </a-form-model-item>
+              </a-col>
+              <a-col style="padding-right: 5px" :span="8">
+                <a-form-model-item :label="$t('filter_type')">
                   <a-select style="width: 100%" v-model="form.filter_type">
                     <a-select-option v-for="(t, i) in types" :key="'key' + i" :value="t">
                       {{ t }}
@@ -181,6 +190,7 @@ export default {
       colorable: false,
       loadingPage: false,
       multilanguage: false,
+      parentFeatures: [],
       form: {
         name_uz: '',
         name_ru: '',
@@ -231,7 +241,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getTreeCategory', 'postFeatures', 'getFeaturesById', 'updateFeatures', 'getListCategory']),
+    ...mapActions(['getTreeCategory', 'postFeatures', 'getFeaturesById', 'updateFeatures', 'getListCategory', 'getParentFeatures']),
     saveData() {
       this.$refs.ruleForm.validate((valid) => {
         console.log(valid)
@@ -309,6 +319,11 @@ export default {
         }
       }
       return true
+    },
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
     }
   },
   mounted() {
@@ -335,6 +350,9 @@ export default {
       })
     }
     this.getTreeCategory()
+    this.getParentFeatures().then(res => {
+      this.parentFeatures = res.data
+    })
   }
 }
 </script>
