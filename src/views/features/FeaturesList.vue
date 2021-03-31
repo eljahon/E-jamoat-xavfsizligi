@@ -42,55 +42,57 @@
           </a-select>
         </a-col>
       </a-row>
-      <a-table
-        :columns='columns'
-        :data-source='allFeatures'
-        :loading='loadFeatures'
-        :rowKey='item => item.id'
-        :pagination='paginationFeatures'
-        @change='changePagination'
-      >
-        <template slot='popular' slot-scope='is_popular'>
-          <a-tag v-if='is_popular' color='green'>{{ $t('popular') }}</a-tag>
-          <a-tag v-else color='red'>{{ $t('popular.no') }}</a-tag>
-        </template>
-<!--        <template slot='status' slot-scope='status'>-->
-<!--          <a-tag v-if='status === 10' color='blue'>{{ $t('active') }}</a-tag>-->
-<!--          <a-tag v-else color='red'>{{ $t('inactive') }}</a-tag>-->
-<!--        </template>-->
-        <template slot='is_main' slot-scope='is_main'>
-          <a-tag v-if='is_main' color='blue'>{{ $t('is_main') }}</a-tag>
-          <a-tag v-else color='red'>{{ $t('no_is_main') }}</a-tag>
-        </template>
-        <template slot='image' slot-scope='item'>
-          <div class='imagePreview'>
-            <img :src='item.logo_url'>
-          </div>
-        </template>
-        <template slot='action' slot-scope='item'>
-          <a-tooltip>
-            <template slot='title'>{{ $t('update') }}</template>
-            <a-button style='margin: 0 2px' type='primary' @click='editItem(item)' icon='edit'></a-button>
-          </a-tooltip>
-          <a-popconfirm
-            placement='topRight'
-            slot='extra'
-            :title="$t('deleteMsg')"
-            @confirm='removeItem(item)'
-            :okText="$t('yes')"
-            :cancelText="$t('no')"
-          >
+      <div class="customTable">
+        <a-table
+          :columns='columns'
+          :data-source='allFeatures'
+          :loading='loadFeatures'
+          :rowKey='item => item.id'
+          :pagination='paginationFeatures'
+          @change='changePagination'
+        >
+          <template slot='popular' slot-scope='is_popular'>
+            <a-tag v-if='is_popular' color='green'>{{ $t('popular') }}</a-tag>
+            <a-tag v-else color='red'>{{ $t('popular.no') }}</a-tag>
+          </template>
+          <!--        <template slot='status' slot-scope='status'>-->
+          <!--          <a-tag v-if='status === 10' color='blue'>{{ $t('active') }}</a-tag>-->
+          <!--          <a-tag v-else color='red'>{{ $t('inactive') }}</a-tag>-->
+          <!--        </template>-->
+          <template slot='is_main' slot-scope='is_main'>
+            <a-tag v-if='is_main' color='blue'>{{ $t('is_main') }}</a-tag>
+            <a-tag v-else color='red'>{{ $t('no_is_main') }}</a-tag>
+          </template>
+          <template slot='image' slot-scope='item'>
+            <div class='imagePreview'>
+              <img :src='item.logo_url'>
+            </div>
+          </template>
+          <template slot='action' slot-scope='item'>
             <a-tooltip>
-              <template slot='title'>{{ $t('delete') }}</template>
-              <a-button
-                style='margin: 0 2px'
-                type='danger'
-                icon='delete'
-              ></a-button>
+              <template slot='title'>{{ $t('update') }}</template>
+              <a-button style='margin: 0 2px' @click='editItem(item)' icon='edit'></a-button>
             </a-tooltip>
-          </a-popconfirm>
-        </template>
-      </a-table>
+            <a-popconfirm
+              placement='topRight'
+              slot='extra'
+              :title="$t('deleteMsg')"
+              @confirm='removeItem(item)'
+              :okText="$t('yes')"
+              :cancelText="$t('no')"
+            >
+              <a-tooltip>
+                <template slot='title'>{{ $t('delete') }}</template>
+                <a-button
+                  style='margin: 0 2px'
+                  type='danger'
+                  icon='delete'
+                ></a-button>
+              </a-tooltip>
+            </a-popconfirm>
+          </template>
+        </a-table>
+      </div>
     </a-card>
 
     <!-- MODALS -->
@@ -243,11 +245,22 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="less">
 .imagePreview img {
   width: 80px;
   height: 80px;
   box-sizing: border-box;
   object-fit: cover;
+}
+.customTable {
+  .ant-table-row-level-0 {
+    background-color: #ffffff !important;
+  }
+  .ant-table-row-level-1 {
+    background-color: rgba(0, 102, 255, .1) !important;
+  }
+  .ant-table-row-level-2 {
+    background-color: rgba(0, 102, 255, .2) !important;
+  }
 }
 </style>
