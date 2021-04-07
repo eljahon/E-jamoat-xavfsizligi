@@ -37,36 +37,28 @@
             class='animated'
             :list='product.images'
           >
-            <a-col class='animated' v-for='(item, j) in product.images' :key='j + 1'
-                   style='padding-left: 5px; padding-right: 5px' :span='6'>
+            <a-col class='animated' v-for='(item, j) in product.images' :key='j + 1' style='padding-left: 5px; padding-right: 5px' :span='6'>
               <a-tooltip>
                 <template slot='title'>
                   {{ $t('delete') }}
                 </template>
-                <div v-if='product.images.length > 1 && item.url' @click='removePhoto(i, j)' class='remove-image'>
+                <div v-if="product.images.length > 1 && item.image_url" @click='removePhoto(i, j)' class='remove-image'>
                   <a-icon type='delete' class='icon' />
                 </div>
               </a-tooltip>
               <!--        <a-checkbox class="status" v-model="item.status">Active</a-checkbox>-->
-              <a-form-model-item :label="$t('image') + ' ' + (j +1)" prop='image'>
-                <a-upload
-                  list-type='picture-card'
-                  :custom-request='(e) => { uploadImage(e, i, j) }'
-                  class='avatar-uploader'
-                  :show-upload-list='false'
-                  :before-upload='beforeUpload'
-                >
-                  <div v-if='item.url' class='upload-image'>
-                    <img :src='item.url' alt='avatar' />
+              <a-form-model-item :label="(item.image_url ? $t('image') : '') + ' ' + (j +1)" prop='image'>
+                <div class='avatar-uploader attach'>
+                  <div @click="$refs.fileManager.open(i, j)" v-if="item.image_url" class='upload-image'>
+                    <img :src='item.image_url' alt='avatar' />
                   </div>
-                  <div class='upload-empty' v-else>
-                    <a-icon v-if='!(item.loading && onUpload)' type='upload' style='font-size: 48px' />
-                    <a-progress v-if='item.loading && onUpload' :percent='progress' />
-                    <div v-if='!(item.loading && onUpload)' class='ant-upload-text'>
+                  <div v-if="!item.image_url" @click="$refs.fileManager.open(i, j)" class='upload-empty'>
+                    <a-icon type='upload' style='font-size: 48px' />
+                    <div class='ant-upload-text'>
                       {{ $t('upload_photo') }}
                     </div>
                   </div>
-                </a-upload>
+                </div>
               </a-form-model-item>
             </a-col>
           </draggable>
@@ -82,6 +74,7 @@
         {{ $t('clear') }}
       </a-button>
     </a-row>
+    <filemanager ref="fileManager" v-model="fileManagerData"/>
   </div>
 </template>
 
@@ -89,28 +82,37 @@
 import { mapActions, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 import { findDuplicates } from '@/utils/util'
+import filemanager from '@/views/filemanager/index'
 
 export default {
   components: {
-    draggable
+    draggable,
+    filemanager
   },
   data() {
     return {
       loading: false,
+      fileManagerData: null,
       products: [
         {
           images: [
             {
-              loading: false,
-              url: null,
-              image: '',
-              status: true
+              image_url: null,
+              image: null
             }
           ],
           features: [],
           sku: ''
         }
       ]
+    }
+  },
+  watch: {
+    fileManagerData (val) {
+      const indexes = val.indexes
+      const _image = [ ...this.products[indexes.product_id].images ]
+      console.log([...val.data, ..._image])
+      this.products[indexes.product_id].images = [...val.data, ..._image]
     }
   },
   methods: {
@@ -301,6 +303,7 @@ export default {
     })
     if (this.$route.name === 'ProductsEdit') {
       this.getProductsById(this.$route.query.productGroupId).then(res => {
+        console.log(res)
         this.products = res.map(p => {
           return {
             id: p.id,
@@ -308,10 +311,8 @@ export default {
             features: p.product_feature_values,
             images: p.attachments.map(e => {
               return {
-                loading: false,
-                url: e,
-                image: e,
-                status: true
+                image_url: e,
+                image: e
               }
             })
           }
@@ -322,7 +323,7 @@ export default {
 }
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .flip-list-move {
   transition: transform 0.5s;
 }
@@ -331,7 +332,10 @@ export default {
   opacity: 0.5;
   background: #c8ebfb;
 }
-
+.attach {
+  border: 1px solid #d9d9d9;
+  border-radius: 3px;
+}
 .remove-image {
   position: absolute;
   z-index: 5;
@@ -382,6 +386,7 @@ export default {
 }
 
 .avatar-uploader > .ant-upload.ant-upload-select-picture-card {
+  border: 1px solid gray;
   width: 100%;
   height: 120px;
 }

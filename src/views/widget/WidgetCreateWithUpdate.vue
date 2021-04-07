@@ -32,6 +32,7 @@
         </a-col>
       </a-row>
       <a-card title="Images">
+        <a-button type="dashed" @click="$refs.filemanager.open()" slot="extra">File</a-button>
         <a-button type="dashed" @click="addPhoto" slot="extra">{{ $t('add_photo') }}</a-button>
       </a-card>
       <draggable
@@ -79,16 +80,25 @@
         <a-button type="primary" @click="saveDate" :loading="loading">{{ $route.params.id ? $t('update') : $t('save') }}</a-button>
       </a-card>
     </a-form-model>
+
+<!--    FILEMANAGER-->
+
+    <filemanager ref="filemanager"/>
+
+<!--    FILEMANAGER-->
+
+
   </a-card>
 </template>
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import draggable from 'vuedraggable'
-
+import fileManager from '@/views/filemanager/index'
 export default {
   components: {
-    draggable
+    draggable,
+    'filemanager': fileManager
   },
   data() {
     return {

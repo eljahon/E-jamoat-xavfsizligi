@@ -173,6 +173,7 @@ const locale = {
     'is_main': 'Oсновной',
     'no_is_main': 'Hет основного',
     'enter': 'Войти',
+    'no_category_image': 'В этой категории фото пока нет',
 
 
     // courier
