@@ -4,6 +4,8 @@
       <div style="width: 100%; display: flex; justify-content: space-between">
         <div>
           <a-upload
+            multiple
+            ref="uploader"
             :custom-request="(e) => { uploadImage(e) }"
             :show-upload-list="false"
             :before-upload="beforeUpload"
@@ -52,16 +54,18 @@
         <div v-if="images.length === 0" class="renderPlace">
           <div v-if="!onUpload" class="noImages">
             <h1>{{ $t('no_category_image') }}</h1>
-            <a-upload
-              :custom-request="(e) => { uploadImage(e) }"
-              :show-upload-list="false"
-              :before-upload="beforeUpload"
-            >
-              <a-button>{{ $t('upload_photo') }}</a-button>
-            </a-upload>
+<!--            <a-button @click="uploader">{{ $t('upload_photo') }}</a-button>-->
+<!--            <a-upload-->
+<!--              :multiple="true"-->
+<!--              :custom-request="(e) => { uploadImage(e) }"-->
+<!--              :show-upload-list="false"-->
+<!--              :before-upload="beforeUpload"-->
+<!--            >-->
+<!--              -->
+<!--            </a-upload>-->
           </div>
         </div>
-        <a-checkbox-group v-if="images.length > 0" v-model="selected" class="renderPlace" @change="onChange">
+        <a-checkbox-group v-if="images.length > 0" v-model="selected" class="renderPlace">
           <a-checkbox v-for="(item, i) in images" :key="i" class="card" :value="item">
             <img @click="showImage(item)" :src="item.image_url" />
           </a-checkbox>
@@ -103,10 +107,14 @@ export default {
     }
   },
   methods: {
+    uploader () {
+      console.log(this.$refs.uploader)
+      this.$refs.uploader.renderUploadList()
+    },
     uploadImage(e) {
       console.log(e)
       this.$imageUp(e).then(res => {
-        this.images.unshift(res)
+        this.images.push(res)
         console.log(res)
       })
     },
@@ -123,11 +131,11 @@ export default {
     beforeUpload(file) {
       return this.$beforeUpImage(file)
     },
-    onChange (e) {
-      this.selected = e
-      console.log(e)
-      // console.log(this.checkBoxSelected)
-    },
+    // onChange (e) {
+    //   this.selected = e
+    //   console.log(e)
+    //   // console.log(this.checkBoxSelected)
+    // },
     route () {
       this.$router.push({
         name: this.$route.name,

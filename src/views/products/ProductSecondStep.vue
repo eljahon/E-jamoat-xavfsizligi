@@ -47,7 +47,7 @@
                 </div>
               </a-tooltip>
               <!--        <a-checkbox class="status" v-model="item.status">Active</a-checkbox>-->
-              <a-form-model-item :label="(item.image_url ? $t('image') : '') + ' ' + (j +1)" prop='image'>
+              <a-form-model-item :label="(item.image_url ? $t('image') : '') + ' ' + (item.image_url ? (j +1) : $t('upload_photo'))" prop='image'>
                 <div class='avatar-uploader attach'>
                   <div @click="$refs.fileManager.open(i, j)" v-if="item.image_url" class='upload-image'>
                     <img :src='item.image_url' alt='avatar' />
