@@ -26,8 +26,11 @@
         <a-col :span='8' style='padding-right: 10px'>
           <a-form-model-item :label="$t('categories')" prop='category_id'>
             <a-tree-select
+              show-search
               v-model='form.category_id'
               :treeData='treeCategory'
+              treeNodeFilterProp="name_uz"
+              :filterTreeNode="filterTreeNode"
               style='width: 100%'
               :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
               :placeholder="$t('category')"
@@ -344,52 +347,11 @@ export default {
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
       );
     },
-    // uploader: function(blobInfo, success, failure, progress) {
-    //   let xhr, formData
-    //
-    //   xhr = new XMLHttpRequest()
-    //   xhr.withCredentials = false
-    //   xhr.open('POST', `${process.env.VUE_APP_API_BASE_URL}/admin/category/upload`)
-    //
-    //   xhr.upload.onprogress = function(e) {
-    //     progress((e.loaded / e.total) * 100)
-    //   }
-    //
-    //   xhr.onload = function() {
-    //     var json
-    //
-    //     if (xhr.status === 403) {
-    //       failure('HTTP Error: ' + xhr.status, { remove: true })
-    //       return
-    //     }
-    //
-    //     if (xhr.status < 200 || xhr.status >= 300) {
-    //       failure('HTTP Error: ' + xhr.status)
-    //       return
-    //     }
-    //
-    //     json = JSON.parse(xhr.responseText)
-    //     console.log('json', json)
-    //     console.log('xhr.responseText', xhr.responseText)
-    //
-    //     if (!json || typeof json.data.path !== 'string') {
-    //       failure('Invalid JSON: ' + xhr.responseText)
-    //       return undefined
-    //     }
-    //     success(json.data.full_url)
-    //   }
-    //
-    //   xhr.onerror = function() {
-    //     failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status)
-    //   }
-    //
-    //   formData = new FormData()
-    //   formData.append('image', blobInfo.blob(), blobInfo.filename())
-    //
-    //   console.log('formData', formData)
-    //   xhr.setRequestHeader('Authorization', storage.get(ACCESS_TOKEN))
-    //   xhr.send(formData)
-    // },
+    filterTreeNode (value, node) {
+      const title = node.data.props.title
+      const result = title.toLowerCase().indexOf(value.toLowerCase()) > 0
+      return result
+    },
     changeFt(val, f) {
       this.form.features[f].feature_id = val
       for (let i = 0; i < this.categoryFeatures.length; i++) {
