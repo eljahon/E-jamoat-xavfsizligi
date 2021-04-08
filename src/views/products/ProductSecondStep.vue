@@ -117,25 +117,6 @@ export default {
   },
   methods: {
     ...mapActions(['getMainFeatures', 'postProduct', 'getProductsById', 'updateProduct']),
-    uploadImage(e, productIndex, i) {
-      console.log(e)
-      this.products[productIndex].images[i].url = null
-      this.products[productIndex].images[i].loading = true
-      this.$imageUp(e).then(res => {
-        console.log(res)
-        this.products[productIndex].images[i].image = res.image
-        this.products[productIndex].images[i].url = res.image_url
-        this.products[productIndex].images.push({
-          loading: false,
-          url: null,
-          image: '',
-          status: true
-        })
-      })
-        .finally(() => {
-          this.products[productIndex].images[i].loading = false
-        })
-    },
     beforeUpload(file) {
       return this.$beforeUpImage(file)
     },
@@ -367,7 +348,7 @@ export default {
   height: 120px;
   width: 100%;
   object-fit: contain;
-
+  cursor: pointer;
   img {
     margin: 0 auto;
     width: 100%;
@@ -383,6 +364,7 @@ export default {
   justify-content: center;
   align-items: center;
   flex-flow: column;
+  cursor: pointer;
 }
 
 .avatar-uploader > .ant-upload.ant-upload-select-picture-card {

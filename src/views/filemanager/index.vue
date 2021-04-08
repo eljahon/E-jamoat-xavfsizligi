@@ -55,7 +55,6 @@
           <div v-if="!onUpload" class="noImages">
             <h1>{{ $t('no_category_image') }}</h1>
 <!--            <a-button @click="uploader">{{ $t('upload_photo') }}</a-button>-->
-<!--            <a-upload-->
 <!--              :multiple="true"-->
 <!--              :custom-request="(e) => { uploadImage(e) }"-->
 <!--              :show-upload-list="false"-->
@@ -67,7 +66,8 @@
         </div>
         <a-checkbox-group v-if="images.length > 0" v-model="selected" class="renderPlace">
           <a-checkbox v-for="(item, i) in images" :key="i" class="card" :value="item">
-            <img @click="showImage(item)" :src="item.image_url" />
+            <img :src="item.image_url" />
+<!--            <img @click="showImage(item)" :src="item.image_url" />-->
           </a-checkbox>
         </a-checkbox-group>
       </div>
@@ -109,7 +109,8 @@ export default {
   methods: {
     uploader () {
       console.log(this.$refs.uploader)
-      this.$refs.uploader.renderUploadList()
+      this.$refs.uploader.setState()
+      // this.$refs.uploader.renderUploadList()
     },
     uploadImage(e) {
       console.log(e)
