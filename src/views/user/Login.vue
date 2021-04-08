@@ -16,7 +16,7 @@
               :placeholder="$t('phone')"
               v-mask="'## ### ## ##'"
               v-decorator="[
-                'username',
+                'phone',
                 {rules: [{ required: true, message: 'Phone invalid' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
@@ -119,14 +119,15 @@ export default {
 
       state.loginBtn = true
 
-      const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password'] : ['mobile', 'captcha']
+      const validateFieldsKey = customActiveKey === 'tab1' ? ['phone', 'password'] : ['mobile', 'captcha']
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
           console.log('login form', values)
           const loginParams = { ...values }
-          delete loginParams.username
-          loginParams[!state.loginType ? 'email' : 'phone'] = values.username.replace(' ', '')
+          // delete loginParams.username
+          // eslint-disable-next-line
+          loginParams.phone = values.phone.replace(/\s/g, '')
           loginParams.password = values.password
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
