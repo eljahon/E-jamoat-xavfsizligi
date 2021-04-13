@@ -16,6 +16,7 @@
       </a-row>
 
       <a-table
+        class="customTable"
         :columns="columns"
         :data-source="allCategory"
         :loading="loadCategory"
@@ -186,7 +187,7 @@ export default {
   },
 }
 </script>
-<style>
+<style lang="less">
 .ant-table-row:hover {
   cursor: pointer;
 }
@@ -194,5 +195,16 @@ export default {
   width: 80px;
   height: 80px;
   object-fit: cover;
+}
+.customTable {
+  .ant-table-row-level-0 {
+    background-color: #ffffff !important;
+  }
+  .ant-table-row-level-1 {
+    background-color: rgba(0, 102, 255, .1) !important;
+  }
+  .ant-table-row-level-2 {
+    background-color: rgba(0, 102, 255, .2) !important;
+  }
 }
 </style>

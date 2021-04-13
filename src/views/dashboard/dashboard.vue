@@ -60,8 +60,8 @@
 
 <script>
 import { mapActions } from 'vuex'
-import bar from '@/components/charts/barChart'
-import LineChart from '@/components/charts/lineChart'
+import bar from '@/components/Charts/barChart'
+import LineChart from '@/components/Charts/lineChart'
 import moment from 'moment'
 export default {
   components: {

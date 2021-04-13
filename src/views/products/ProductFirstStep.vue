@@ -349,7 +349,9 @@ export default {
     },
     filterTreeNode (value, node) {
       const title = node.data.props.title
-      const result = title.toLowerCase().indexOf(value.toLowerCase()) > 0
+      // const result = title.toLowerCase().indexOf(value.toLowerCase()) > 0
+      const result = title.toLowerCase().startsWith(value.toLowerCase())
+      // console.log(title + ' <==> ' + value + ': ' + result);
       return result
     },
     changeFt(val, f) {
