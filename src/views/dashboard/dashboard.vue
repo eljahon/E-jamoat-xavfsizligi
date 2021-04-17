@@ -15,7 +15,7 @@
         <a-row v-if='charts'>
           <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px'>
             <a-card>
-              <bar title='Birnima' :head-title='charts.chart_one.chart[0].name' :data='charts.chart_one.chart[0].data' :labels='charts.chart_one.days'></bar>
+              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[0].name' :data='charts.chart_one.chart[0].data' :labels='charts.chart_one.days'></bar-chart>
             </a-card>
           </a-col>
           <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px; padding-left: 5px'>
@@ -25,7 +25,7 @@
           </a-col>
           <a-col :sm="24" :md="12" :xl="8" style='padding-left: 5px'>
             <a-card>
-              <bar title='Birnima' :head-title='charts.chart_one.chart[2].name' :data='charts.chart_one.chart[2].data' :labels='charts.chart_one.days'></bar>
+              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[2].name' :data='charts.chart_one.chart[2].data' :labels='charts.chart_one.days'></bar-chart>
             </a-card>
           </a-col>
 
@@ -60,13 +60,13 @@
 
 <script>
 import { mapActions } from 'vuex'
-import bar from '@/components/Charts/barChart'
-import LineChart from '@/components/Charts/lineChart'
+import BarChart from './charts/barChart'
+import LineChart from './charts/lineChart'
 import moment from 'moment'
 export default {
   components: {
     LineChart,
-    'bar': bar
+    BarChart
   },
   data () {
     return {
