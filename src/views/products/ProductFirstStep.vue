@@ -29,18 +29,18 @@
               show-search
               v-model='form.category_id'
               :treeData='treeCategory'
-              treeNodeFilterProp="name_uz"
-              :filterTreeNode="filterTreeNode"
+              treeNodeFilterProp='name_uz'
+              :filterTreeNode='filterTreeNode'
               style='width: 100%'
               :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
               :placeholder="$t('category')"
               allow-clear
             />
-<!--            <a-select style='width: 100%' v-model='form.category_id'>-->
-<!--              <a-select-option v-for='(c, i) in listCategory' :key="'category' + i" :value='c.id'>-->
-<!--                {{ c.name_ru }}-->
-<!--              </a-select-option>-->
-<!--            </a-select>-->
+            <!--            <a-select style='width: 100%' v-model='form.category_id'>-->
+            <!--              <a-select-option v-for='(c, i) in listCategory' :key="'category' + i" :value='c.id'>-->
+            <!--                {{ c.name_ru }}-->
+            <!--              </a-select-option>-->
+            <!--            </a-select>-->
           </a-form-model-item>
         </a-col>
         <a-col :span='8' style='padding: 0 10px'>
@@ -64,69 +64,69 @@
         <a-col :span='24'>
           <a-form-model-item :label="$t('description')" prop='description'>
             <a-input type='textarea' @input='event => form.description = event.target.value' />
-<!--            <a-input type='textarea' v-model='form.description' />-->
+            <!--            <a-input type='textarea' v-model='form.description' />-->
           </a-form-model-item>
         </a-col>
-<!--        <a-col :span='24'>-->
-<!--          <a-form-model-item :label="$t('content_uz')" prop='content_uz'>-->
-<!--            <editor-->
-<!--              ref='uz'-->
-<!--              v-model='form.content_uz'-->
-<!--              api-key='43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf'-->
-<!--              :init="{-->
-<!--             height: 500,-->
-<!--             menubar: 'insert',-->
-<!--             selector: 'textarea',-->
-<!--             a11y_advanced_options: true,-->
-<!--             image_title: true,-->
-<!--             automatic_uploads: true,-->
-<!--             images_upload_handler: this.uploader,-->
-<!--             plugins: [-->
-<!--                'advlist autolink lists link image charmap print preview anchor',-->
-<!--                'searchreplace visualblocks code fullscreen',-->
-<!--                'insertdatetime media table paste imagetools wordcount'-->
-<!--             ],-->
-<!--             toolbar:-->
-<!--               'undo redo | formatselect | bold italic backcolor | \-->
-<!--               alignleft aligncenter alignright alignjustify | image media | \-->
-<!--               bullist numlist outdent indent | removeformat | help',-->
-<!--          }"-->
-<!--            />-->
-<!--            &lt;!&ndash;            <a-input type="textarea" v-model="form.content_uz" />&ndash;&gt;-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--        <a-col :span='24'>-->
-<!--          <a-form-model-item :label="$t('content_ru')" prop='content_ru'>-->
-<!--            <editor-->
-<!--              ref='uz'-->
-<!--              v-model='form.content_ru'-->
-<!--              api-key='43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf'-->
-<!--              :init="{-->
-<!--             height: 500,-->
-<!--             menubar: 'insert',-->
-<!--             selector: 'textarea',-->
-<!--             a11y_advanced_options: true,-->
-<!--             image_title: true,-->
-<!--             automatic_uploads: true,-->
-<!--             images_upload_handler: this.uploader,-->
-<!--             plugins: [-->
-<!--                'advlist autolink lists link image charmap print preview anchor',-->
-<!--                'searchreplace visualblocks code fullscreen',-->
-<!--                'insertdatetime media table paste imagetools wordcount'-->
-<!--             ],-->
-<!--             toolbar:-->
-<!--               'undo redo | formatselect | bold italic backcolor | \-->
-<!--               alignleft aligncenter alignright alignjustify | image media | \-->
-<!--               bullist numlist outdent indent | removeformat | help',-->
-<!--          }"-->
-<!--            />-->
-<!--            &lt;!&ndash;            <a-input type="textarea" v-model="form.content_ru" />&ndash;&gt;-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
+        <!--        <a-col :span='24'>-->
+        <!--          <a-form-model-item :label="$t('content_uz')" prop='content_uz'>-->
+        <!--            <editor-->
+        <!--              ref='uz'-->
+        <!--              v-model='form.content_uz'-->
+        <!--              api-key='43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf'-->
+        <!--              :init="{-->
+        <!--             height: 500,-->
+        <!--             menubar: 'insert',-->
+        <!--             selector: 'textarea',-->
+        <!--             a11y_advanced_options: true,-->
+        <!--             image_title: true,-->
+        <!--             automatic_uploads: true,-->
+        <!--             images_upload_handler: this.uploader,-->
+        <!--             plugins: [-->
+        <!--                'advlist autolink lists link image charmap print preview anchor',-->
+        <!--                'searchreplace visualblocks code fullscreen',-->
+        <!--                'insertdatetime media table paste imagetools wordcount'-->
+        <!--             ],-->
+        <!--             toolbar:-->
+        <!--               'undo redo | formatselect | bold italic backcolor | \-->
+        <!--               alignleft aligncenter alignright alignjustify | image media | \-->
+        <!--               bullist numlist outdent indent | removeformat | help',-->
+        <!--          }"-->
+        <!--            />-->
+        <!--            &lt;!&ndash;            <a-input type="textarea" v-model="form.content_uz" />&ndash;&gt;-->
+        <!--          </a-form-model-item>-->
+        <!--        </a-col>-->
+        <!--        <a-col :span='24'>-->
+        <!--          <a-form-model-item :label="$t('content_ru')" prop='content_ru'>-->
+        <!--            <editor-->
+        <!--              ref='uz'-->
+        <!--              v-model='form.content_ru'-->
+        <!--              api-key='43hzrms710evup3megfjv61a1a2mutt7dtqur4smu4bvp5jf'-->
+        <!--              :init="{-->
+        <!--             height: 500,-->
+        <!--             menubar: 'insert',-->
+        <!--             selector: 'textarea',-->
+        <!--             a11y_advanced_options: true,-->
+        <!--             image_title: true,-->
+        <!--             automatic_uploads: true,-->
+        <!--             images_upload_handler: this.uploader,-->
+        <!--             plugins: [-->
+        <!--                'advlist autolink lists link image charmap print preview anchor',-->
+        <!--                'searchreplace visualblocks code fullscreen',-->
+        <!--                'insertdatetime media table paste imagetools wordcount'-->
+        <!--             ],-->
+        <!--             toolbar:-->
+        <!--               'undo redo | formatselect | bold italic backcolor | \-->
+        <!--               alignleft aligncenter alignright alignjustify | image media | \-->
+        <!--               bullist numlist outdent indent | removeformat | help',-->
+        <!--          }"-->
+        <!--            />-->
+        <!--            &lt;!&ndash;            <a-input type="textarea" v-model="form.content_ru" />&ndash;&gt;-->
+        <!--          </a-form-model-item>-->
+        <!--        </a-col>-->
       </a-row>
       <a-divider v-if='form.features.length > 0'>{{ $t('features') }}</a-divider>
-      <a-row v-for="parent in form.features" :key="parent.id">
-        <h1 class="parent_title">{{ parent.parent.name_uz }} | {{ parent.parent.name_ru }}:</h1>
+      <a-row v-for='parent in form.features' :key='parent.id'>
+        <h1 class='parent_title'>{{ parent.parent.name_uz }} | {{ parent.parent.name_ru }}:</h1>
         <a-col
           :span='8'
           v-for='(ft, f) in parent.child'
@@ -208,6 +208,8 @@ export default {
     return {
       loading: false,
       status: true,
+      categoryFt: [],
+      productFt: [],
       form: {
         measure_id: null,
         category_id: null,
@@ -241,7 +243,7 @@ export default {
     'form.category_id': function(val) {
       if (val) {
         this.getCategoryFeatures(val).then(res => {
-          console.log(res)
+          const oldProductFeatures = [...this.form.features]
           this.form.features = res.data.map(e => {
             return {
               parent: e,
@@ -250,22 +252,50 @@ export default {
                   feature: child,
                   feature_id: child.id,
                   value: {
-                    id: null,
+                    // eslint-disable-next-line camelcase
+                    id: oldProductFeatures.filter(e => e.feature_id === child.id)[0]?.value_id,
                     value: null
                   }
                 }
               })
             }
           })
-          console.log(res)
-          console.log(this.form.features)
+          // console.log('all features', res)
+          // console.log('product features', this.form.features)
+          // const featuresById = {}
+          // const features = res.data.flatMap(per => per.children.map(child => ({ parent: per, child })))
+          //
+          // features.forEach(el => {
+          //   featuresById[el.child.id] = el
+          // })
+          //
+          // const newFt = this.form.features.map(e => {
+          //   return {
+          //     parent: featuresById[e.feature_id].parent,
+          //     child: featuresById[e.feature_id].parent.children.map(child => {
+          //       return {
+          //         feature: child,
+          //         feature_id: child.id,
+          //         value: {
+          //           id: e.value_id,
+          //           value: null
+          //         }
+          //       }
+          //     })
+          //   }
+          // })
+          // this.form.features = newFt
+          //
+          // console.log('this form features', this.form.features)
+          // console.log('newFt', newFt)
+
         })
       }
     }
   },
   computed: {
     ...mapGetters(['allBrands', 'listCategory', 'allMeasures', 'categoryFeatures']),
-    treeCategory () {
+    treeCategory() {
       return this.treeDataMap(this.listCategory)
     }
   },
@@ -326,7 +356,7 @@ export default {
         }
       })
     },
-    treeDataMap (category) {
+    treeDataMap(category) {
       return category.map((c) => {
         if (!c.children) {
           return {
@@ -345,9 +375,9 @@ export default {
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      );
+      )
     },
-    filterTreeNode (value, node) {
+    filterTreeNode(value, node) {
       const title = node.data.props.title
       // const result = title.toLowerCase().indexOf(value.toLowerCase()) > 0
       const result = title.toLowerCase().startsWith(value.toLowerCase())
@@ -413,9 +443,9 @@ export default {
         _form.measure_id = res.measure_id
         _form.name_ru = res.name_ru
         _form.name_uz = res.name_uz
-        setTimeout(() => {
-          _form.features = res.features
-        }, 1000)
+        // setTimeout(() => {
+        _form.features = res.features
+        // }, 1000)
       })
     }
   }

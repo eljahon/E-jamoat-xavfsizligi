@@ -19,5 +19,5 @@ export default {
         maintainAspectRatio: false
       }
     )
-  }
+  },
 }

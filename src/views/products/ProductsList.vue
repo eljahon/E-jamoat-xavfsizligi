@@ -55,7 +55,7 @@
         </template>
         <template slot="image" slot-scope="image">
           <div class="imagePreview">
-            <img v-if="image" :src="image" :alt="image">
+            <img v-if="image" :src="image">
             <img v-else src="../../assets/upload.jpg" :alt="image">
           </div>
         </template>

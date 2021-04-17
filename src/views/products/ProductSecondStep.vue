@@ -109,6 +109,7 @@ export default {
   },
   watch: {
     fileManagerData (val) {
+      console.log(val)
       const indexes = val.indexes
       const _image = [ ...this.products[indexes.product_id].images ]
       console.log([...val.data, ..._image])
@@ -187,7 +188,7 @@ export default {
       let _products = []
       _products = this.products.map(e => {
         return {
-          id: (e.id ? e.id : undefined),
+          id: e?.id,
           features: e.features.map(f => {
             return {
               feature_id: f.feature_id,
@@ -195,7 +196,7 @@ export default {
             }
           }),
           sku: e.sku,
-          attachments: e.images.filter(i => i.url).map(image => {
+          attachments: e.images.filter(i => i.image_url).map(image => {
             return image.image
           })
         }
@@ -286,18 +287,29 @@ export default {
       this.getProductsById(this.$route.query.productGroupId).then(res => {
         console.log(res)
         this.products = res.map(p => {
+          let _images = []
+          for (let i = 0; i < p.attachments.length; i++) {
+            for (let j = 0; j < p.images.length; j++) {
+              if (p.images[j].indexOf(p.attachments[i]) > 0) {
+                _images.push({
+                  image_url: p.images[j],
+                  image: p.attachments[i]
+                })
+              }
+            }
+          }
+          _images.push({
+            image_url: null,
+            image: null
+          })
           return {
             id: p.id,
             sku: p.sku,
             features: p.product_feature_values,
-            images: p.attachments.map(e => {
-              return {
-                image_url: e,
-                image: e
-              }
-            })
+            images: _images
           }
         })
+        console.log(this.products)
       })
     }
   }
