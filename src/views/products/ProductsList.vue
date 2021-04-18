@@ -5,7 +5,7 @@
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style="margin: 20px 0">
         <a-col style='padding-right: 5px' :span="4">
-          <a-input v-debounce="search" :placeholder="$t('search.name')" />
+          <a-input v-debounce="search" v-model="params.search" :placeholder="$t('search.name')" />
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
           <a-tree-select
@@ -22,20 +22,20 @@
 <!--          </a-select>-->
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
-          <a-select allowClear show-search :placeholder="$t('brand')" :filter-option="filterOption" style="width: 100%" @change="filterBrand">
+          <a-select allowClear v-model="params.brand" show-search :placeholder="$t('brand')" :filter-option="filterOption" style="width: 100%" @change="filterBrand">
             <a-select-option v-for='b in allBrands' :key='b.id' :value='b.id'>{{ b.name }}</a-select-option>
           </a-select>
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
-          <a-input v-debounce="search" :placeholder="$t('supplier')" />
+          <a-input allowClear v-debounce="search" :placeholder="$t('supplier')" />
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
-          <a-select allowClear show-search :placeholder="$t('measure')" :filter-option="filterOption" style="width: 100%" @change="filterMeasure">
+          <a-select allowClear show-search v-model="params.measure" :placeholder="$t('measure')" :filter-option="filterOption" style="width: 100%" @change="filterMeasure">
             <a-select-option v-for='m in measure' :key='m.id' :value='m.id'>{{ m.name_uz }}</a-select-option>
           </a-select>
         </a-col>
         <a-col style='padding-left: 5px' :span="4">
-          <a-select allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
+          <a-select v-model="params.status" allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
             <a-select-option :value='10'>{{ $t('active') }}</a-select-option>
             <a-select-option :value='0'>{{ $t('inactive') }}</a-select-option>
           </a-select>
@@ -151,17 +151,13 @@ export default {
       category: [],
       measure: [],
       params: {
-        pagination: {
-          current: 1,
-          pageSize: 15,
-          total: null,
-        },
+        page: null,
         search: '',
-        category: null,
-        brand: null,
-        supplier: null,
-        measure: null,
-        status: null
+        category: undefined,
+        brand: undefined,
+        supplier: undefined,
+        measure: undefined,
+        status: undefined
       },
     }
   },
@@ -200,17 +196,29 @@ export default {
       })
     },
     changePagination(e) {
-      this.params.pagination = e
+      // this.params.pagination = e
+      this.params.page = e.current
+      this.routeReplacer()
       this.getAllProduct(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllProduct(this.params)
     },
     removeItem (item) {
       this.deleteProduct(item.id).then(res => {
         this.getAllProduct(this.params)
+      })
+    },
+    routeReplacer () {
+      const _filters = { ...this.params }
+      // delete _filters.pagination
+      this.$router.push({
+        name: 'ProductsList',
+        query: _filters
       })
     },
     addItem () {
@@ -223,18 +231,27 @@ export default {
     },
     filterCategory (e) {
       this.params.category = e
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllProduct(this.params)
     },
     filterBrand (e) {
+      console.log(e)
       this.params.brand = e
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllProduct(this.params)
     },
     filterMeasure (e) {
       this.params.measure = e
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllProduct(this.params)
     },
     filterStatus (e) {
       this.params.status = e
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllProduct(this.params)
     }
   },
@@ -242,6 +259,17 @@ export default {
     ...mapGetters(['allProduct', 'loadProduct', 'paginationProduct', 'allBrands', 'allSuppliersList']),
   },
   mounted() {
+    const _query = this.$route.query
+    this.params = {
+        page: _query.page ? parseInt(_query.page) : undefined,
+        search: _query?.search,
+        category: _query.category ? parseInt(_query.category) : undefined,
+      // ? parseInt(_query.category) : undefined,
+        brand: _query.brand ? parseInt(_query.brand) : undefined,
+        supplier: _query.supplier ? parseInt(_query.supplier) : undefined,
+        measure: _query.measure ? parseInt(_query.measure) : undefined,
+        status: _query.status ? parseInt(_query.status) : undefined,
+    }
     this.getAllProduct(this.params)
     this.getListCategory().then(res => {
       this.category = this.treeDataMap(res)

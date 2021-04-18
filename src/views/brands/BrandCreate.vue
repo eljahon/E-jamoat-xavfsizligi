@@ -47,13 +47,14 @@ export default {
       if (this.editable) {
         console.log(data)
         setTimeout(() => {
+          console.log(data)
           this.$refs.brandEdit.id = data.id
-          this.$refs.brandEdit.imageUrl = data.logo_url
+          this.$refs.brandEdit.imageUrl = data.logo
           data.status === 10 ? this.$refs.brandEdit.status = true : this.$refs.brandEdit.status = false
           this.$refs.brandEdit.form = { ...data }
           this.$refs.brandEdit.form.id = undefined
           this.$refs.brandEdit.form.slug = undefined
-          this.$refs.brandEdit.form.logo_url = undefined
+          this.$refs.brandEdit.form.logo = undefined
         }, 0)
         this.visible = true
       }

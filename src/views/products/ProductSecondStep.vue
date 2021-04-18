@@ -218,9 +218,7 @@ export default {
             }
           }).then(res => {
             this.$message.success('Продукт успешно oбновлен')
-            this.$router.push({
-              name: 'ProductsList'
-            })
+            this.$router.go(-2)
           }).finally(() => {
             this.loading = false
           })
@@ -232,9 +230,7 @@ export default {
             }
           }).then(res => {
             this.$message.success('Продукт успешно создан')
-            this.$router.push({
-              name: 'ProductsList'
-            })
+            this.$router.go(-2)
           }).finally(() => {
             this.loading = false
           })

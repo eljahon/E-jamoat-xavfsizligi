@@ -25,12 +25,12 @@ export default {
   actions: {
     getAllProduct({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        let { pagination } = payload
+        // let { pagination } = payload
         commit('GET_LOAD_PRODUCT', true)
         // axios
         axiosInit.get('/admin/products', {
-          page: pagination.current,
-          name: payload.search ? payload.search : undefined,
+          page: payload?.page,
+          name: payload?.search,
           category: payload.category ? payload.category : undefined,
           brand: payload.brand ? payload.brand : undefined,
           supplier: payload.supplier ? payload.supplier : undefined,
@@ -40,7 +40,10 @@ export default {
           .then(res => {
             resolve(res)
             console.log(res)
-            let page = { ...pagination }
+            let page = {
+              current: payload.page,
+              pageSize: 15,
+            }
             page.total = parseInt(res.links.total)
             commit('GET_PRODUCT_PAGINATION', page)
             commit('GET_ALL_PRODUCT', res.data)
