@@ -282,9 +282,7 @@ export default {
                 data: _form
               }).then(res => {
                   console.log(res)
-                  this.$router.push({
-                    name: 'FeaturesList'
-                  })
+                  this.$router.go(-1)
                 })
                 .finally(() => {
                   this.loading = false
@@ -294,9 +292,7 @@ export default {
             this.postFeatures(_form)
               .then(res => {
                 console.log(res)
-                this.$router.push({
-                  name: 'FeaturesList'
-                })
+                this.$router.go(-1)
               })
               .finally(() => {
                 this.loading = false

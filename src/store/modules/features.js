@@ -35,12 +35,12 @@ export default {
   actions: {
     getAllFeatures({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        let { pagination } = payload
+        // let { pagination } = payload
         commit('GET_LOAD_FEATURES', true)
         // axios
         axiosInit.get('/admin/features',
           {
-            page: pagination.current,
+            page: payload.page,
             name: payload.search ? payload.search : undefined,
             status: payload.status,
             type: payload.type ? payload.type : undefined,
@@ -51,6 +51,11 @@ export default {
           .then(res => {
             resolve(res.data)
             console.log(res)
+            let pagination = {
+              current: payload.page || 1,
+              pageSize: 15,
+              total: 0
+            }
             pagination.total = parseInt(res.links.total)
             commit('GET_FEATURES_PAGINATION', pagination)
             commit('GET_ALL_FEATURES', res.data)

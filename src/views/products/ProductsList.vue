@@ -9,6 +9,9 @@
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
           <a-tree-select
+            show-search
+            treeNodeFilterProp="name_ru"
+            :filterTreeNode="filterTreeNode"
             v-model='params.category'
             :treeData='category'
             style='width: 100%'
@@ -178,12 +181,12 @@ export default {
       return category.map((c) => {
         if (!c.children) {
           return {
-            title: c.name_uz + ' - ' + c.name_ru,
+            title: c.name_ru,
             value: c.id
           }
         } else {
           return {
-            title: c.name_uz + ' - ' + c.name_ru,
+            title: c.name_ru,
             value: c.id,
             children: this.treeDataMap(c.children)
           }
@@ -212,6 +215,12 @@ export default {
       this.deleteProduct(item.id).then(res => {
         this.getAllProduct(this.params)
       })
+    },
+    filterTreeNode (value, node) {
+      const title = node.data.props.title
+      console.log(title)
+      const result = title.toLowerCase().startsWith(value.trim().toLowerCase())
+      return result
     },
     routeReplacer () {
       const _filters = { ...this.params }

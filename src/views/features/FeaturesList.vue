@@ -12,6 +12,9 @@
         <a-col style='padding-right: 5px; padding-left: 5px' :span='4'>
           <a-tree-select
             v-model='params.category'
+            show-search
+            treeNodeFilterProp="name_ru"
+            :filterTreeNode="filterTreeNode"
             :treeData='category'
             style='width: 100%'
             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
@@ -24,19 +27,19 @@
           <!--          </a-select>-->
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span='4'>
-          <a-select allowClear show-search :placeholder="$t('type')" :filter-option='filterOption' style='width: 100%'
+          <a-select allowClear show-search v-model='params.type' :placeholder="$t('type')" :filter-option='filterOption' style='width: 100%'
                     @change='filterType'>
             <a-select-option v-for='type in types' :key='type' :value='type'>{{ type }}</a-select-option>
           </a-select>
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span='4'>
-          <a-select allowClear show-search :placeholder="$t('filter_type')" :filter-option='filterOption'
+          <a-select allowClear show-search v-model='params.filter_type' :placeholder="$t('filter_type')" :filter-option='filterOption'
                     style='width: 100%' @change='filterTypeFilter'>
             <a-select-option v-for='type in types' :key='type' :value='type'>{{ type }}</a-select-option>
           </a-select>
         </a-col>
         <a-col style='padding-left: 5px' :span='4'>
-          <a-select allowClear :placeholder="$t('status')" style='width: 100%' @change='filterStatus'>
+          <a-select allowClear v-model='params.status' :placeholder="$t('status')" style='width: 100%' @change='filterStatus'>
             <a-select-option :value='10'>{{ $t('active') }}</a-select-option>
             <a-select-option :value='0'>{{ $t('inactive') }}</a-select-option>
           </a-select>
@@ -152,16 +155,12 @@ export default {
         'dropdown', 'radio', 'checkbox', 'text', 'number', 'date', 'datetime', 'textarea'
       ],
       params: {
-        pagination: {
-          current: 1,
-          pageSize: 15,
-          total: null
-        },
+        page: 1,
         search: '',
-        status: 10,
-        category: null,
-        type: null,
-        filter_type: null
+        status: undefined,
+        category: undefined,
+        type: undefined,
+        filter_type: undefined
       }
     }
   },
@@ -176,16 +175,24 @@ export default {
       })
       console.log(item)
     },
+    routeReplacer () {
+      const _filters = { ...this.params }
+      // delete _filters.pagination
+      this.$router.push({
+        name: 'FeaturesList',
+        query: _filters
+      })
+    },
     treeDataMap (category) {
       return category.map((c) => {
         if (!c.children) {
           return {
-            title: c.name_uz + ' - ' + c.name_ru,
+            title: c.name_ru,
             value: c.id
           }
         } else {
           return {
-            title: c.name_uz + ' - ' + c.name_ru,
+            title: c.name_ru,
             value: c.id,
             children: this.treeDataMap(c.children)
           }
@@ -193,30 +200,47 @@ export default {
       })
     },
     changePagination(e) {
-      this.params.pagination = e
+      this.params.page = e.current
       this.getAllFeatures(this.params)
+      this.routeReplacer()
     },
     search(value) {
       console.log(value)
       this.params.search = value
+      this.params.page = 1
       this.getAllFeatures(this.params)
+      this.routeReplacer()
+    },
+    filterTreeNode (value, node) {
+      const title = node.data.props.title
+      console.log(title)
+      const result = title.toLowerCase().startsWith(value.trim().toLowerCase())
+      return result
     },
     filterStatus(value) {
       console.log(value)
       this.params.status = value
+      this.params.page = 1
       this.getAllFeatures(this.params)
+      this.routeReplacer()
     },
     filterCategory(e) {
       this.params.category = e
+      this.params.page = 1
       this.getAllFeatures(this.params)
+      this.routeReplacer()
     },
     filterType(e) {
       this.params.type = e
+      this.params.page = 1
       this.getAllFeatures(this.params)
+      this.routeReplacer()
     },
     filterTypeFilter(e) {
       this.params.filter_type = e
+      this.params.page = 1
       this.getAllFeatures(this.params)
+      this.routeReplacer()
     },
     filterOption(input, option) {
       console.log(input, option)
@@ -235,6 +259,20 @@ export default {
     ...mapGetters(['allFeatures', 'loadFeatures', 'paginationFeatures'])
   },
   mounted() {
+    const _query = this.$route.query
+    this.params = {
+      page: _query.page ? parseInt(_query.page) : undefined,
+      search: _query?.search,
+      type: _query?.type,
+      // eslint-disable-next-line camelcase
+      filter_type: _query?.filter_type,
+      category: _query.category ? parseInt(_query.category) : undefined,
+      // ? parseInt(_query.category) : undefined,
+      // brand: _query.brand ? parseInt(_query.brand) : undefined,
+      // supplier: _query.supplier ? parseInt(_query.supplier) : undefined,
+      // measure: _query.measure ? parseInt(_query.measure) : undefined,
+      status: _query.status ? parseInt(_query.status) : undefined,
+    }
     this.getAllFeatures(this.params).then(res => {
       console.log(res)
       console.log(this.allFeatures)
