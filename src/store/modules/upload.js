@@ -49,7 +49,7 @@ export default {
       commit('CHANGE_STATUS', 0)
       commit('ON_LOAD', true)
       return new Promise((resolve, reject) => {
-        axios.post('http://163.172.182.95:2500/api/v1/admin/category/upload', payload, {
+        axios.post(`${process.env.VUE_APP_API_BASE_URL}/admin/category/upload`, payload, {
           onUploadProgress: e => {
             let progress = Math.floor((e.loaded * 100) / e.total)
             commit('CHANGE_STATUS', progress)
