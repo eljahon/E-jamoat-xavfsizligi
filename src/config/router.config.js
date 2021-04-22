@@ -233,32 +233,57 @@ export const asyncRouterMap = [
           // },
         ]
       },
-      // products
+      // product_groups
       {
         path: '/products',
         name: 'products',
-        hideChildrenInMenu: true,
-        redirect: '/products/list',
+        redirect: '/products/product-group',
         component: RouteView,
         meta: { title: 'products', icon: 'shop', permission: ['form'] },
         children: [
           {
-            path: '/products/list',
-            name: 'ProductsList',
-            component: () => import('@/views/products/ProductsList'),
-            meta: { title: 'product_list', keepAlive: true, permission: [ 'form' ] }
+            path: '/products/product-group',
+            name: 'product-group',
+            hideChildrenInMenu: true,
+            redirect: '/products/product-group/list',
+            component: RouteView,
+            meta: { title: 'product-groups', icon: 'shop', permission: ['form'] },
+            children: [
+              {
+                path: '/products/product-group/list',
+                name: 'ProductGroupsList',
+                component: () => import('@/views/product_groups/ProductsList'),
+                meta: { title: 'product-groups.list', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/products/product-group/create/:step',
+                name: 'ProductGroupsCreate',
+                component: () => import('@/views/product_groups/ProductsCreateWithUpdate'),
+                meta: { title: 'product-groups.create', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/products/product-group/edit/:step',
+                name: 'ProductGroupsEdit',
+                component: () => import('@/views/product_groups/ProductsCreateWithUpdate'),
+                meta: { title: 'product-groups.edit', keepAlive: true, permission: [ 'form' ] }
+              }
+            ]
           },
           {
-            path: '/products/create/:step',
-            name: 'ProductsCreate',
-            component: () => import('@/views/products/ProductsCreateWithUpdate'),
-            meta: { title: 'product.add', keepAlive: true, permission: [ 'form' ] }
-          },
-          {
-            path: '/products/edit/:step',
-            name: 'ProductsEdit',
-            component: () => import('@/views/products/ProductsCreateWithUpdate'),
-            meta: { title: 'product.edit', keepAlive: true, permission: [ 'form' ] }
+            path: '/products/product',
+            name: 'product',
+            hideChildrenInMenu: true,
+            redirect: '/products/product/list',
+            component: RouteView,
+            meta: { title: 'products', icon: 'shop', permission: ['form'] },
+            children: [
+              {
+                path: '/products/product/list',
+                name: 'ProductList',
+                component: () => import('@/views/products/List'),
+                meta: { title: 'products', keepAlive: true, permission: [ 'form' ] }
+              }
+            ]
           }
         ]
       },
@@ -554,7 +579,7 @@ export const asyncRouterMap = [
               // }
             ]
           },
-          // top sold products
+          // top sold product_groups
           {
             path: '/statistics/top_sold_products',
             name: 'TopSoldProducts',

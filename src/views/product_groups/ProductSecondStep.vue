@@ -68,7 +68,7 @@
 
     <a-row style='margin: 20px 0'>
       <a-button type='primary' @click='saveProduct' :loading='loading'>
-        {{ $route.name !== 'ProductsEdit' ? $t('save') : $t('update') }}
+        {{ $route.name !== 'ProductGroupsEdit' ? $t('save') : $t('update') }}
       </a-button>
       <a-button style='margin-left: 10px' @click='clear' type='primary' ghost>
         {{ $t('clear') }}
@@ -210,7 +210,7 @@ export default {
 
       console.log(_products)
       if (this.skuValidate() && !hasDuplicates) {
-        if (this.$route.name === 'ProductsEdit') {
+        if (this.$route.name === 'ProductGroupsEdit') {
           this.updateProduct({
             id: this.$route.query.productGroupId,
             data: {
@@ -279,7 +279,7 @@ export default {
         }
       })
     })
-    if (this.$route.name === 'ProductsEdit') {
+    if (this.$route.name === 'ProductGroupsEdit') {
       this.getProductsById(this.$route.query.productGroupId).then(res => {
         console.log(res)
         this.products = res.map(p => {

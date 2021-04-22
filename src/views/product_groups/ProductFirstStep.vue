@@ -182,7 +182,7 @@
       </a-row>
       <a-row>
         <a-button type='primary' html-type='submit' :loading='loading'>
-          {{ $route.name === 'ProductsEdit' ? $t('update') : $t('save') }}
+          {{ $route.name === 'ProductGroupsEdit' ? $t('update') : $t('save') }}
         </a-button>
         <a-button style='margin-left: 10px' @click='$refs.ruleForm.resetFields()' type='primary' ghost>
           {{ $t('clear') }}
@@ -319,14 +319,14 @@ export default {
             }
           }
           _form.features = f
-          if (this.$route.name === 'ProductsEdit') {
+          if (this.$route.name === 'ProductGroupsEdit') {
             this.updateProductGroup({
               id: this.$route.query.group_id,
               data: _form
             }).then((res) => {
               this.$message.success('Updated Successfully')
               this.$router.push({
-                name: 'ProductsEdit',
+                name: 'ProductGroupsEdit',
                 params: {
                   step: '2'
                 },
@@ -341,7 +341,7 @@ export default {
             this.postProductGroup(_form).then((res) => {
               this.$message.success('Created Successfully')
               this.$router.push({
-                name: 'ProductsCreate',
+                name: 'ProductGroupsCreate',
                 params: {
                   step: '2'
                 },
