@@ -28,7 +28,7 @@ export default {
         // let { pagination } = payload
         commit('GET_LOAD_PRODUCT', true)
         // axios
-        axiosInit.get('/admin/products', {
+        axiosInit.get('/admin/product-groups', {
           page: payload?.page,
           name: payload?.search,
           category: payload.category ? payload.category : undefined,

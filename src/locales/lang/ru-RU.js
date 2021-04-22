@@ -25,7 +25,10 @@ const locale = {
     'product.edit': 'Изменить продукт',
     'product.add.field': 'Создать продукт основных полей',
     'product.update.field': 'Изменить продукт основных полей',
-
+    'product-groups': 'Группы продуктов',
+    'product-groups.list': 'Список группы продуктов',
+    'product-groups.create': 'Создать группу продукт',
+    'product-groups.edit': 'Изменить группу продукт',
 
 
     // basic

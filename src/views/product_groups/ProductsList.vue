@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a-card :title="$t('product_list')" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="() => { $router.push({ name: 'ProductsCreate', params: { step: '1' } }) }">{{ $t('add') }}</a-button>
+    <a-card :title="$t('product-groups.list')" style="width: 100%">
+      <a-button type="primary" slot="extra" @click="() => { $router.push({ name: 'ProductGroupsCreate', params: { step: '1' } }) }">{{ $t('add') }}</a-button>
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style="margin: 20px 0">
         <a-col style='padding-right: 5px' :span="4">
@@ -124,7 +124,7 @@ export default {
         },
         {
           title: this.$t('name'),
-          dataIndex: 'name',
+          dataIndex: 'name_ru',
         },
         {
           title: this.$t('category'),
@@ -168,7 +168,7 @@ export default {
     ...mapActions(['getAllProduct', 'deleteProduct', 'getListCategory', 'getAllBrandsList', 'getAllSuppliersList', 'getAllMeasureList']),
     editItem(item) {
       this.$router.push({
-        name: 'ProductsEdit',
+        name: 'ProductGroupsEdit',
         params: {
           step: '1'
         },
@@ -226,7 +226,7 @@ export default {
       const _filters = { ...this.params }
       // delete _filters.pagination
       this.$router.push({
-        name: 'ProductsList',
+        name: 'ProductGroupsList',
         query: _filters
       })
     },

@@ -28,6 +28,7 @@ import complaint from '@/store/modules/complaint'
 import searchHistory from '@/store/modules/search_history'
 import roles from '@/store/modules/roles'
 import supplierProduct from '@/store/modules/supplierProduct'
+import productList from '@/store/modules/product_list'
 // import orderDelivered from '@/store/modules/order-delivered'
 import dashboard from '@/store/modules/dashboard'
 
@@ -51,6 +52,7 @@ export default new Vuex.Store({
     complaint,
     dashboard,
     deliveryType,
+    productList,
     brands,
     location,
     user,
