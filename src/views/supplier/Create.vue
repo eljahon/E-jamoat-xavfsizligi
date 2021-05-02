@@ -2,7 +2,7 @@
   <a-card :title="$route.params.id ? $t('supplier.product.update') : $t('supplier.product.create')">
     <a-form-model ref="ruleForm" :model="form" :rules="rules">
       <a-row>
-        <a-col :span="11">
+        <a-col :span="12" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('product')" prop="product_id">
             <a-spin :spinning='spinning'>
               <a-auto-complete
@@ -17,7 +17,7 @@
             </a-spin>
           </a-form-model-item>
         </a-col>
-        <a-col :span="11" :offset='1'>
+        <a-col :span="12" style="padding: 0 0 0 10px">
           <a-form-model-item :label="$t('supplier_store')" prop="supplier_store_id">
             <a-select style="width: 100%" v-model='form.supplier_store_id'>
               <a-select-option v-for='sup in allSupplierStores' :key='sup.id' :value="sup.id">
@@ -26,37 +26,34 @@
             </a-select>
           </a-form-model-item>
         </a-col>
-        <a-col :span="11">
+        <a-col :span="12" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('price')" prop="price">
             <a-input type='number' v-model="form.price" />
           </a-form-model-item>
         </a-col >
-        <a-col :span="11" :offset="1">
-          <a-form-model-item :label="$t('ball')" prop="ball">
-            <a-input type='number' v-model="form.ball" />
+        <a-col :span="12" style="padding: 0 0 0 10px">
+          <a-form-model-item label="Количество продуктов" prop="stock">
+            <a-input type='number' v-model="form.stock" />
           </a-form-model-item>
 <!--          <a-form-model-item :label="$t('stock')" prop="stock">-->
 <!--            <a-input type='number' v-model="form.stock" />-->
 <!--          </a-form-model-item>-->
         </a-col>
-        <a-col :span="11">
+        <a-col :span="12" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('discount')" prop="discount">
             <a-input type='number' :min='0' :max='99' v-model="form.discount" />
           </a-form-model-item>
         </a-col>
-        <a-col :span="11" :offset="1">
+        <a-col :span="12" style="padding: 0 0 0 10px">
           <a-form-model-item :label="$t('discount_price')">
-            <a-input type='number' disabled :value="Math.round((form.price * (1 - (form.discount / 100))) / 100) * 100"/>
+            <a-input type='number' disabled :value="((form.price * (1 - (form.discount / 100))) / 100) * 100"/>
           </a-form-model-item>
         </a-col>
-<!--        <a-col :span="11">-->
-<!--          -->
-<!--        </a-col>-->
-<!--        <a-col :span="11" :offset="1">-->
-<!--          <a-form-model-item :label="$t('old_price')" prop="old_price">-->
-<!--            <a-input type='number' v-model="form.old_price" />-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
+        <a-col :span="12" style="padding: 0 10px 0 0">
+          <a-form-model-item :label="$t('ball')" prop="ball">
+            <a-input type='number' v-model="form.ball" />
+          </a-form-model-item>
+        </a-col>
       </a-row>
     </a-form-model>
     <h1 v-if="variants.length > 0"><strong>{{ $t('variants') }}</strong></h1>
@@ -107,7 +104,7 @@ export default {
         discount: null,
         // old_price: null,
         ball: null,
-        // stock: null,
+        stock: null,
         supplier_store_id: null,
         supplier_id: this.$route.query.supplierID
       },
@@ -115,7 +112,7 @@ export default {
       rules: {
         product_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         price: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        // stock: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        stock: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         supplier_store_id: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         discount: [{
           validator: (rule, value, callback) => {
@@ -221,16 +218,16 @@ export default {
                 id: this.$route.params.id,
                 data: _form
               }).then(res => {
-                // this.$router.go(-1)
-                this.$router.push({
-                  name: 'supplierPreview',
-                  params: {
-                    id: this.$route.query.supplierID
-                  },
-                  query: {
-                    key: 3
-                  }
-                })
+                this.$router.go(-1)
+                // this.$router.push({
+                //   name: 'supplierPreview',
+                //   params: {
+                //     id: this.$route.query.supplierID
+                //   },
+                //   query: {
+                //     key: 3
+                //   }
+                // })
               }).finally(() => {
                 this.loading = false
               })
@@ -272,7 +269,7 @@ export default {
         const _form = this.form
         this.product_name = _data.product_name
         _form.product_id = _data.product_id
-        // _form.price = _data.price
+        _form.price = parseInt(_data.price)
         _form.discount = _data.discount
         _form.price = _data.old_price
         _form.ball = _data.ball
