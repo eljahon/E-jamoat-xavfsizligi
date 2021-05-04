@@ -167,13 +167,14 @@ export default {
   methods: {
     ...mapActions(['getAllProduct', 'deleteProduct', 'getListCategory', 'getAllBrandsList', 'getAllSuppliersList', 'getAllMeasureList']),
     editItem(item) {
+      console.log(item)
       this.$router.push({
         name: 'ProductGroupsEdit',
         params: {
           step: '1'
         },
         query: {
-          group_id: item.group_id
+          group_id: item.id
         }
       })
     },
@@ -182,12 +183,14 @@ export default {
         if (!c.children) {
           return {
             title: c.name_ru,
-            value: c.id
+            value: c.id,
+            key: c.name_ru + c.id + Math.random()
           }
         } else {
           return {
             title: c.name_ru,
             value: c.id,
+            key: c.name_ru + c.id + Math.random(),
             children: this.treeDataMap(c.children)
           }
         }
@@ -218,7 +221,7 @@ export default {
     },
     filterTreeNode (value, node) {
       const title = node.data.props.title
-      console.log(title)
+      // console.log(title)
       const result = title.toLowerCase().startsWith(value.trim().toLowerCase())
       return result
     },

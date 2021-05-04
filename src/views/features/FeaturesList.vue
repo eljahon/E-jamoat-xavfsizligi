@@ -188,12 +188,14 @@ export default {
         if (!c.children) {
           return {
             title: c.name_ru,
-            value: c.id
+            value: c.id,
+            key: c.name_ru + c.id + Math.random()
           }
         } else {
           return {
             title: c.name_ru,
             value: c.id,
+            key: c.name_ru + c.id + Math.random(),
             children: this.treeDataMap(c.children)
           }
         }

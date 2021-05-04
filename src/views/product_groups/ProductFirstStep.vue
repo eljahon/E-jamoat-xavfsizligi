@@ -29,7 +29,7 @@
               show-search
               v-model='form.category_id'
               :treeData='treeCategory'
-              treeNodeFilterProp='name_uz'
+              treeNodeFilterProp='name_ru'
               :filterTreeNode='filterTreeNode'
               style='width: 100%'
               :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
@@ -356,17 +356,19 @@ export default {
         }
       })
     },
-    treeDataMap(category) {
+    treeDataMap (category) {
       return category.map((c) => {
         if (!c.children) {
           return {
-            title: c.name_uz + ' - ' + c.name_ru,
-            value: c.id
+            title: c.name_ru,
+            value: c.id,
+            key: c.name_ru + c.id + Math.random()
           }
         } else {
           return {
-            title: c.name_uz + ' - ' + c.name_ru,
+            title: c.name_ru,
             value: c.id,
+            key: c.name_ru + c.id + Math.random(),
             children: this.treeDataMap(c.children)
           }
         }
