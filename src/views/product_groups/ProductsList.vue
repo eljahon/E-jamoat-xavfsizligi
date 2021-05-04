@@ -215,6 +215,7 @@ export default {
       this.getAllProduct(this.params)
     },
     removeItem (item) {
+      console.log(item)
       this.deleteProduct(item.id).then(res => {
         this.getAllProduct(this.params)
       })
