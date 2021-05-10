@@ -126,7 +126,7 @@
       </a-row>
       <a-divider v-if='form.features.length > 0'>{{ $t('features') }}</a-divider>
       <a-row v-for='parent in form.features' :key='parent.id'>
-        <h1 class='parent_title'>{{ parent.parent.name_uz }} | {{ parent.parent.name_ru }}:</h1>
+        <h1 v-if="parent && parent.parent && parent.parent.name_uz" class='parent_title'>{{ parent.parent.name_uz }} | {{ parent.parent.name_ru }}:</h1>
         <a-col
           :span='8'
           v-for='(ft, f) in parent.child'

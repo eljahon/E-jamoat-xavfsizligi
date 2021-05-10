@@ -268,20 +268,8 @@ export default {
   },
   mounted() {
     this.getMainFeatures(parseInt(this.$route.query.productGroupId)).then(res => {
-      this.products[0].features = this.mainFeatures.map(e => {
-        return {
-          feature: e,
-          feature_id: e.id,
-          values: {
-            id: null,
-            value: null
-          }
-        }
-      })
-    })
-    if (this.$route.name === 'ProductGroupsEdit') {
       this.getProductsById(this.$route.query.productGroupId).then(res => {
-        console.log(res)
+        // this.getMainFeatures(parseInt(this.$route.query.productGroupId)).then(result => {
         this.products = res.map(p => {
           let _images = []
           for (let i = 0; i < p.attachments.length; i++) {
@@ -301,13 +289,44 @@ export default {
           return {
             id: p.id,
             sku: p.sku,
-            features: p.product_feature_values,
+            features: (p.product_feature_values && p.product_feature_values.length > 0) ? p.product_feature_values.map(f => {
+              return {
+                feature: this.mainFeatures.filter(el => el.id === f.feature_id)[0],
+                feature_id: f.feature_id,
+                values: {
+                  id: f.value_id,
+                  value: f.value
+                }
+              }
+            }) : this.mainFeatures.map(e => {
+              return {
+                feature: e,
+                feature_id: e.id,
+                values: {
+                  id: null,
+                  value: null
+                }
+              }
+            }),
             images: _images
           }
         })
-        console.log(this.products)
+        // })
       })
-    }
+      console.log(res)
+      // this.products[0].features = this.mainFeatures.map(e => {
+      //   return {
+      //     feature: e,
+      //     feature_id: e.id,
+      //     values: {
+      //       id: null,
+      //       value: null
+      //     }
+      //   }
+      // })
+    })
+    // if (this.$route.name === 'ProductGroupsEdit') {
+    // }
   }
 }
 </script>

@@ -29,6 +29,7 @@ import searchHistory from '@/store/modules/search_history'
 import roles from '@/store/modules/roles'
 import supplierProduct from '@/store/modules/supplierProduct'
 import productList from '@/store/modules/product_list'
+import homeWidget from '@/store/modules/home-widget'
 // import orderDelivered from '@/store/modules/order-delivered'
 import dashboard from '@/store/modules/dashboard'
 
@@ -55,6 +56,7 @@ export default new Vuex.Store({
     productList,
     brands,
     location,
+    homeWidget,
     user,
     category,
     product,
