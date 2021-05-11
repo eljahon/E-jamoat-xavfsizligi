@@ -25,17 +25,17 @@
         </a-col>
         <a-col :span='8' style='padding-right: 10px'>
           <a-form-model-item :label="$t('categories')" prop='category_id'>
-<!--            <a-tree-select-->
-<!--              show-search-->
-<!--              v-model='form.category_id'-->
-<!--              :treeData='treeCategory'-->
-<!--              treeNodeFilterProp='name_ru'-->
-<!--              :filterTreeNode='filterTreeNode'-->
-<!--              style='width: 100%'-->
-<!--              :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"-->
-<!--              :placeholder="$t('category')"-->
-<!--              allow-clear-->
-<!--            />-->
+            <a-tree-select
+              show-search
+              v-model='form.category_id'
+              :treeData='treeCategory'
+              treeNodeFilterProp='name_ru'
+              :filterTreeNode='filterTreeNode'
+              style='width: 100%'
+              :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
+              :placeholder="$t('category')"
+              allow-clear
+            />
             <!--            <a-select style='width: 100%' v-model='form.category_id'>-->
             <!--              <a-select-option v-for='(c, i) in listCategory' :key="'category' + i" :value='c.id'>-->
             <!--                {{ c.name_ru }}-->

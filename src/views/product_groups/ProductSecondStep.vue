@@ -28,6 +28,7 @@
             </a-col>
           </a-row>
           <a-form-model-item label='Артикуль' style='padding: 0 5px'>
+<!--            <a-input :disabled="$route.name === 'ProductGroupsEdit'" v-model='product.sku'></a-input>-->
             <a-input v-model='product.sku'></a-input>
           </a-form-model-item>
           <a-divider>{{ $t('features.upload.image') }}</a-divider>
@@ -209,7 +210,7 @@ export default {
       // }
 
       console.log(_products)
-      if (!hasDuplicates) {
+      if (this.skuValidate() && !hasDuplicates) {
         if (this.$route.name === 'ProductGroupsEdit') {
           this.updateProduct({
             id: this.$route.query.productGroupId,
@@ -235,7 +236,9 @@ export default {
             this.loading = false
           })
         }
-      } else this.$message.error('Некоторые продукты дублированы')
+      } else if (!this.skuValidate()) {
+        this.$message.error('Артикуль не был выбран')
+      } else if (hasDuplicates) this.$message.error('Некоторые продукты дублированы')
     },
     equalsFeatures(arr1, arr2) {
       // if (arr1 === arr2 || arr1.length !== 0 && arr2.length !== 0) return true
@@ -277,6 +280,7 @@ export default {
       })
       if (this.$route.name === 'ProductGroupsEdit') {
         this.getProductsById(this.$route.query.productGroupId).then(res => {
+          // this.getMainFeatures(parseInt(this.$route.query.productGroupId)).then(result => {
           this.products = res.map(p => {
             let _images = []
             for (let i = 0; i < p.attachments.length; i++) {
@@ -322,10 +326,7 @@ export default {
         })
       }
       console.log(res)
-
     })
-    // if (this.$route.name === 'ProductGroupsEdit') {
-    // }
   }
 }
 </script>
