@@ -28,7 +28,7 @@
             </a-col>
           </a-row>
           <a-form-model-item label='Артикуль' style='padding: 0 5px'>
-            <a-input v-model='product.sku'></a-input>
+            <a-input :disabled="$route.name === 'ProductGroupsEdit'" v-model='product.sku'></a-input>
           </a-form-model-item>
           <a-divider>{{ $t('features.upload.image') }}</a-divider>
           <draggable
