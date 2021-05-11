@@ -1,6 +1,6 @@
 <template>
   <a-card size='small' :title="$t('fill')">
-    <a-switch checked-children='Active' slot='extra' un-checked-children='Deactivated' v-model='status' />
+    <a-switch @click="showTreeData" checked-children='Active' slot='extra' un-checked-children='Deactivated' v-model='status' />
     <a-form-model
       @submit.prevent='saveData'
       ref='ruleForm'
@@ -25,17 +25,17 @@
         </a-col>
         <a-col :span='8' style='padding-right: 10px'>
           <a-form-model-item :label="$t('categories')" prop='category_id'>
-            <a-tree-select
-              show-search
-              v-model='form.category_id'
-              :treeData='treeCategory'
-              treeNodeFilterProp='name_ru'
-              :filterTreeNode='filterTreeNode'
-              style='width: 100%'
-              :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
-              :placeholder="$t('category')"
-              allow-clear
-            />
+<!--            <a-tree-select-->
+<!--              show-search-->
+<!--              v-model='form.category_id'-->
+<!--              :treeData='treeCategory'-->
+<!--              treeNodeFilterProp='name_ru'-->
+<!--              :filterTreeNode='filterTreeNode'-->
+<!--              style='width: 100%'-->
+<!--              :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"-->
+<!--              :placeholder="$t('category')"-->
+<!--              allow-clear-->
+<!--            />-->
             <!--            <a-select style='width: 100%' v-model='form.category_id'>-->
             <!--              <a-select-option v-for='(c, i) in listCategory' :key="'category' + i" :value='c.id'>-->
             <!--                {{ c.name_ru }}-->
@@ -300,6 +300,9 @@ export default {
     }
   },
   methods: {
+    showTreeData () {
+      console.log(this.treeCategory)
+    },
     ...mapActions(['updateProductGroup', 'postProduct', 'updateProduct', 'postProductGroup', 'getAllProduct', 'getCategoryFeatures', 'getAllMeasures', 'getListCategory', 'getAllBrandsList', 'getProductGroupById']),
     saveData() {
       this.$refs.ruleForm.validate((valid) => {

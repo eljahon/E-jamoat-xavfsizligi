@@ -28,7 +28,7 @@
             </a-col>
           </a-row>
           <a-form-model-item label='Артикуль' style='padding: 0 5px'>
-            <a-input :disabled="$route.name === 'ProductGroupsEdit'" v-model='product.sku'></a-input>
+            <a-input v-model='product.sku'></a-input>
           </a-form-model-item>
           <a-divider>{{ $t('features.upload.image') }}</a-divider>
           <draggable
@@ -209,7 +209,7 @@ export default {
       // }
 
       console.log(_products)
-      if (this.skuValidate() && !hasDuplicates) {
+      if (!hasDuplicates) {
         if (this.$route.name === 'ProductGroupsEdit') {
           this.updateProduct({
             id: this.$route.query.productGroupId,
@@ -235,9 +235,7 @@ export default {
             this.loading = false
           })
         }
-      } else if (!this.skuValidate()) {
-        this.$message.error('Артикуль не был выбран')
-      } else if (hasDuplicates) this.$message.error('Некоторые продукты дублированы')
+      } else this.$message.error('Некоторые продукты дублированы')
     },
     equalsFeatures(arr1, arr2) {
       // if (arr1 === arr2 || arr1.length !== 0 && arr2.length !== 0) return true
@@ -252,7 +250,6 @@ export default {
         }
       }
       return true
-
     }
   },
   computed: {
@@ -268,62 +265,64 @@ export default {
   },
   mounted() {
     this.getMainFeatures(parseInt(this.$route.query.productGroupId)).then(res => {
-      this.getProductsById(this.$route.query.productGroupId).then(res => {
-        // this.getMainFeatures(parseInt(this.$route.query.productGroupId)).then(result => {
-        this.products = res.map(p => {
-          let _images = []
-          for (let i = 0; i < p.attachments.length; i++) {
-            for (let j = 0; j < p.images.length; j++) {
-              if (p.images[j].indexOf(p.attachments[i]) > 0) {
-                _images.push({
-                  image_url: p.images[j],
-                  image: p.attachments[i]
-                })
+      this.products[0].features = this.mainFeatures.map(e => {
+        return {
+          feature: e,
+          feature_id: e.id,
+          values: {
+            id: null,
+            value: null
+          }
+        }
+      })
+      if (this.$route.name === 'ProductGroupsEdit') {
+        this.getProductsById(this.$route.query.productGroupId).then(res => {
+          this.products = res.map(p => {
+            let _images = []
+            for (let i = 0; i < p.attachments.length; i++) {
+              for (let j = 0; j < p.images.length; j++) {
+                if (p.images[j].indexOf(p.attachments[i]) > 0) {
+                  _images.push({
+                    image_url: p.images[j],
+                    image: p.attachments[i]
+                  })
+                }
               }
             }
-          }
-          _images.push({
-            image_url: null,
-            image: null
+            _images.push({
+              image_url: null,
+              image: null
+            })
+            return {
+              id: p.id,
+              sku: p.sku,
+              features: (p.product_feature_values && p.product_feature_values.length > 0) ? p.product_feature_values.map(f => {
+                return {
+                  feature: this.mainFeatures.filter(el => el.id === f.feature_id)[0],
+                  feature_id: f.feature_id,
+                  values: {
+                    id: f.value_id,
+                    value: f.value
+                  }
+                }
+              }) : this.mainFeatures.map(e => {
+                return {
+                  feature: e,
+                  feature_id: e.id,
+                  values: {
+                    id: null,
+                    value: null
+                  }
+                }
+              }),
+              images: _images
+            }
           })
-          return {
-            id: p.id,
-            sku: p.sku,
-            features: (p.product_feature_values && p.product_feature_values.length > 0) ? p.product_feature_values.map(f => {
-              return {
-                feature: this.mainFeatures.filter(el => el.id === f.feature_id)[0],
-                feature_id: f.feature_id,
-                values: {
-                  id: f.value_id,
-                  value: f.value
-                }
-              }
-            }) : this.mainFeatures.map(e => {
-              return {
-                feature: e,
-                feature_id: e.id,
-                values: {
-                  id: null,
-                  value: null
-                }
-              }
-            }),
-            images: _images
-          }
+          // })
         })
-        // })
-      })
+      }
       console.log(res)
-      // this.products[0].features = this.mainFeatures.map(e => {
-      //   return {
-      //     feature: e,
-      //     feature_id: e.id,
-      //     values: {
-      //       id: null,
-      //       value: null
-      //     }
-      //   }
-      // })
+
     })
     // if (this.$route.name === 'ProductGroupsEdit') {
     // }
