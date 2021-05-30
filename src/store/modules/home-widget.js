@@ -4,16 +4,21 @@ export default {
   state: {
     data: [],
     loading: false,
-    pagination: {}
+    pagination: {},
+    types: null,
   },
   getters: {
     allHomeWigets: (state) => state.data,
     loadHomeWigets: (state) => state.loading,
+    homeWidgetTypes: (state) => state.types,
     paginationHomeWigets: (state) => state.pagination
   },
   mutations: {
     GET_ALL_HOME_WIDGETS(state, payload) {
       state.data = payload
+    },
+    GET_HOME_WIDGET_TYPES(state, payload) {
+      state.types = payload
     },
     GET_LOAD_HOME_WIDGETS(state, payload) {
       state.loading = payload
@@ -52,72 +57,91 @@ export default {
           })
       })
     },
-    // updateWidgets({ commit }, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     axiosInit.put(`/admin/widget/${payload.id}`, payload.data)
-    //       .then(res => {
-    //         resolve(res)
-    //         console.log(res)
-    //       })
-    //       .catch(err => {
-    //         notification.error({
-    //           message: 'Ошибка сети или сервер не работает',
-    //           description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
-    //           duration: 5
-    //         })
-    //         reject(err)
-    //       })
-    //   })
-    // },
-    // getWidgetById({ commit }, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     axiosInit.get(`/admin/widget/${payload}`)
-    //       .then(res => {
-    //         resolve(res)
-    //         console.log(res)
-    //       })
-    //       .catch(err => {
-    //         notification.error({
-    //           message: 'Ошибка сети или сервер не работает',
-    //           description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
-    //           duration: 5
-    //         })
-    //         reject(err)
-    //       })
-    //   })
-    // },
-    // deleteWidgets({ commit }, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     axiosInit.delete(`/admin/widget/${payload}`)
-    //       .then(res => {
-    //         resolve()
-    //         console.log(res)
-    //       })
-    //       .catch(err => {
-    //         notification.error({
-    //           message: 'Ошибка сети или сервер не работает',
-    //           description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
-    //           duration: 5
-    //         })
-    //         reject(err)
-    //       })
-    //   })
-    // },
-    // postWidgets({ commit }, payload) {
-    //   return new Promise((resolve, reject) => {
-    //     axiosInit.post('/admin/widget', payload).then(res => {
-    //       resolve(res)
-    //       console.log(res)
-    //     })
-    //       .catch(err => {
-    //         notification.error({
-    //           message: 'Ошибка сети или сервер не работает',
-    //           description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
-    //           duration: 5
-    //         })
-    //         reject(err)
-    //       })
-    //   })
-    // }
+    getHomeWidgetTypes({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get('/admin/home-widgets/types')
+          .then(res => {
+            console.log(res)
+            commit('GET_HOME_WIDGET_TYPES', res.data)
+            resolve(res)
+            console.log(res)
+          })
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
+          })
+      })
+    },
+    updateHomeWidgets({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.put(`/admin/widget/${payload.id}`, payload.data)
+          .then(res => {
+            resolve(res)
+            console.log(res)
+          })
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
+          })
+      })
+    },
+    getHomeWidgetById({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get(`/admin/widget/${payload}`)
+          .then(res => {
+            resolve(res)
+            console.log(res)
+          })
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
+          })
+      })
+    },
+    deleteHomeWidgets({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.delete(`/admin/home-widgets/${payload}`)
+          .then(res => {
+            resolve()
+            console.log(res)
+          })
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
+          })
+      })
+    },
+    postHomeWidgets({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.post('/admin/home-widgets', payload).then(res => {
+          resolve(res)
+          console.log(res)
+        })
+          .catch(err => {
+            notification.error({
+              message: 'Ошибка сети или сервер не работает',
+              description: 'Пожалуйста, проверьте свою сеть или обновить страницу' + '\n' + err.message,
+              duration: 5
+            })
+            reject(err)
+          })
+      })
+    }
   }
 }

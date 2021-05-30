@@ -5,7 +5,7 @@
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style='margin: 20px 0'>
         <a-col :span='6' style='padding-right: 10px'>
-          <a-input v-debounce="search" :placeholder="$t('name')"></a-input>
+          <a-input allow-clear v-model="params.search" @change="search" :placeholder="$t('name')"></a-input>
         </a-col>
         <a-col :span='6' style='padding-left: 10px'>
           <a-select allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
@@ -18,6 +18,10 @@
         :columns="columns"
         :data-source="allBrands"
         :loading="loadBrand"
+        :row-selection="{
+          selectedRowKeys: rowSelection,
+          onChange: onSelectChange
+        }"
         :rowKey="item => item.id"
         :pagination='paginationBrand'
         @change="changePagination"
@@ -69,15 +73,18 @@
 <script>
 import BrandCreate from './BrandCreate'
 import { mapActions, mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
 export default {
   components: {
     'brand-create': BrandCreate,
     // 'category-edit': editBrand
   },
   data() {
+    this.search = debounce(this.search, 600)
     return {
       visible: false,
       loading: false,
+      rowSelection: [],
       slug: null,
       columns: [
         {
@@ -103,41 +110,68 @@ export default {
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
         },
-        {
-          title: this.$t('action'),
-          key: 'action',
-          align: 'center',
-          width: '12%',
-          scopedSlots: { customRender: 'action' },
-        },
+        this.$route.name !== 'HomeWidgetCreate'
+          ? {
+            title: this.$t('action'),
+            key: 'action',
+            align: 'center',
+            width: '12%',
+            scopedSlots: { customRender: 'action' },
+          } : {}
+        // {
+        //   title: this.$t('action'),
+        //   key: 'action',
+        //   align: 'center',
+        //   width: '12%',
+        //   scopedSlots: { customRender: 'action' },
+        // },
       ],
       params: {
-        pagination: {
-          current: 1,
-          pageSize: 15,
-          total: null,
-        },
+        page: 1,
         search: '',
         status: 10
       },
     }
   },
+  watch: {
+    rowSelection: function(val) {
+      console.log(val)
+    }
+  },
   methods: {
+    onSelectChange (e) {
+      this.rowSelection = e
+      console.log(e)
+      this.$emit('input', e)
+    },
     ...mapActions(['getAllBrands', 'deleteBrand']),
     editBrand(item) {
       this.$refs.editBrand.show(item)
     },
+    routeReplacer () {
+      const _filters = { ...this.params }
+      // delete _filters.pagination
+      if (this.$route.name !== 'HomeWidgetCreate') {
+        this.$router.push({
+          name: this.$route.name,
+          query: _filters
+        })
+      }
+    },
     changePagination(e) {
-      this.params.pagination = e
+      this.params.page = e.current
+      this.routeReplacer()
       this.getAllBrands(this.params)
     },
     search(value) {
-      console.log(value)
-      this.params.search = value
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllBrands(this.params)
     },
     filterStatus (value) {
       this.params.status = value
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllBrands(this.params)
     },
     removeBrand (item) {
@@ -154,6 +188,11 @@ export default {
     ...mapGetters(['allBrands', 'loadBrand', 'paginationBrand']),
   },
   mounted() {
+    this.params = {
+      page: this.$route.query.page ? parseInt(this.$route.query.page) : 1,
+      search: this.$route.query?.search,
+      status: this.$route.query.status ? parseInt(this.$route.query.status) : 10
+    }
     this.getAllBrands(this.params)
   },
 }

@@ -5,7 +5,7 @@
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style="margin: 20px 0">
         <a-col style='padding-right: 5px' :span="4">
-          <a-input v-debounce="search" v-model="params.search" :placeholder="$t('search.name')" />
+          <a-input allow-clear @change="search" v-model="params.search" :placeholder="$t('search.name')" />
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
           <a-tree-select
@@ -106,12 +106,14 @@
 import Create from './ProductsCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 import { TreeSelect } from 'ant-design-vue'
+import debounce from 'lodash/debounce'
 export default {
   components: {
     'create': Create,
     'a-tree-select': TreeSelect
   },
   data() {
+    this.search = debounce(this.search, 600)
     return {
       visible: false,
       loading: false,
@@ -208,8 +210,6 @@ export default {
       this.getAllProduct(this.params)
     },
     search(value) {
-      console.log(value)
-      this.params.search = value
       this.params.page = 1
       this.routeReplacer()
       this.getAllProduct(this.params)

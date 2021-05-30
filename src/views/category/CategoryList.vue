@@ -5,7 +5,7 @@
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style='margin: 20px 0'>
         <a-col :span='6' style='padding-right: 10px'>
-          <a-input v-debounce="search" :placeholder="$t('name')"></a-input>
+          <a-input @change="search" allowClear v-model="params.search" :placeholder="$t('name')"></a-input>
         </a-col>
         <a-col :span='6' style='padding: 0 10px'>
           <a-select allowClear :placeholder="$t('status')" style="width: 100%" @change="filterStatus">
@@ -21,6 +21,10 @@
         :data-source="allCategory"
         :loading="loadCategory"
         :rowKey="item => item.id"
+        :row-selection="{
+          selectedRowKeys: rowSelection,
+          onChange: onSelectChange
+        }"
         :pagination="paginationCategory"
         @change="changePagination"
       >
@@ -72,16 +76,21 @@
   </div>
 </template>
 <script>
+
+
 import CreateCategory from './CategoryCreate'
+import debounce from 'lodash/debounce'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   components: {
     'category-create': CreateCategory
   },
   data() {
+    this.search = debounce(this.search, 600)
     return {
       visible: false,
       loading: false,
+      rowSelection: [],
       columns: [
         {
           title: this.$t('name_uz'),
@@ -110,20 +119,17 @@ export default {
           align: 'center',
           scopedSlots: { customRender: 'image' },
         },
-        {
+        this.$route.name !== 'HomeWidgetCreate'
+        ? {
           title: this.$t('action'),
           key: 'action',
           align: 'center',
           width: '12%',
           scopedSlots: { customRender: 'action' },
-        },
+        } : {}
       ],
       params: {
-        pagination: {
-          current: 1,
-          pageSize: 15,
-          total: null,
-        },
+        page: 1,
         search: '',
         status: 10
       },
@@ -134,21 +140,39 @@ export default {
     cropper () {
       this.$refs.imageCrop.show()
     },
+    onSelectChange (e) {
+      this.rowSelection = e
+      console.log(e)
+      this.$emit('input', e)
+    },
     editCategory(item) {
       this.$refs.editCategory.show(item)
     },
     changePagination(e) {
-      this.params.pagination = e
+      this.params.page = e.current
+      this.routeReplacer()
       this.getAllCategory(this.params)
+    },
+    routeReplacer () {
+      const _filters = { ...this.params }
+      // delete _filters.pagination
+      if (this.$route.name !== 'HomeWidgetCreate') {
+        this.$router.push({
+          name: this.$route.name,
+          query: _filters
+        })
+      }
     },
     search(value) {
       console.log(value)
-      this.params.search = value
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllCategory(this.params)
     },
     filterStatus (value) {
-      console.log(value)
-      this.params.search = value
+      this.params.status = value
+      this.params.page = 1
+      this.routeReplacer()
       this.getAllCategory(this.params)
     },
     removeCategory (item) {
@@ -182,6 +206,11 @@ export default {
     ...mapGetters(['allCategory', 'loadCategory', 'paginationCategory']),
   },
   mounted() {
+    this.params = {
+      page: this.$route.query.page ? parseInt(this.$route.query.page) : 1,
+      search: this.$route.query?.search,
+      status: this.$route.query.status ? parseInt(this.$route.query.status) : 10
+    }
     this.getAllCategory(this.params)
     this.getTreeCategory()
   },

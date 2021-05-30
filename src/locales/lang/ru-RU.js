@@ -97,6 +97,11 @@ const locale = {
     'cancel': 'Отмена',
     'name': 'Название',
     'order_number': 'Порядковый номер',
+    'order_no': 'Приоритет',
+    'widgets': 'Виджеты',
+    'widgets.type': 'Тип виджетов',
+    'is_carousel': 'Карусель?',
+    'view_count': 'Количество просмотров',
     'description': 'Описание',
     'add_type': 'Выберите тип',
     'fill': 'Заполните поле',
@@ -237,6 +242,9 @@ const locale = {
     'pages_and_widgets': 'Страницы и карусель',
     'widget': 'Карусель',
     'widget.list': 'Список карусель',
+    'home.widget': 'Домашние виджеты',
+    'home.widget.list': 'Список виджетов на главной странице',
+
 
     // supplier
     'supplier': 'Поставщики',

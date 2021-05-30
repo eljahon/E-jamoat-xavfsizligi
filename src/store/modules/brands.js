@@ -25,22 +25,22 @@ export default {
     getAllBrands({ commit }, payload) {
       return new Promise((resolve, reject) => {
         commit('GET_LOAD_BRAND', true)
-        // axios
         axiosInit.get('/admin/brand',
           {
-            page: payload ? payload.pagination.current : undefined,
-            name: payload && payload.search ? payload.search : undefined,
-            status: payload && payload.status ? payload.status : undefined,
+            page: payload?.page,
+            name: payload?.search,
+            status: payload?.status
           }
         )
           .then(res => {
             console.log(res)
             resolve()
-            if (payload) {
-              let { pagination } = payload
-              pagination.total = parseInt(res.links.total)
-              commit('GET_BRAND_PAGINATION', pagination)
+            let page = {
+              current: payload.page,
+              pageSize: 15,
             }
+            page.total = parseInt(res.links.total)
+            commit('GET_BRAND_PAGINATION', page)
             commit('GET_ALL_BRAND', res.data)
           })
           .catch(error => {

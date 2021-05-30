@@ -1,13 +1,11 @@
 <template>
   <div>
     <a-card :title="$t('features.list')" style='width: 100%'>
-      <a-button type='primary' slot='extra' @click="() => { $router.push({ name: 'FeaturesCreate' }) }">{{ $t('add')
-        }}
-      </a-button>
+      <a-button type='primary' slot='extra' @click="() => { $router.push({ name: 'FeaturesCreate' }) }">{{ $t('add') }}</a-button>
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style='margin: 20px 0'>
         <a-col style='padding-right: 5px' :span='4'>
-          <a-input v-debounce='search' :placeholder="$t('search.name')" />
+          <a-input v-model="params.search" allow-clear @change="search" :placeholder="$t('search.name')" />
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span='4'>
           <a-tree-select
@@ -74,7 +72,7 @@
           <template slot='action' slot-scope='item'>
             <a-tooltip>
               <template slot='title'>{{ $t('update') }}</template>
-              <a-button style='margin: 0 2px' @click='editItem(item)' icon='edit'></a-button>
+              <a-button type="primary" style='margin: 0 2px' @click='editItem(item)' icon='edit'></a-button>
             </a-tooltip>
             <a-popconfirm
               placement='topRight'
@@ -98,15 +96,13 @@
       </div>
     </a-card>
 
-    <!-- MODALS -->
-    <!--    <create ref="createBrand" :editable="false" :params="params"/>-->
-    <!--    <create ref="editItem" :editable="true" :params="params"/>-->
   </div>
 </template>
 <script>
 import { TreeSelect } from 'ant-design-vue'
 import Create from './FeaturesCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
 
 export default {
   components: {
@@ -114,6 +110,7 @@ export default {
     'a-tree-select': TreeSelect
   },
   data() {
+    this.search = debounce(this.search, 600)
     return {
       visible: false,
       loading: false,
@@ -137,12 +134,6 @@ export default {
           align: 'center',
           scopedSlots: { customRender: 'is_main' }
         },
-        // {
-        //   title: this.$t('status'),
-        //   dataIndex: 'status',
-        //   align: 'center',
-        //   scopedSlots: { customRender: 'status' }
-        // },
         {
           title: this.$t('action'),
           key: 'action',
@@ -208,7 +199,6 @@ export default {
     },
     search(value) {
       console.log(value)
-      this.params.search = value
       this.params.page = 1
       this.getAllFeatures(this.params)
       this.routeReplacer()

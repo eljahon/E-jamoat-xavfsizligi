@@ -13,9 +13,12 @@
         :data-source="allArticles"
         :loading="loadArticle"
         :rowKey="item => item.id"
+        :row-selection="{
+          selectedRowKeys: rowSelection,
+          onChange: onSelectChange
+        }"
         :pagination="paginationArticle"
         @change="changePagination"
-        bordered
       >
         <template slot="action" slot-scope="item">
           <a-tooltip>
@@ -54,27 +57,36 @@ export default {
     return {
       visible: false,
       loading: false,
+      rowSelection: [],
       slug: null,
       columns: [
         {
           title: this.$t('name_uz'),
-          dataIndex: 'name_uz',
+          dataIndex: 'title_uz',
         },
         {
           title: this.$t('name_ru'),
-          dataIndex: 'name_ru',
+          dataIndex: 'title_ru',
         },
         {
-          title: this.$t('symbol'),
-          dataIndex: 'symbol',
+          title: this.$t('view_count'),
+          dataIndex: 'view_count',
         },
-        {
-          title: this.$t('action'),
-          key: 'action',
-          align: 'center',
-          width: '20%',
-          scopedSlots: { customRender: 'action' },
-        },
+        this.$route.name !== 'HomeWidgetCreate'
+          ? {
+            title: this.$t('action'),
+            key: 'action',
+            align: 'center',
+            width: '20%',
+            scopedSlots: { customRender: 'action' },
+          } : {}
+        // {
+        //   title: this.$t('action'),
+        //   key: 'action',
+        //   align: 'center',
+        //   width: '20%',
+        //   scopedSlots: { customRender: 'action' },
+        // },
       ],
       params: {
         pagination: {
@@ -90,6 +102,11 @@ export default {
     ...mapActions(['getAllArticles', 'deleteArticle']),
     editItem(item) {
       this.$refs.editArticle.show(item)
+    },
+    onSelectChange (e) {
+      this.rowSelection = e
+      console.log(e)
+      this.$emit('input', e)
     },
     changePagination(e) {
       this.params.pagination = e

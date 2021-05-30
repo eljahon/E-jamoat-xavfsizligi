@@ -17,13 +17,23 @@
         <a-form-model-item :label="$t('category')" prop="parent_id">
           <a-tree-select
             show-search
-            v-model="form.parent_id"
-            :treeData="treeData"
-            style="width: 100%"
+            treeNodeFilterProp="name_ru"
+            :filterTreeNode="filterTreeNode"
+            v-model='form.parent_id'
+            :treeData='treeData'
+            style='width: 100%'
             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            placeholder="Please select"
+            :placeholder="$t('category')"
             allow-clear
           />
+<!--          <a-tree-select-->
+<!--            show-search-->
+<!--            v-model="form.parent_id"-->
+<!--            :treeData="treeData"-->
+<!--            style="width: 100%"-->
+<!--            :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"-->
+<!--            allow-clear-->
+<!--          />-->
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
@@ -153,6 +163,12 @@ export default {
           } else reject(valid)
         })
       })
+    },
+    filterTreeNode (value, node) {
+      const title = node.data.props.title
+      // console.log(title)
+      const result = title.toLowerCase().startsWith(value.trim().toLowerCase())
+      return result
     },
     resetForm () {
       this.imageUrl = null

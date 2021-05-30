@@ -34,20 +34,24 @@ export default {
   actions: {
     getAllCategory({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        let { pagination } = payload
+        // let { pagination } = payload
         commit('GET_LOAD_CATEGORY', true)
         // axios
         axiosInit.get('/admin/category',
           {
-          page: pagination.current,
-          name: pagination.search ? pagination.search : undefined,
-          status: pagination.status
+          page: payload?.page,
+          name: payload?.search,
+          status: payload?.status
         }
         )
           .then(res => {
             resolve()
-            pagination.total = parseInt(res.links.total)
-            commit('GET_CATEGORY_PAGINATION', pagination)
+            let page = {
+              current: payload.page,
+              pageSize: 15,
+            }
+            page.total = parseInt(res.links.total)
+            commit('GET_CATEGORY_PAGINATION', page)
             commit('GET_ALL_CATEGORY', res.data)
           })
           .catch(error => {

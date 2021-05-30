@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :title="$t('widget.list')" style="width: 100%">
+    <a-card :title="$t('home.widget.list')" style="width: 100%">
       <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
@@ -10,22 +10,16 @@
       </a-row>
       <a-table
         :columns="columns"
-        :data-source="allWigets"
-        :loading="loadWigets"
+        :data-source="allHomeWigets"
+        :loading="loadHomeWigets"
         :rowKey="item => item.id"
-        :pagination="paginationWigets"
+        :pagination="paginationHomeWigets"
         @change="changePagination"
         bordered
       >
-        <!--        <template slot="status" slot-scope="status">-->
-        <!--          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>-->
-        <!--          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>-->
-        <!--        </template>-->
-        <template slot="category" slot-scope="item">
-          {{ getCatgory(item.category_id) }}
-        </template>
-        <template slot="brand" slot-scope="item">
-          {{ getBrand(item.brand_id) }}
+        <template slot="status" slot-scope="status">
+          <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
         </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
@@ -54,35 +48,32 @@
     </a-card>
 
     <!-- MODALS -->
-    <create ref="createItem" :editable="false" :params="params"/>
-    <create ref="editItem" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import Create from './WidgetCreate'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  components: {
-    'create': Create,
-  },
   data() {
     return {
       visible: false,
       loading: false,
       columns: [
         {
-          title: this.$t('categories'),
-          dataIndex: 'category_id',
-          scopedSlots: { customRender: 'category' }
+          title: this.$t('name_uz'),
+          dataIndex: 'title_uz',
         },
         {
-          title: this.$t('brands'),
-          dataIndex: 'brand_id',
-          scopedSlots: { customRender: 'brand' }
+          title: this.$t('name_ru'),
+          dataIndex: 'title_ru',
         },
         {
-          title: this.$t('key'),
-          dataIndex: 'key',
+          title: this.$t('order_no'),
+          dataIndex: 'order',
+        },
+        {
+          title: this.$t('status'),
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' },
         },
         {
           title: this.$t('action'),
@@ -103,7 +94,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getAllWidgets', 'deleteWidgets', 'getListCategory', 'getAllBrands']),
+    ...mapActions(['getAllHomeWidgets', 'deleteHomeWidgets', 'getListCategory', 'getAllBrands']),
     editItem(item) {
       console.log(item)
       this.$router.push({
@@ -116,22 +107,22 @@ export default {
     },
     changePagination(e) {
       this.params.pagination = e
-      this.getAllWidgets(this.params)
+      this.getAllHomeWidgets(this.params)
     },
     search(value) {
       console.log(value)
       this.params.search = value
-      this.getAllWidgets(this.params)
+      this.getAllHomeWidgets(this.params)
     },
     removeItem (item) {
       console.log(item)
-      this.deleteWidgets(item.id).then(res => {
-        this.getAllWidgets(this.params)
+      this.deleteHomeWidgets(item.id).then(res => {
+        this.getAllHomeWidgets(this.params)
       })
     },
     addItem () {
       this.$router.push({
-        name: 'WidgetCreate'
+        name: 'HomeWidgetCreate'
       })
       // this.$refs.createItem.show()
     },
@@ -147,12 +138,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allWigets', 'loadWigets', 'paginationWigets', 'allBrands', 'listCategory'])
+    ...mapGetters(['allHomeWigets', 'loadHomeWigets', 'paginationHomeWigets', 'allBrands', 'listCategory'])
   },
   mounted() {
     this.getAllBrands()
     this.getListCategory()
-    this.getAllWidgets(this.params)
+    this.getAllHomeWidgets(this.params)
   },
 }
 </script>

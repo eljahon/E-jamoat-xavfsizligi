@@ -323,6 +323,35 @@ export const asyncRouterMap = [
               }
             ]
           },
+          // home-widgets
+          {
+            path: '/pages_and_widgets/home_widgets',
+            name: 'HomeWidget',
+            hideChildrenInMenu: true,
+            component: RouteView,
+            redirect: '/pages_and_widgets/home_widgets/list',
+            meta: { title: 'home.widget', icon: 'flag', permission: [ 'form' ] },
+            children: [
+              {
+                path: '/pages_and_widgets/home_widgets/list',
+                name: 'HomeWidgetList',
+                component: () => import('@/views/home-widget/List'),
+                meta: { title: 'home.widget.list', keepAlive: true, permission: [ 'form' ] }
+              },
+              {
+                path: '/pages_and_widgets/home_widgets/create',
+                name: 'HomeWidgetCreate',
+                component: () => import('@/views/home-widget/Create'),
+                meta: { title: 'home.widget', keepAlive: true, permission: [ 'form' ] }
+              },
+              // {
+              //   path: '/pages_and_widgets/widget/update/:id',
+              //   name: 'WidgetUpdate',
+              //   component: () => import('@/views/widget/WidgetCreateWithUpdate'),
+              //   meta: { title: 'widget.list', keepAlive: true, permission: [ 'form' ] }
+              // }
+            ]
+          },
           // article
           {
             path: '/pages_and_widgets/article',

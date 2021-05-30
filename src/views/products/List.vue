@@ -49,6 +49,10 @@
         :data-source="allProductList"
         :loading="loadProductList"
         :rowKey="item => item.id"
+        :row-selection="{
+          selectedRowKeys: rowSelection,
+          onChange: onSelectChange
+        }"
         :pagination="paginationProductList"
         @change="changePagination"
       >
@@ -66,44 +70,11 @@
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
           <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
         </template>
-        <!--        <template slot="image" slot-scope="item">-->
-        <!--          <div class="imagePreview">-->
-        <!--            <img :src="item.logo_url">-->
-        <!--          </div>-->
-        <!--        </template>-->
-<!--        <template slot="action" slot-scope="item">-->
-<!--          <a-tooltip>-->
-<!--            <template slot="title">{{ $t('update') }}</template>-->
-<!--            <a-button style="margin: 0 2px" type="primary" @click="editItem(item)" icon="edit"></a-button>-->
-<!--          </a-tooltip>-->
-<!--          <a-popconfirm-->
-<!--            placement="topRight"-->
-<!--            slot="extra"-->
-<!--            :title="$t('deleteMsg')"-->
-<!--            @confirm="removeProduct(item.id)"-->
-<!--            :okText="$t('yes')"-->
-<!--            :cancelText="$t('no')"-->
-<!--          >-->
-<!--            <a-tooltip>-->
-<!--              <template slot="title">{{ $t('delete') }}</template>-->
-<!--              <a-button-->
-<!--                style="margin: 0 2px"-->
-<!--                type="danger"-->
-<!--                icon="delete"-->
-<!--              ></a-button>-->
-<!--            </a-tooltip>-->
-<!--          </a-popconfirm>-->
-<!--        </template>-->
       </a-table>
     </a-card>
-
-    <!-- MODALS -->
-    <!--    <create ref="createBrand" :editable="false" :params="params"/>-->
-    <!--    <create ref="editItem" :editable="true" :params="params"/>-->
   </div>
 </template>
 <script>
-// import Create from './ProductsCreateWithUpdate'
 import { mapActions, mapGetters } from 'vuex'
 import { TreeSelect } from 'ant-design-vue'
 export default {
@@ -115,9 +86,10 @@ export default {
     return {
       visible: false,
       loading: false,
+      rowSelection: [],
       columns: [
         {
-          title: 'Image',
+          title: this.$t('image'),
           dataIndex: 'avatar',
           align: 'center',
           scopedSlots: { customRender: 'image' },
@@ -143,13 +115,6 @@ export default {
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
         },
-        // {
-        //   title: this.$t('action'),
-        //   key: 'action',
-        //   align: 'center',
-        //   width: '15%',
-        //   scopedSlots: { customRender: 'action' },
-        // },
       ],
       category: [],
       measure: [],
@@ -177,6 +142,10 @@ export default {
           group_id: item.group_id
         }
       })
+    },
+    onSelectChange (e) {
+      this.rowSelection = e
+      this.$emit('input', e)
     },
     treeDataMap (category) {
       return category.map((c) => {
@@ -226,10 +195,12 @@ export default {
     routeReplacer () {
       const _filters = { ...this.params }
       // delete _filters.pagination
-      this.$router.push({
-        name: 'ProductGroupsList',
-        query: _filters
-      })
+      if (this.$route.name !== 'HomeWidgetCreate') {
+        this.$router.push({
+          name: 'ProductGroupsList',
+          query: _filters
+        })
+      }
     },
     addItem () {
       this.$refs.createBrand.show()
