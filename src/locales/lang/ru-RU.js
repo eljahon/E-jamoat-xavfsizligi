@@ -104,6 +104,7 @@ const locale = {
     'view_count': 'Количество просмотров',
     'description': 'Описание',
     'add_type': 'Выберите тип',
+    'file.manager': 'Файловый менеджер',
     'fill': 'Заполните поле',
     'password': 'Пароль',
     'settings': 'Настройки',

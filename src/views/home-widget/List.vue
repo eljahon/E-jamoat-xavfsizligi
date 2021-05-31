@@ -5,7 +5,7 @@
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
-          <a-input v-debounce="search" :placeholder="$t('search')" />
+          <a-input allow-clear @change="search" v-model="params.search" :placeholder="$t('search')" />
         </a-col>
       </a-row>
       <a-table
@@ -52,8 +52,10 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import debounce from 'lodash/debounce'
 export default {
   data() {
+    this.search = debounce(this.search, 600)
     return {
       visible: false,
       loading: false,
@@ -111,7 +113,7 @@ export default {
     },
     search(value) {
       console.log(value)
-      this.params.search = value
+      // this.params.search = value
       this.getAllHomeWidgets(this.params)
     },
     removeItem (item) {

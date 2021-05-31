@@ -3,7 +3,7 @@
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('name')" prop="name">
-          <a-input v-model="form.name" />
+          <a-input v-model="form.name" allow-clear/>
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">

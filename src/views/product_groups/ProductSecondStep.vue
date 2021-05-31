@@ -12,7 +12,7 @@
           <a-row>
             <a-col v-for='(ft, f) in product.features' :key='f' :span='12' style='padding: 0 5px' size='small'>
               <a-form-model-item :label='ft.feature.name_ru'>
-                <a-select style='width: 100%' v-model='ft.values.id'>
+                <a-select style='width: 100%' v-model='ft.values.id' allow-clear>
                   <a-select-option v-for='vl in ft.feature.values' :key='vl.id' :value='vl.id'>
                     {{ vl.value_uz }} - {{ vl.value_ru }}
                   </a-select-option>
@@ -21,15 +21,15 @@
               <a-form-model-item
                 v-if="ft.feature_id && !(ft.feature.type === 'dropdown' || ft.feature.type === 'radio' || ft.feature.type === 'checkbox')"
                 :label='ft.feature.name_ru'>
-                <a-input v-if="ft.feature.type === 'text'" v-model='ft.values.value'></a-input>
-                <a-input v-if="ft.feature.type === 'number'" v-model='ft.values.value'></a-input>
-                <a-input v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.values.value'></a-input>
+                <a-input allow-clear v-if="ft.feature.type === 'text'" v-model='ft.values.value'></a-input>
+                <a-input allow-clear v-if="ft.feature.type === 'number'" v-model='ft.values.value'></a-input>
+                <a-input allow-clear v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.values.value'></a-input>
               </a-form-model-item>
             </a-col>
           </a-row>
           <a-form-model-item label='Артикуль' style='padding: 0 5px'>
 <!--            <a-input :disabled="$route.name === 'ProductGroupsEdit'" v-model='product.sku'></a-input>-->
-            <a-input v-model='product.sku'></a-input>
+            <a-input allow-clear v-model='product.sku'></a-input>
           </a-form-model-item>
           <a-divider>{{ $t('features.upload.image') }}</a-divider>
           <draggable

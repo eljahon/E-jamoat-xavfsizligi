@@ -213,7 +213,7 @@ export const asyncRouterMap = [
             path: '/supplier/product/edit/:id',
             name: 'supplierProductUpdate',
             component: () => import('@/views/supplier/Create'),
-            meta: { title: 'supplier.product.edit', keepAlive: true, permission: [ 'form' ] }
+            meta: { title: 'supplier.product.update', keepAlive: true, permission: [ 'form' ] }
           }
           // {
           //   path: '/supplier_all/supplierStore',

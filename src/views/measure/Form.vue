@@ -3,24 +3,24 @@
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('name_uz')" prop="name_uz">
-          <a-input v-model="form.name_uz" />
+          <a-input v-model="form.name_uz" allow-clear/>
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('name_ru')" prop="name_ru">
-          <a-input v-model="form.name_ru" />
+          <a-input v-model="form.name_ru" allow-clear/>
         </a-form-model-item>
       </a-col>
     </a-row>
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('symbol_uz')" prop="symbol_uz">
-          <a-input v-model="form.symbol_uz" />
+          <a-input v-model="form.symbol_uz" allow-clear/>
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('symbol_ru')" prop="symbol_ru">
-          <a-input v-model="form.symbol_ru" />
+          <a-input v-model="form.symbol_ru" allow-clear/>
         </a-form-model-item>
       </a-col>
       <a-col :span="11">

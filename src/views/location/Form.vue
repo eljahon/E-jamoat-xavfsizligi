@@ -3,19 +3,19 @@
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('name_uz')" prop="name_uz">
-          <a-input v-model="form.name_uz" />
+          <a-input v-model="form.name_uz" allow-clear/>
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('name_ru')" prop="name_ru">
-          <a-input v-model="form.name_ru" />
+          <a-input v-model="form.name_ru" allow-clear/>
         </a-form-model-item>
       </a-col>
     </a-row>
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('region')" prop="parent_id">
-          <a-select v-model="form.parent_id" style="width: 100%">
+          <a-select v-model="form.parent_id" style="width: 100%" allow-clear >
             <a-select-option v-for="item in parentLocation" :key="item.id" :value="item.id">
               {{ item.name_uz + ' ' + item.name_ru }}
             </a-select-option>

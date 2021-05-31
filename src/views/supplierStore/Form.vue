@@ -3,12 +3,12 @@
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('phone')" prop="phone">
-          <a-input addon-before="+998" v-mask="'## ### ## ##'" v-model="form.phone" />
+          <a-input allow-clear addon-before="+998" v-mask="'## ### ## ##'" v-model="form.phone" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('second_phone')" prop="second_phone">
-          <a-input addon-before="+998" v-mask="'## ### ## ##'" v-model="form.second_phone" />
+          <a-input allow-clear addon-before="+998" v-mask="'## ### ## ##'" v-model="form.second_phone" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11">
@@ -19,19 +19,18 @@
             :treeData="treeData"
             style="width: 100%"
             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-            placeholder="Please select"
             allow-clear
           />
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('address') + ' UZ'" prop="address_uz">
-          <a-input v-model="form.address_uz" />
+          <a-input allow-clear v-model="form.address_uz" />
         </a-form-model-item>
       </a-col>
       <a-col :span="11">
         <a-form-model-item :label="$t('address') + ' RU'" prop="address_ru">
-          <a-input v-model="form.address_ru" />
+          <a-input allow-clear v-model="form.address_ru" />
         </a-form-model-item>
       </a-col>
     </a-row>

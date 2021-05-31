@@ -1,6 +1,6 @@
 <template>
   <a-card size='small' :title="$t('fill')">
-    <a-switch @click="showTreeData" checked-children='Active' slot='extra' un-checked-children='Deactivated' v-model='status' />
+    <a-switch @click="showTreeData" slot="extra" :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model='status' />
     <a-form-model
       @submit.prevent='saveData'
       ref='ruleForm'
@@ -10,17 +10,17 @@
       <a-row>
         <a-col :span='8' style='padding-right: 10px'>
           <a-form-model-item :label="$t('name_uz')" prop='name_uz'>
-            <a-input v-model='form.name_uz' />
+            <a-input v-model='form.name_uz' allow-clear/>
           </a-form-model-item>
         </a-col>
         <a-col :span='8' style='padding: 0 10px'>
           <a-form-model-item :label="$t('name_ru')" prop='name_ru'>
-            <a-input v-model='form.name_ru' />
+            <a-input v-model='form.name_ru' allow-clear/>
           </a-form-model-item>
         </a-col>
         <a-col :span='8' style='padding-left: 10px'>
           <a-form-model-item :label="$t('keyword')" prop='keywords'>
-            <a-input v-model='form.keywords' />
+            <a-input v-model='form.keywords' allow-clear/>
           </a-form-model-item>
         </a-col>
         <a-col :span='8' style='padding-right: 10px'>
@@ -45,7 +45,7 @@
         </a-col>
         <a-col :span='8' style='padding: 0 10px'>
           <a-form-model-item :label="$t('brands')" prop='brand_id'>
-            <a-select style='width: 100%' v-model='form.brand_id' show-search :filter-option='filterOption'>
+            <a-select style='width: 100%' v-model='form.brand_id' show-search :filter-option='filterOption' allow-clear>
               <a-select-option v-for='(b, i) in allBrands' :key="'brand' + i" :value='b.id'>
                 {{ b.name }}
               </a-select-option>
@@ -53,8 +53,8 @@
           </a-form-model-item>
         </a-col>
         <a-col :span='8' style='padding-left: 10px'>
-          <a-form-model-item :label="$t('measures')" prop='measure_id'>
-            <a-select style='width: 100%' v-model='form.measure_id' show-search :filter-option='filterOption'>
+          <a-form-model-item :label="$t('measures')" prop='measure_id' >
+            <a-select style='width: 100%' v-model='form.measure_id' show-search allow-clear :filter-option='filterOption'>
               <a-select-option v-for='(m, i) in allMeasures' :key="'measure' + i" :value='m.id'>
                 {{ m.name_ru }}
               </a-select-option>
@@ -63,7 +63,7 @@
         </a-col>
         <a-col :span='24'>
           <a-form-model-item :label="$t('description')" prop='description'>
-            <a-input type='textarea' @input='event => form.description = event.target.value' />
+            <a-input allow-clear type='textarea' @input='event => form.description = event.target.value' />
             <!--            <a-input type='textarea' v-model='form.description' />-->
           </a-form-model-item>
         </a-col>
@@ -135,7 +135,7 @@
         >
           <div v-if="ft.feature.type === 'dropdown' || ft.feature.type === 'checkbox'" style='width: 100%'>
             <a-form-model-item :label='ft.feature.name_ru'>
-              <a-select style='width: 100%' v-model='ft.value.id'>
+              <a-select style='width: 100%' v-model='ft.value.id' allow-clear>
                 <a-select-option v-for='vl in ft.feature.values' :key='vl.id' :value='vl.id'>
                   {{ vl.value_ru }}
                 </a-select-option>
@@ -154,14 +154,14 @@
           <div v-if="!(ft.feature.type === 'radio' || ft.feature.type === 'dropdown' || ft.feature.type === 'checkbox')"
                style='width: 100%'>
             <a-form-model-item :label='ft.feature.name_ru'>
-              <a-input v-if="ft.feature.type === 'text'" v-model='ft.value.value'></a-input>
-              <a-input v-if="ft.feature.type === 'number'" v-model='ft.value.value'></a-input>
-              <a-input v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.value.value'></a-input>
+              <a-input allow-clear v-if="ft.feature.type === 'text'" v-model='ft.value.value'></a-input>
+              <a-input allow-clear v-if="ft.feature.type === 'number'" v-model='ft.value.value'></a-input>
+              <a-input allow-clear v-if="ft.feature.type === 'textarea'" type='textarea' v-model='ft.value.value'></a-input>
             </a-form-model-item>
           </div>
           <div v-if="ft.feature.type === 'date'" style='width: 100%'>
             <a-form-model-item :label='ft.feature.name_ru'>
-              <a-date-picker :placeholder="$t('select_data')" v-model='ft.value.value' valueFormat='YYYY-MM-DD'
+              <a-date-picker :placeholder="$t('select_data')" allow-clear v-model='ft.value.value' valueFormat='YYYY-MM-DD'
                              format='YYYY-MM-DD' />
             </a-form-model-item>
           </div>
@@ -169,7 +169,7 @@
             <a-form-model-item :label='ft.feature.name_ru'>
               <a-row>
                 <a-col :span='11'>
-                  <a-date-picker :placeholder="$t('select_data')" v-model='ft.value.value' valueFormat='YYYY-MM-DD'
+                  <a-date-picker allow-clear :placeholder="$t('select_data')" v-model='ft.value.value' valueFormat='YYYY-MM-DD'
                                  format='YYYY-MM-DD' />
                 </a-col>
                 <a-col :span='11' :offset='2'>

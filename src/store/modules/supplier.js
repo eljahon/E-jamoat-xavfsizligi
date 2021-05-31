@@ -34,7 +34,8 @@ export default {
         // axios
         axiosInit.get('/admin/supplier',
           {
-            page: pagination.current
+            page: pagination.current,
+            name: payload?.search
           }
         )
           .then(res => {

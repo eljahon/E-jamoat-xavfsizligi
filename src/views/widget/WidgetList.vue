@@ -5,7 +5,7 @@
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
-          <a-input v-debounce="search" :placeholder="$t('search')" />
+          <a-input allow-clear v-debounce="search" :placeholder="$t('search')" />
         </a-col>
       </a-row>
       <a-table

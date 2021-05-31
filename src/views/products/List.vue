@@ -5,7 +5,7 @@
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style="margin: 20px 0">
         <a-col style='padding-right: 5px' :span="4">
-          <a-input v-debounce="search" v-model="params.search" :placeholder="$t('search.name')" />
+          <a-input @change="search" allow-clear v-model="params.search" :placeholder="$t('search.name')" />
         </a-col>
         <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
           <a-tree-select
@@ -77,12 +77,14 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { TreeSelect } from 'ant-design-vue'
+import debounce from 'lodash/debounce'
 export default {
   components: {
     // 'create': Create,
     'a-tree-select': TreeSelect
   },
   data() {
+    this.search = debounce(this.search, 600)
     return {
       visible: false,
       loading: false,
@@ -176,7 +178,7 @@ export default {
     },
     search(value) {
       console.log(value)
-      this.params.search = value
+      // this.params.search = value
       this.params.page = 1
       this.routeReplacer()
       this.getAllProductList(this.params)
@@ -197,7 +199,7 @@ export default {
       // delete _filters.pagination
       if (this.$route.name !== 'HomeWidgetCreate') {
         this.$router.push({
-          name: 'ProductGroupsList',
+          name: 'ProductList',
           query: _filters
         })
       }

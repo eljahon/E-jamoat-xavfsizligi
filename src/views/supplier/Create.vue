@@ -19,7 +19,7 @@
         </a-col>
         <a-col :span="12" style="padding: 0 0 0 10px">
           <a-form-model-item :label="$t('supplier_store')" prop="supplier_store_id">
-            <a-select style="width: 100%" v-model='form.supplier_store_id'>
+            <a-select style="width: 100%" v-model='form.supplier_store_id' allow-clear>
               <a-select-option v-for='sup in allSupplierStores' :key='sup.id' :value="sup.id">
                 {{ sup.location }}
               </a-select-option>
@@ -28,12 +28,12 @@
         </a-col>
         <a-col :span="12" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('price')" prop="price">
-            <a-input type='number' v-model="form.price" />
+            <a-input type='number' v-model="form.price" allow-clear/>
           </a-form-model-item>
         </a-col >
         <a-col :span="12" style="padding: 0 0 0 10px">
           <a-form-model-item label="Количество продуктов" prop="stock">
-            <a-input type='number' v-model="form.stock" />
+            <a-input type='number' v-model="form.stock" allow-clear/>
           </a-form-model-item>
 <!--          <a-form-model-item :label="$t('stock')" prop="stock">-->
 <!--            <a-input type='number' v-model="form.stock" />-->
@@ -41,17 +41,17 @@
         </a-col>
         <a-col :span="12" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('discount')" prop="discount">
-            <a-input type='number' :min='0' :max='99' v-model="form.discount" />
+            <a-input type='number' :min='0' :max='99' v-model="form.discount" allow-clear/>
           </a-form-model-item>
         </a-col>
         <a-col :span="12" style="padding: 0 0 0 10px">
           <a-form-model-item :label="$t('discount_price')">
-            <a-input type='number' disabled :value="((form.price * (1 - (form.discount / 100))) / 100) * 100"/>
+            <a-input allow-clear type='number' disabled :value="((form.price * (1 - (form.discount / 100))) / 100) * 100"/>
           </a-form-model-item>
         </a-col>
         <a-col :span="12" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('ball')" prop="ball">
-            <a-input type='number' v-model="form.ball" />
+            <a-input allow-clear type='number' v-model="form.ball" />
           </a-form-model-item>
         </a-col>
       </a-row>

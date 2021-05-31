@@ -35,7 +35,8 @@ export default {
         // axios
         axiosInit.get('/admin/home-widgets',
           {
-            page: pagination.current
+            page: pagination.current,
+            name: payload?.search
           }
         )
           .then(res => {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card size="small" :title="$t('supplier_store.list')" style="width: 100%">
-      <a-button size="small" type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
+      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-table
         :columns="columns"
         :data-source="allSupplierStores"
@@ -9,7 +9,6 @@
         :rowKey="item => item.id"
         :pagination="paginationSupplierStore"
         @change="changePagination"
-        size="small"
       >
         <template slot="phone" slot-scope="phone">
           +{{ phone }}
@@ -23,7 +22,7 @@
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
-            <a-button style="margin: 0 2px" size='small' type="primary" @click="editItem(item)" icon="edit"></a-button>
+            <a-button style="margin: 0 2px" type="primary" @click="editItem(item)" icon="edit"></a-button>
           </a-tooltip>
           <a-popconfirm
             placement="topRight"
@@ -37,7 +36,6 @@
               <template slot="title">{{ $t('delete') }}</template>
               <a-button
                 style="margin: 0 2px"
-                size='small'
                 type="danger"
                 icon="delete"
               ></a-button>

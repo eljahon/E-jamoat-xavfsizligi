@@ -3,24 +3,24 @@
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('name_uz')" prop="title_uz">
-          <a-input v-model="form.title_uz" />
+          <a-input v-model="form.title_uz" allow-clear/>
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('name_ru')" prop="title_ru">
-          <a-input v-model="form.title_ru" />
+          <a-input v-model="form.title_ru" allow-clear/>
         </a-form-model-item>
       </a-col>
     </a-row>
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('keyword_uz')" prop="keywords_uz">
-          <a-input v-model="form.keywords_uz" />
+          <a-input v-model="form.keywords_uz" allow-clear/>
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('keyword_ru')" prop="keywords_ru">
-          <a-input v-model="form.keywords_ru" />
+          <a-input v-model="form.keywords_ru" allow-clear/>
         </a-form-model-item>
       </a-col>
     </a-row>
@@ -40,12 +40,12 @@
     <a-row>
       <a-col :span="11">
         <a-form-model-item :label="$t('description_uz')" prop="description_uz">
-          <a-input type="textarea" v-model="form.description_uz" />
+          <a-input type="textarea" v-model="form.description_uz" allow-clear/>
         </a-form-model-item>
       </a-col>
       <a-col :span="11" :offset="1">
         <a-form-model-item :label="$t('description_ru')" prop="description_ru">
-          <a-input type="textarea" v-model="form.description_ru" />
+          <a-input type="textarea" v-model="form.description_ru" allow-clear/>
         </a-form-model-item>
       </a-col>
     </a-row>

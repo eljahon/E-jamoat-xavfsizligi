@@ -29,7 +29,8 @@ export default {
         // axios
         axiosInit.get('/admin/article',
           {
-            page: pagination.current
+            page: pagination.current,
+            name: payload?.search
           }
         )
           .then(res => {

@@ -12,17 +12,17 @@
             <a-row>
               <a-col :span="8">
                 <a-form-model-item :label="$t('name_uz')" prop="name_uz">
-                  <a-input v-model="form.name_uz"/>
+                  <a-input v-model="form.name_uz" allow-clear/>
                 </a-form-model-item>
               </a-col>
               <a-col style="padding-left: 5px; padding-right: 5px" :span="8">
                 <a-form-model-item :label="$t('name_ru')" prop="name_ru">
-                  <a-input v-model="form.name_ru"/>
+                  <a-input v-model="form.name_ru" allow-clear/>
                 </a-form-model-item>
               </a-col>
               <a-col style="padding-left: 5px" :span="8">
                 <a-form-model-item :label="$t('type')">
-                  <a-select style="width: 100%" v-model="form.type">
+                  <a-select style="width: 100%" v-model="form.type" allow-clear>
                     <a-select-option v-for="(t, i) in types" :key="'key' + i" :value="t">
                       {{ t }}
                     </a-select-option>
@@ -31,7 +31,7 @@
               </a-col>
               <a-col style="padding-right: 5px" :span="8">
                 <a-form-model-item :label="$t('features')">
-                  <a-select style="width: 100%" v-model="form.parent_id" :filter-option="filterOption" show-search>
+                  <a-select style="width: 100%" v-model="form.parent_id" :filter-option="filterOption" show-search allow-clear>
                     <a-select-option v-for="(parent, p) in parentFeatures" :key="'parent' + p" :value="parent.id">
                       {{ parent.name_uz }} - {{ parent.name_ru }}
                     </a-select-option>
@@ -40,7 +40,7 @@
               </a-col>
               <a-col style="padding-right: 5px" :span="8">
                 <a-form-model-item :label="$t('filter_type')">
-                  <a-select style="width: 100%" v-model="form.filter_type">
+                  <a-select style="width: 100%" v-model="form.filter_type" allow-clear>
                     <a-select-option v-for="(t, i) in types" :key="'key' + i" :value="t">
                       {{ t }}
                     </a-select-option>
@@ -49,19 +49,19 @@
               </a-col>
               <a-col style="padding-left: 5px; padding-right: 5px" :span="8">
                 <a-form-model-item :label="$t('unit')" prop="unit">
-                  <a-input v-model="form.unit"/>
+                  <a-input v-model="form.unit" allow-clear/>
                 </a-form-model-item>
               </a-col>
               <a-col style="padding-left: 5px" :span="8">
                 <a-form-model-item :label="$t('order')" prop="order">
-                  <a-input type="number" :maxLength='3' style="width: 100%" v-model="form.order"></a-input>
+                  <a-input type="number" :maxLength='3' style="width: 100%" v-model="form.order" allow-clear/>
                 </a-form-model-item>
               </a-col>
             </a-row>
             <a-row>
               <a-col style="margin-right: 10px" :span="3">
                 <a-form-model-item :label="$t('required')" prop="is_required">
-                  <a-switch checked-children="Active" un-checked-children="Deactivated" v-model="form.is_required"/>
+                  <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="form.is_required"/>
                 </a-form-model-item>
               </a-col>
               <a-col style="margin-right: 10px; margin-left: 5px" :span="3">
@@ -104,12 +104,12 @@
             <a-row v-for="(f, j) in form.feature_values" :key="'features_values' + j">
               <a-col :span="8" style="padding-right: 5px">
                 <a-form-model-item :label="multilanguage ? $t('features.value.uz') : $t('features.value')">
-                  <a-input v-model="f.value_uz"/>
+                  <a-input v-model="f.value_uz" allow-clear/>
                 </a-form-model-item>
               </a-col>
               <a-col v-if="multilanguage" :span="8" style="padding-left: 5px">
                 <a-form-model-item :label="$t('features.value.ru')">
-                  <a-input v-model="f.value_ru"/>
+                  <a-input v-model="f.value_ru" allow-clear/>
                 </a-form-model-item>
               </a-col>
               <a-col v-if="colorable" :span="2" style="padding-left: 10px; margin-top: 2px">

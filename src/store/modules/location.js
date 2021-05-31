@@ -45,7 +45,7 @@ export default {
         axiosInit.get('/admin/location',
           {
             page: pagination.current,
-            search: payload.search
+            name: payload?.search
           }
         )
           .then(res => {

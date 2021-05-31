@@ -1,32 +1,32 @@
 <template>
   <a-form-model ref="ruleForm" :model="form" :rules="rules">
     <a-row>
-      <a-col :span="11">
+      <a-col :span="12" style="padding: 0 10px 0 0">
         <a-form-model-item :label="$t('name')" prop="name">
-          <a-input v-model="form.name" />
+          <a-input v-model="form.name" allow-clear/>
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="1">
+      <a-col :span="12" style="padding: 0 0 0 10px">
         <a-form-model-item :label="$t('phone')" prop="phone">
-          <a-input addon-before="+998" v-mask="'## ### ## ##'" v-model="form.phone" />
+          <a-input allow-clear addon-before="+998" v-mask="'## ### ## ##'" v-model="form.phone" />
         </a-form-model-item>
       </a-col >
-      <a-col :span="11">
+      <a-col :span="12" style="padding: 0 10px 0 0">
         <a-form-model-item :label="$t('email')" prop="email">
-          <a-input v-model="form.email" />
+          <a-input v-model="form.email" allow-clear/>
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="1">
+      <a-col :span="12" style="padding: 0 0 0 10px">
         <a-form-model-item label="Address UZ" prop="address_uz">
-          <a-input v-model="form.address_uz" />
+          <a-input v-model="form.address_uz" allow-clear/>
         </a-form-model-item>
       </a-col>
-      <a-col :span="11">
+      <a-col :span="12" style="padding: 0 10px 0 0">
         <a-form-model-item label="Address RU" prop="address_ru">
-          <a-input v-model="form.address_ru" />
+          <a-input v-model="form.address_ru" allow-clear/>
         </a-form-model-item>
       </a-col>
-      <a-col :span="11" :offset="1">
+      <a-col :span="12" style="padding: 0 0 0 10px">
         <a-form-model-item :label="$t('status')">
           <a-switch :checked-children="$t('active')" :un-checked-children="$t('inactive')" v-model="status" />
         </a-form-model-item>

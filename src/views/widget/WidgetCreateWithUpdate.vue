@@ -4,7 +4,7 @@
       <a-row>
         <a-col :span="11">
           <a-form-model-item :label="$t('categories')" prop="category_id">
-            <a-select style="width: 100%" v-model="form.category_id">
+            <a-select style="width: 100%" v-model="form.category_id" allow-clear>
               <a-select-option v-for="category in listCategory" :key="category.id" :value="category.id">
                 {{ category.name_uz }}
               </a-select-option>
@@ -13,7 +13,7 @@
         </a-col>
         <a-col :span="11" :offset="1">
           <a-form-model-item :label="$t('brands')" prop="brand_id">
-            <a-select style="width: 100%" v-model="form.brand_id">
+            <a-select style="width: 100%" v-model="form.brand_id" allow-clear>
               <a-select-option v-for="brand in allBrands" :key="brand.id" :value="brand.id">
                 {{ brand.name }}
               </a-select-option>
@@ -22,17 +22,17 @@
         </a-col>
         <a-col :span="11">
           <a-form-model-item :label="$t('key')" prop="key">
-            <a-input v-model="form.key"/>
+            <a-input v-model="form.key" allow-clear/>
           </a-form-model-item>
         </a-col>
         <a-col :span="11" :offset="1">
           <a-form-model-item :label="$t('order')" prop="order">
-            <a-input type="number" style="width: 100%" v-model="form.order"/>
+            <a-input type="number" style="width: 100%" allow-clear v-model="form.order"/>
           </a-form-model-item>
         </a-col>
       </a-row>
-      <a-card title="Images">
-        <a-button type="dashed" @click="$refs.filemanager.open()" slot="extra">File</a-button>
+      <a-card :title="$t('images')">
+        <a-button type="dashed" @click="$refs.filemanager.open()" slot="extra" style="margin-right: 10px">{{ $t('file.manager') }}</a-button>
         <a-button type="dashed" @click="addPhoto" slot="extra">{{ $t('add_photo') }}</a-button>
       </a-card>
       <draggable
