@@ -15,17 +15,17 @@
         <a-row v-if='charts'>
           <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px'>
             <a-card>
-              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[0].name' :data='charts.chart_one.chart[0].data' :labels='charts.chart_one.days'></bar-chart>
+<!--              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[0].name' :data='charts.chart_one.chart[0].data' :labels='charts.chart_one.days'></bar-chart>-->
             </a-card>
           </a-col>
           <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px; padding-left: 5px'>
             <a-card>
-              <line-chart title='Birnima' :head-title='charts.chart_one.chart[1].name' :data='charts.chart_one.chart[1].data' :labels='charts.chart_one.days'></line-chart>
+<!--              <line-chart title='Birnima' :head-title='charts.chart_one.chart[1].name' :data='charts.chart_one.chart[1].data' :labels='charts.chart_one.days'></line-chart>-->
             </a-card>
           </a-col>
           <a-col :sm="24" :md="12" :xl="8" style='padding-left: 5px'>
             <a-card>
-              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[2].name' :data='charts.chart_one.chart[2].data' :labels='charts.chart_one.days'></bar-chart>
+<!--              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[2].name' :data='charts.chart_one.chart[2].data' :labels='charts.chart_one.days'></bar-chart>-->
             </a-card>
           </a-col>
 
@@ -133,8 +133,8 @@ export default {
     moment,
     ...mapActions(['getDashboardTopData', 'getDashboardTopProducts', 'getDashboardTopClients', 'getDashboardTopPages', 'getDashboardAllCharts']),
      onChangeDateFilter (e) {
-      this.date.from = e[1]
-      this.date.to = e[2]
+        this.date.from = e[1]
+        this.date.to = e[2]
        this.rangePicker = e
        this.topPages = []
        this.topClients = []
@@ -142,11 +142,26 @@ export default {
        this.getData()
      },
      getData () {
-       this.getDashboardTopData(this.date).then(res => { this.topData = res })
-       this.getDashboardTopProducts(this.date).then(res => { this.topProducts = res })
-       this.getDashboardTopClients(this.date).then(res => { this.topClients = res })
-       this.getDashboardTopPages(this.date).then(res => { this.topPages = res })
-       this.getDashboardAllCharts(this.date).then(res => { this.charts = res })
+       this.getDashboardTopData(this.date).then(res => {
+         console.log(res)
+         this.topData = res
+       })
+       this.getDashboardTopProducts(this.date).then(res => {
+         console.log(res)
+         this.topProducts = res
+       })
+       this.getDashboardTopClients(this.date).then(res => {
+         console.log(res)
+         this.topClients = res
+       })
+       this.getDashboardTopPages(this.date).then(res => {
+         console.log(res)
+         this.topPages = res
+       })
+       this.getDashboardAllCharts(this.date).then(res => {
+         console.log(res)
+         this.charts = res
+       })
      }
    },
    mounted() {

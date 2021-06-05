@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card :title="$t('category_list')" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="addCategory">{{ $t('add') }}</a-button>
+      <a-button v-if="$route.name !== 'HomeWidgetCreate'" type="primary" slot="extra" @click="addCategory">{{ $t('add') }}</a-button>
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style='margin: 20px 0'>
         <a-col :span='6' style='padding-right: 10px'>

@@ -114,12 +114,13 @@ export default {
         category_id: null,
         is_carousal: false,
         status: 10,
-        url: ''
+        url: '',
+        is_main: true
       },
       rules: {
         title_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         title_ru: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
-        order: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
+        // order: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
         category_id: [{ required: true, message: this.$t('requiredField'), trigger: 'change' }],
         widget_name: [{ required: true, message: this.$t('requiredField'), trigger: 'change' }],
         type: [{ required: true, message: this.$t('requiredField'), trigger: 'change' }],
@@ -172,6 +173,8 @@ export default {
           const _form = { ...this.form }
           _form.items = this.items
           _form.is_carousal = this.form.is_carousal ? 1 : 0
+          _form.is_main = this.form.is_main ? 1 : 0
+          _form.order = this.form.order ? parseInt(this.form.order) : null
           this.postHomeWidgets(_form).then(res => {
             console.log(res)
           })

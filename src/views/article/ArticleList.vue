@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card :title="$t('article.list')" style="width: 100%">
-      <a-button type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
+      <a-button v-if="$route.name !== 'HomeWidgetCreate'" type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
