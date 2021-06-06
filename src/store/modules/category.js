@@ -117,7 +117,7 @@ export default {
         axiosInit.get('/admin/category/parent').then(res => {
           commit('GET_CATEGORY_TREE', res.data)
           resolve(res.data)
-          console.log(res)
+          console.log(res.data)
         }).catch(err => {
           reject(err)
         })
@@ -127,6 +127,17 @@ export default {
       return new Promise((resolve, reject) => {
         axiosInit.get('/admin/category/list').then(res => {
           commit('GET_LIST_CATEGORY', res.data)
+          resolve(res.data)
+          console.log(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
+    getParentListCategory({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get('/admin/category/parent-list').then(res => {
+          // commit('GET_LIST_CATEGORY', res.data)
           resolve(res.data)
           console.log(res)
         }).catch(err => {

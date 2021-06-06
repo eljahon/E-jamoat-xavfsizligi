@@ -4,37 +4,42 @@
       <a-row>
         <a-col :span="8" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('name_uz')" prop="title_uz">
-            <a-input v-model="form.title_uz" />
+            <a-input v-model="form.title_uz" allow-clear/>
           </a-form-model-item>
         </a-col>
         <a-col :span="8" style="padding: 0 10px">
           <a-form-model-item :label="$t('name_ru')" prop="title_ru">
-            <a-input v-model="form.title_ru" />
+            <a-input v-model="form.title_ru" allow-clear/>
           </a-form-model-item>
         </a-col>
         <a-col :span="8" style="padding: 0 0 0 10px">
           <a-form-model-item :label="$t('order_no')" prop="order">
-            <a-input type="number" v-model="form.order" />
+            <a-input type="number" v-model="form.order" allow-clear/>
           </a-form-model-item>
         </a-col>
         <a-col :span="8" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('categories')" prop='category_id'>
-            <a-tree-select
-              show-search
-              v-model='form.category_id'
-              :treeData='treeCategory'
-              treeNodeFilterProp='name_ru'
-              :filterTreeNode='filterTreeNode'
-              style='width: 100%'
-              :dropdown-style="{ maxHeight: '300px', maxWidth: '250px', overflow: 'auto' }"
-              :placeholder="$t('category')"
-              allow-clear
-            />
+            <a-select style="width: 100%" v-model="form.category_id" allow-clear>
+              <a-select-option v-for="ct in parentCategoryList" :key="ct.id" :value="ct.id">
+                {{ ct.name_ru }}
+              </a-select-option>
+            </a-select>
+<!--            <a-tree-select-->
+<!--              show-search-->
+<!--              v-model='form.category_id'-->
+<!--              :treeData='treeCategoryReBuild()'-->
+<!--              treeNodeFilterProp='name_ru'-->
+<!--              :filterTreeNode='filterTreeNode'-->
+<!--              style='width: 100%'-->
+<!--              :dropdown-style="{ maxHeight: '300px', maxWidth: '250px', overflow: 'auto' }"-->
+<!--              :placeholder="$t('category')"-->
+<!--              allow-clear-->
+<!--            />-->
           </a-form-model-item>
         </a-col>
         <a-col :span="8" style="padding: 0 10px">
           <a-form-model-item :label="$t('widgets')" prop="widget_name">
-            <a-select style="width: 100%" v-model="form.widget_name">
+            <a-select style="width: 100%" v-model="form.widget_name" allow-clear>
               <a-select-option v-for="wn in homeWidgetTypes.widget_names" :key="wn.value" :value="wn.value">
                 {{ wn.name }}
               </a-select-option>
@@ -52,17 +57,22 @@
         </a-col>
         <a-col :span="8" style="padding: 0 10px 0 0">
           <a-form-model-item :label="$t('home.category')" prop="home_category_id">
-            <a-tree-select
-              show-search
-              v-model='form.home_category_id'
-              :treeData='treeCategory'
-              treeNodeFilterProp='name_ru'
-              :filterTreeNode='filterTreeNode'
-              style='width: 100%'
-              :dropdown-style="{ maxHeight: '300px', maxWidth: '250px', overflow: 'auto' }"
-              :placeholder="$t('category')"
-              allow-clear
-            />
+            <a-select style="width: 100%" v-model="form.home_category_id" allow-clear>
+              <a-select-option v-for="ct in parentCategoryList" :key="ct.id" :value="ct.id">
+                {{ ct.name_ru }}
+              </a-select-option>
+            </a-select>
+<!--            <a-tree-select-->
+<!--              show-search-->
+<!--              v-model='form.home_category_id'-->
+<!--              :treeData='treeCategoryReBuild()'-->
+<!--              treeNodeFilterProp='name_ru'-->
+<!--              :filterTreeNode='filterTreeNode'-->
+<!--              style='width: 100%'-->
+<!--              :dropdown-style="{ maxHeight: '300px', maxWidth: '250px', overflow: 'auto' }"-->
+<!--              :placeholder="$t('category')"-->
+<!--              allow-clear-->
+<!--            />-->
           </a-form-model-item>
         </a-col>
         <a-col :span="8" style="padding: 0 10px">
@@ -86,7 +96,7 @@
         </a-col>
         <a-col :span="8" style="padding: 0 0 0 10px">
           <a-form-model-item :label="$t('URL')" prop="url">
-            <a-input v-model="form.url"></a-input>
+            <a-input v-model="form.url" allow-clear></a-input>
           </a-form-model-item>
         </a-col>
       </a-row>
@@ -125,6 +135,7 @@ export default {
       status: true,
       loading: false,
       items: [],
+      parentCategoryList: [],
       form: {
         title_uz: '',
         title_ru: '',
@@ -146,7 +157,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getHomeWidgetTypes', 'getListCategory', 'postHomeWidgets', 'getHomeWidgetById', 'updateHomeWidgets']),
+    ...mapActions(['getHomeWidgetTypes', 'getParentListCategory', 'getListCategory', 'postHomeWidgets', 'getHomeWidgetById', 'updateHomeWidgets', 'getTreeCategory']),
     filterTreeNode(value, node) {
       const title = node.data.props.title
       // const result = title.toLowerCase().indexOf(value.toLowerCase()) > 0
@@ -155,8 +166,9 @@ export default {
       return result
     },
     treeDataMap (category) {
-      return category.map((c) => {
-        if (!c.children) {
+      return category.map(c => {
+        // debugger
+        if (c.children.length === 0) {
           return {
             title: c.name_uz + ' - ' + c.name_ru,
             value: c.id,
@@ -171,6 +183,9 @@ export default {
           }
         }
       })
+    },
+    treeCategoryReBuild() {
+      return this.treeDataMap(this.treeCategory)
     },
     save () {
       this.$refs.ruleForm.validate(valid => {
@@ -213,7 +228,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['homeWidgetTypes', 'listCategory']),
+    ...mapGetters(['homeWidgetTypes', 'treeCategory']),
     rules () {
       return {
         title_uz: [{ required: true, message: this.$t('requiredField'), trigger: 'blur' }],
@@ -225,9 +240,6 @@ export default {
         type: [{ required: true, message: this.$t('requiredField'), trigger: 'change' }],
       }
     },
-    treeCategory() {
-      return this.treeDataMap(this.listCategory)
-    }
   },
   mounted() {
     if (this.$route.params.id) {
@@ -256,7 +268,12 @@ export default {
             }, 1000)
       })
     }
-    this.getListCategory()
+    this.getTreeCategory().then(res => {
+      console.log(this.treeCategory)
+    })
+    this.getParentListCategory().then(res => {
+      this.parentCategoryList = res
+    })
     this.getHomeWidgetTypes()
   }
 }

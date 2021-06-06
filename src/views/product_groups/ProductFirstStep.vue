@@ -28,7 +28,7 @@
             <a-tree-select
               show-search
               v-model='form.category_id'
-              :treeData='treeCategory'
+              :treeData='treeCategoryReBuild()'
               treeNodeFilterProp='name_ru'
               :filterTreeNode='filterTreeNode'
               style='width: 100%'
@@ -294,16 +294,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allBrands', 'listCategory', 'allMeasures', 'categoryFeatures']),
-    treeCategory() {
-      return this.treeDataMap(this.listCategory)
-    }
+    ...mapGetters(['allBrands', 'treeCategory', 'allMeasures', 'categoryFeatures'])
   },
   methods: {
     showTreeData () {
       console.log(this.treeCategory)
     },
-    ...mapActions(['updateProductGroup', 'postProduct', 'updateProduct', 'postProductGroup', 'getAllProduct', 'getCategoryFeatures', 'getAllMeasures', 'getListCategory', 'getAllBrandsList', 'getProductGroupById']),
+    ...mapActions(['updateProductGroup', 'postProduct', 'updateProduct', 'postProductGroup', 'getAllProduct', 'getCategoryFeatures', 'getAllMeasures', 'getTreeCategory', 'getAllBrandsList', 'getProductGroupById']),
     saveData() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
@@ -377,6 +374,9 @@ export default {
         }
       })
     },
+    treeCategoryReBuild() {
+      return this.treeDataMap(this.treeCategory)
+    },
     filterOption(input, option) {
       return (
         option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -433,7 +433,7 @@ export default {
   mounted() {
     this.getAllBrandsList()
     this.getAllMeasures()
-    this.getListCategory()
+    this.getTreeCategory()
     this.$store.commit('GET_CATEGORY_FEATURES', [])
     if (this.$route.query.group_id) {
       this.getProductGroupById(this.$route.query.group_id).then(res => {
