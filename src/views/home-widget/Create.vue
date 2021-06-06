@@ -242,10 +242,10 @@ export default {
           _form.home_category_id = _data.home_category_id
           _form.order = _data.order
           _form.category_id = _data.category_id
-          _form.is_carousal = _data.is_carousal === 1
+          _form.is_carousal = _data.is_carousal
           _form.status = _data.status === 10
           _form.url = _data.url
-          _form.is_main = _data.is_main === 1
+          _form.is_main = _data.is_main
           this.items = _data.items
             setTimeout(() => {
               if (_data.type === 'products') this.$refs.products.rowSelection = _data.items

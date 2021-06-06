@@ -21,6 +21,10 @@
           <a-tag v-if="status === 10" color="blue">{{ $t('active') }}</a-tag>
           <a-tag v-else color="red">{{ $t('inactive') }}</a-tag>
         </template>
+        <template slot="main" slot-scope="main">
+          <a-tag v-if="main" color="blue">{{ $t('yes') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('no') }}</a-tag>
+        </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
             <template slot="title">{{ $t('update') }}</template>
@@ -71,6 +75,11 @@ export default {
         {
           title: this.$t('order_no'),
           dataIndex: 'order',
+        },
+        {
+          title: this.$t('is_main'),
+          dataIndex: 'is_main',
+          scopedSlots: { customRender: 'main' },
         },
         {
           title: this.$t('status'),
