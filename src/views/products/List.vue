@@ -197,7 +197,7 @@ export default {
     routeReplacer () {
       const _filters = { ...this.params }
       // delete _filters.pagination
-      if (this.$route.name !== 'HomeWidgetCreate') {
+      if (this.$route.name !== 'HomeWidgetCreate' || this.$route.name !== 'HomeWidgetEdit') {
         this.$router.push({
           name: 'ProductList',
           query: _filters

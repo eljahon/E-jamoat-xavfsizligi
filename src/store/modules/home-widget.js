@@ -79,7 +79,7 @@ export default {
     },
     updateHomeWidgets({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.put(`/admin/widget/${payload.id}`, payload.data)
+        axiosInit.put(`/admin/home-widgets/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
             console.log(res)
@@ -96,7 +96,7 @@ export default {
     },
     getHomeWidgetById({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.get(`/admin/widget/${payload}`)
+        axiosInit.get(`/admin/home-widgets/${payload}`)
           .then(res => {
             resolve(res)
             console.log(res)

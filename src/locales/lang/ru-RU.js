@@ -12,6 +12,7 @@ const locale = {
 
     'category': 'Категория',
     'categories': 'Категории',
+    'home.category': 'Домашняя категория',
     'category_list': 'Список категорий',
     'add_category': 'Добавить категорию',
     'edit_category': 'Изменить категорию',

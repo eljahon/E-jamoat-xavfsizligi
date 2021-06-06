@@ -344,12 +344,12 @@ export const asyncRouterMap = [
                 component: () => import('@/views/home-widget/Create'),
                 meta: { title: 'home.widget', keepAlive: true, permission: [ 'form' ] }
               },
-              // {
-              //   path: '/pages_and_widgets/widget/update/:id',
-              //   name: 'WidgetUpdate',
-              //   component: () => import('@/views/widget/WidgetCreateWithUpdate'),
-              //   meta: { title: 'widget.list', keepAlive: true, permission: [ 'form' ] }
-              // }
+              {
+                path: '/pages_and_widgets/home_widgets/edit/:id',
+                name: 'HomeWidgetEdit',
+                component: () => import('@/views/home-widget/Create'),
+                meta: { title: 'home.widget', keepAlive: true, permission: [ 'form' ] }
+              }
             ]
           },
           // article

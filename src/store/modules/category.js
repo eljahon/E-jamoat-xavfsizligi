@@ -114,7 +114,7 @@ export default {
     },
     getTreeCategory({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axiosInit.get('/admin/category/parent-with-children').then(res => {
+        axiosInit.get('/admin/category/parent').then(res => {
           commit('GET_CATEGORY_TREE', res.data)
           resolve(res.data)
           console.log(res)

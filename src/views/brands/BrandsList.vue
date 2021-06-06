@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card size="small" :title="$t('brands.list')" style="width: 100%">
-      <a-button v-if="$route.name !== 'HomeWidgetCreate'" type="primary" slot="extra" @click="addBrand">{{ $t('add') }}</a-button>
+      <a-button v-if="!($route.name === 'HomeWidgetCreate' || $route.name === 'HomeWidgetEdit')" type="primary" slot="extra" @click="addBrand">{{ $t('add') }}</a-button>
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style='margin: 20px 0'>
         <a-col :span='6' style='padding-right: 10px'>
@@ -110,7 +110,7 @@ export default {
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
         },
-        this.$route.name !== 'HomeWidgetCreate'
+        !(this.$route.name === 'HomeWidgetCreate' || this.$route.name === 'HomeWidgetEdit')
           ? {
             title: this.$t('action'),
             key: 'action',
@@ -151,7 +151,7 @@ export default {
     routeReplacer () {
       const _filters = { ...this.params }
       // delete _filters.pagination
-      if (this.$route.name !== 'HomeWidgetCreate') {
+      if (this.$route.name !== 'HomeWidgetCreate' || this.$route.name !== 'HomeWidgetEdit') {
         this.$router.push({
           name: this.$route.name,
           query: _filters

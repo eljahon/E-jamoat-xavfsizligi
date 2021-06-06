@@ -100,12 +100,11 @@ export default {
     editItem(item) {
       console.log(item)
       this.$router.push({
-        name: 'WidgetUpdate',
+        name: 'HomeWidgetEdit',
         params: {
           id: item.id
         }
       })
-      // this.$refs.editItem.show(item)
     },
     changePagination(e) {
       this.params.pagination = e

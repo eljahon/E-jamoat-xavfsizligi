@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card :title="$t('article.list')" style="width: 100%">
-      <a-button v-if="$route.name !== 'HomeWidgetCreate'" type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
+      <a-button v-if="!($route.name === 'HomeWidgetCreate' || $route.name === 'HomeWidgetEdit')" type="primary" slot="extra" @click="addItem">{{ $t('add') }}</a-button>
       <a-row style="margin: 10px 0">
         <a-col :span="16"></a-col>
         <a-col :span="8">
@@ -74,7 +74,7 @@ export default {
           title: this.$t('view_count'),
           dataIndex: 'view_count',
         },
-        this.$route.name !== 'HomeWidgetCreate'
+        !(this.$route.name === 'HomeWidgetCreate' || this.$route.name === 'HomeWidgetEdit')
           ? {
             title: this.$t('action'),
             key: 'action',
