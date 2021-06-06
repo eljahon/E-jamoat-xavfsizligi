@@ -140,7 +140,7 @@
                 :tree-data="treeData"
               />
               <a-radio-group v-else v-model="form.category_id">
-                <div v-for='ct in listCategory' :key='ct.id'>
+                <div v-for='ct in allListCategory' :key='ct.id'>
                   <a-tooltip placement="top">
                     <template slot="title">
                       <span>{{ ct.name_uz }} | {{ ct.name_ru }}</span>
@@ -195,6 +195,7 @@ export default {
       colorable: false,
       loadingPage: false,
       multilanguage: false,
+      allListCategory: [],
       parentFeatures: [],
       form: {
         name_uz: '',
@@ -252,7 +253,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getTreeCategory', 'postFeatures', 'getFeaturesById', 'updateFeatures', 'getListCategory', 'getParentFeatures']),
+    ...mapActions(['getTreeCategory', 'postFeatures', 'getFeaturesById', 'updateFeatures', 'getAllListCategory', 'getParentFeatures']),
     saveData() {
       this.$refs.ruleForm.validate((valid) => {
         console.log(valid)
@@ -335,7 +336,9 @@ export default {
   },
   mounted() {
     if (this.$route.params.id) {
-      this.getListCategory()
+      this.getAllListCategory().then(res => {
+        this.allListCategory = res
+      })
       this.multilanguage = true
       this.loadingPage = true
       this.getFeaturesById(this.$route.params.id).then(res => {

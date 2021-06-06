@@ -134,6 +134,16 @@ export default {
         })
       })
     },
+    getAllListCategory({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axiosInit.get('admin/category/all-list').then(res => {
+          resolve(res.data)
+          console.log(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
+    },
     getParentListCategory({ commit }, payload) {
       return new Promise((resolve, reject) => {
         axiosInit.get('/admin/category/parent-list').then(res => {
