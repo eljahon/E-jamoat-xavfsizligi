@@ -248,6 +248,12 @@ const locale = {
     'home.widget.list': 'Список виджетов на главной странице',
 
 
+    // banner
+
+    banner: 'Баннер',
+    banners: 'Баннеры',
+    'banner.list': 'Список баннеров',
+
     // supplier
     'supplier': 'Поставщики',
     'suppliers': 'Поставщик',

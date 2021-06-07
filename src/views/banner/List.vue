@@ -1,7 +1,7 @@
 <template>
   <div>
-    <a-card size="small" :title="$t('brands.list')" style="width: 100%">
-      <a-button v-if="$route.name !== 'HomeWidgetCreate'" type="primary" slot="extra" @click="addBrand">{{ $t('add') }}</a-button>
+    <a-card size="small" :title="$t('banner.list')" style="width: 100%">
+      <a-button type="primary" slot="extra" @click="addBrand">{{ $t('add') }}</a-button>
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style='margin: 20px 0'>
         <a-col :span='6' style='padding-right: 10px'>
@@ -16,14 +16,10 @@
       </a-row>
       <a-table
         :columns="columns"
-        :data-source="allBrands"
-        :loading="loadBrand"
-        :row-selection="{
-          selectedRowKeys: rowSelection,
-          onChange: onSelectChange
-        }"
+        :data-source="allBanners"
+        :loading="loadBanner"
         :rowKey="item => item.id"
-        :pagination='paginationBrand'
+        :pagination='paginationBanner'
         @change="changePagination"
       >
         <template slot="popular" slot-scope="is_popular">
@@ -36,8 +32,12 @@
         </template>
         <template slot="image" slot-scope="item">
           <div class="imagePreview">
-            <img :src="item.logo">
+            <img :src="item.image">
           </div>
+        </template>
+        <template slot="main" slot-scope="main">
+          <a-tag v-if="main" color="blue">{{ $t('yes') }}</a-tag>
+          <a-tag v-else color="red">{{ $t('no') }}</a-tag>
         </template>
         <template slot="action" slot-scope="item">
           <a-tooltip>
@@ -66,17 +66,17 @@
     </a-card>
 
     <!-- MODALS -->
-    <brand-create ref="createBrand" :editable="false" :params="params"/>
-    <brand-create ref="editBrand" :editable="true" :params="params"/>
+    <banner-create ref="createBrand" :editable="false" :params="params"/>
+    <banner-create ref="editBrand" :editable="true" :params="params"/>
   </div>
 </template>
 <script>
-import BrandCreate from './BrandCreate'
+import BannerCreate from './BannerCreate'
 import { mapActions, mapGetters } from 'vuex'
 import debounce from 'lodash/debounce'
 export default {
   components: {
-    'brand-create': BrandCreate,
+    'banner-create': BannerCreate,
     // 'category-edit': editBrand
   },
   data() {
@@ -93,31 +93,35 @@ export default {
           scopedSlots: { customRender: 'image' },
         },
         {
-          title: this.$t('name'),
-          dataIndex: 'name',
+          title: this.$t('category'),
+          dataIndex: 'category.name',
         },
+        // {
+        //   title: this.$t('slug'),
+        //   dataIndex: 'slug',
+        // },
+        // {
+        //   title: this.$t('popular'),
+        //   dataIndex: 'is_popular',
+        //   scopedSlots: { customRender: 'popular' },
+        // },
         {
-          title: this.$t('slug'),
-          dataIndex: 'slug',
-        },
-        {
-          title: this.$t('popular'),
-          dataIndex: 'is_popular',
-          scopedSlots: { customRender: 'popular' },
+          title: this.$t('is_main'),
+          dataIndex: 'is_main',
+          scopedSlots: { customRender: 'main' },
         },
         {
           title: this.$t('status'),
           dataIndex: 'status',
           scopedSlots: { customRender: 'status' },
         },
-        this.$route.name !== 'HomeWidgetCreate'
-          ? {
-            title: this.$t('action'),
-            key: 'action',
-            align: 'center',
-            width: '12%',
-            scopedSlots: { customRender: 'action' },
-          } : {}
+        {
+          title: this.$t('action'),
+          key: 'action',
+          align: 'center',
+          width: '12%',
+          scopedSlots: { customRender: 'action' },
+        }
         // {
         //   title: this.$t('action'),
         //   key: 'action',
@@ -144,40 +148,38 @@ export default {
       console.log(e)
       this.$emit('input', e)
     },
-    ...mapActions(['getAllBrands', 'deleteBrand']),
+    ...mapActions(['getAllBanners', 'deleteBanner', 'getTreeCategory']),
     editBrand(item) {
       this.$refs.editBrand.show(item)
     },
     routeReplacer () {
       const _filters = { ...this.params }
       // delete _filters.pagination
-      if (this.$route.name !== 'HomeWidgetCreate') {
-        this.$router.push({
-          name: this.$route.name,
-          query: _filters
-        })
-      }
+      this.$router.push({
+        name: this.$route.name,
+        query: _filters
+      })
     },
     changePagination(e) {
       this.params.page = e.current
       this.routeReplacer()
-      this.getAllBrands(this.params)
+      this.getAllBanners(this.params)
     },
     search(value) {
       this.params.page = 1
       this.routeReplacer()
-      this.getAllBrands(this.params)
+      this.getAllBanners(this.params)
     },
     filterStatus (value) {
       this.params.status = value
       this.params.page = 1
       this.routeReplacer()
-      this.getAllBrands(this.params)
+      this.getAllBanners(this.params)
     },
     removeBrand (item) {
       console.log(item)
-      this.deleteBrand(item.id).then(res => {
-        this.getAllBrands(this.params)
+      this.deleteBanner(item.id).then(res => {
+        this.getAllBanners(this.params)
       })
     },
     addBrand () {
@@ -185,7 +187,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allBrands', 'loadBrand', 'paginationBrand']),
+    ...mapGetters(['allBanners', 'loadBanner', 'paginationBanner']),
   },
   mounted() {
     this.params = {
@@ -193,7 +195,8 @@ export default {
       search: this.$route.query?.search,
       status: this.$route.query.status ? parseInt(this.$route.query.status) : 10
     }
-    this.getAllBrands(this.params)
+    this.getAllBanners(this.params)
+    this.getTreeCategory()
   },
 }
 </script>

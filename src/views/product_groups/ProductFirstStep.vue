@@ -389,14 +389,14 @@ export default {
       // console.log(title + ' <==> ' + value + ': ' + result);
       return result
     },
-    changeFt(val, f) {
-      this.form.features[f].feature_id = val
-      for (let i = 0; i < this.categoryFeatures.length; i++) {
-        if (this.categoryFeatures[i].id === val) {
-          this.form.features[f].feature = this.categoryFeatures[i]
-        }
-      }
-    },
+    // changeFt(val, f) {
+    //   this.form.features[f].feature_id = val
+    //   for (let i = 0; i < this.categoryFeatures.length; i++) {
+    //     if (this.categoryFeatures[i].id === val) {
+    //       this.form.features[f].feature = this.categoryFeatures[i]
+    //     }
+    //   }
+    // },
     addFeatures() {
       if (this.categoryFeatures.length > 1) {
         if (this.categoryFeatures.length > this.form.features.length) {
@@ -411,19 +411,19 @@ export default {
         }
       }
     },
-    removeValue(f, v) {
-      this.form.features[f].values.splice(v, 1)
-    },
-    addValue(i) {
-      if (this.form.features[i].feature) {
-        if (this.form.features[i].feature.values.length - 1 >= this.form.features[i].values.length) {
-          this.form.features[i].values.push({
-            id: null,
-            value: null
-          })
-        }
-      }
-    },
+    // removeValue(f, v) {
+    //   this.form.features[f].values.splice(v, 1)
+    // },
+    // addValue(i) {
+    //   if (this.form.features[i].feature) {
+    //     if (this.form.features[i].feature.values.length - 1 >= this.form.features[i].values.length) {
+    //       this.form.features[i].values.push({
+    //         id: null,
+    //         value: null
+    //       })
+    //     }
+    //   }
+    // },
     style(index) {
       if ((index + 1) % 3 === 1) return 'padding-right: 10px'
       if ((index + 1) % 3 === 0) return 'padding-left: 10px'

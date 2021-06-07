@@ -30,6 +30,7 @@ import roles from '@/store/modules/roles'
 import supplierProduct from '@/store/modules/supplierProduct'
 import productList from '@/store/modules/product_list'
 import homeWidget from '@/store/modules/home-widget'
+import banner from '@/store/modules/banner'
 // import orderDelivered from '@/store/modules/order-delivered'
 import dashboard from '@/store/modules/dashboard'
 
@@ -47,6 +48,7 @@ export default new Vuex.Store({
     app,
     attrs,
     article,
+    banner,
     courier,
     coupons,
     complaitTypes,

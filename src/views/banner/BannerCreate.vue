@@ -38,23 +38,27 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['postBrand', 'getAllBrands', 'updateBrand']),
+    ...mapActions(['postBanner', 'getAllBanners', 'updateBanner']),
     hide() {
       this.visible = false
       this.clear()
     },
     show(data) {
+      console.log(data)
       if (this.editable) {
         console.log(data)
         setTimeout(() => {
           console.log(data)
           this.$refs.brandEdit.id = data.id
-          this.$refs.brandEdit.imageUrl = data.logo
+          this.$refs.brandEdit.imageUrl = data.image
           data.status === 10 ? this.$refs.brandEdit.status = true : this.$refs.brandEdit.status = false
-          this.$refs.brandEdit.form = { ...data }
-          this.$refs.brandEdit.form.id = undefined
-          this.$refs.brandEdit.form.slug = undefined
-          this.$refs.brandEdit.form.logo = undefined
+          this.$refs.brandEdit.form = {
+            category_id: data.category_id,
+            url: data.url,
+            file: null,
+            is_main: data.is_main,
+            status: data.status
+          }
         }, 0)
         this.visible = true
       }
@@ -73,8 +77,8 @@ export default {
       this.$refs.brandCreate.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.postBrand(res.data).then(res => {
-          this.getAllBrands(this.params)
+        this.postBanner(res.data).then(res => {
+          this.getAllBanners(this.params)
           console.log(res)
           this.hide()
         })
@@ -89,11 +93,11 @@ export default {
       this.$refs.brandEdit.validateForm().then(res => {
         console.log(res)
         this.loading = true
-        this.updateBrand({
+        this.updateBanner({
           id: res.id,
           data: res.data
         }).then(res => {
-          this.getAllBrands(this.params)
+          this.getAllBanners(this.params)
           this.hide()
           console.log(res)
         })

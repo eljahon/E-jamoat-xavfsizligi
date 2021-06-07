@@ -352,6 +352,35 @@ export const asyncRouterMap = [
               }
             ]
           },
+          // banner
+          {
+            path: '/pages_and_widgets/banner',
+            name: 'Banner',
+            hideChildrenInMenu: true,
+            component: RouteView,
+            redirect: '/pages_and_widgets/banner/list',
+            meta: { title: 'banners', icon: 'desktop', permission: [ 'form' ] },
+            children: [
+              {
+                path: '/pages_and_widgets/banner/list',
+                name: 'BannerList',
+                component: () => import('@/views/banner/List'),
+                meta: { title: 'banner.list', keepAlive: true, permission: [ 'form' ] }
+              },
+              // {
+              //   path: '/pages_and_widgets/banner/create',
+              //   name: 'BannerCreate',
+              //   component: () => import('@/views/banner/'),
+              //   meta: { title: 'banners', keepAlive: true, permission: [ 'form' ] }
+              // },
+              // {
+              //   path: '/pages_and_widgets/banner/edit/:id',
+              //   name: 'BannerEdit',
+              //   component: () => import('@/views/home-widget/Create'),
+              //   meta: { title: 'banners', keepAlive: true, permission: [ 'form' ] }
+              // }
+            ]
+          },
           // article
           {
             path: '/pages_and_widgets/article',
