@@ -34,8 +34,8 @@
         </a-form-model-item>
       </a-col>
       <a-col :span="24">
-          <p class="width">Мин. Ширина: {{ form.is_main ? (size.main.w + 'px') : (size.nomain.w + 'px') }}</p>
-          <p class="height">Мин. Высота: {{ form.is_main ? (size.main.h + 'px') : (size.nomain.h + 'px') }}</p>
+          <p class="width"> Ширина: {{ form.is_main ? (size.main.w + 'px') : (size.nomain.w + 'px') }} <span style="margin-left: 25px">Max.Размер: 512 KB</span></p>
+          <p class="height"> Высота: {{ form.is_main ? (size.main.h + 'px') : (size.nomain.h + 'px') }}</p>
         <a-form-model-item :label="$t('image')" prop="image">
           <a-upload
             :custom-request="uploadImage"

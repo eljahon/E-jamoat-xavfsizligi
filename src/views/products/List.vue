@@ -1,20 +1,19 @@
 <template>
   <div>
     <a-card :title="$t('product_list')" style="width: 100%">
-<!--      <a-button type="primary" slot="extra" @click="() => { $router.push({ name: 'ProductGroupsCreate', params: { step: '1' } }) }">{{ $t('add') }}</a-button>-->
       <a-divider>{{ $t('filters') }}</a-divider>
       <a-row style="margin: 20px 0">
-        <a-col style='padding-right: 5px' :span="4">
+        <a-col style="padding-right: 5px" :span="4">
           <a-input @change="search" allow-clear v-model="params.search" :placeholder="$t('search.name')" />
         </a-col>
-        <a-col style='padding-right: 5px; padding-left: 5px' :span="4">
+        <a-col style="padding-right: 5px; padding-left: 5px" :span="4">
           <a-tree-select
             show-search
             treeNodeFilterProp="name_ru"
             :filterTreeNode="filterTreeNode"
-            v-model='params.category'
-            :treeData='category'
-            style='width: 100%'
+            v-model="params.category"
+            :treeData="category"
+            style="width: 100%"
             :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
             :placeholder="$t('category')"
             @change='filterCategory'
@@ -197,7 +196,7 @@ export default {
     routeReplacer () {
       const _filters = { ...this.params }
       // delete _filters.pagination
-      if (this.$route.name !== 'HomeWidgetCreate' || this.$route.name !== 'HomeWidgetEdit') {
+      if (!((this.$route.name === 'HomeWidgetCreate') || (this.$route.name === 'HomeWidgetEdit'))) {
         this.$router.push({
           name: 'ProductList',
           query: _filters
