@@ -10,12 +10,16 @@ const components = {
 const locale = {
   'message': '-',
   'menu.home': 'Home',
-  'menu.dashboard': 'Dashboard',
-  'menu.dashboard.analysis': 'Analysis',
+  'menu.dashboard': 'Bosh sahifa',
+  'menu.dashboard.analysis': 'Huquqbuzarliklar',
   'menu.dashboard.monitor': 'Monitor',
   'menu.dashboard.workplace': 'Workplace',
+  'menu.dashboard.jamoat': 'Jamoat tartibini saqlash',
+  'menu.dashboard.path': 'Yo’l harakati xavfsizligi',
+  'menu.dashboard.probatsiya ': 'Probatsiya',
+  'menu.dashboard.KPI ': 'KPI',
 
-  'layouts.usermenu.dialog.title': 'Message',
+  'layouts.usermenu.dialog.title': 'Siz ',
   'layouts.usermenu.dialog.content': 'Do you really log-out.',
 
   'app.setting.pagestyle': 'Page style setting',

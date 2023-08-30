@@ -57,7 +57,7 @@ export default {
         axiosInit.put(`/admin/coupon/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
-            console.log(res)
+            // console.log(res)
           })
           .catch(err => {
             notification.error({
@@ -74,7 +74,7 @@ export default {
         axiosInit.get(`/admin/coupon/${payload}`)
           .then(res => {
             resolve(res)
-            console.log(res)
+            // console.log(res)
           })
           .catch(err => {
             notification.error({
@@ -91,7 +91,7 @@ export default {
         axiosInit.delete(`/admin/coupon/${payload}`)
           .then(res => {
             resolve()
-            console.log(res)
+            // console.log(res)
           })
           .catch(err => {
             notification.error({
@@ -107,7 +107,7 @@ export default {
       return new Promise((resolve, reject) => {
         axiosInit.post('/admin/coupon', payload).then(res => {
           resolve(res)
-          console.log(res)
+          // console.log(res)
         })
           .catch(err => {
             notification.error({

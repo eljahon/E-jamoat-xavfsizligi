@@ -35,7 +35,7 @@ import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
 import LogoSvg from '../assets/z-favicon.png?inline'
-import logo from '@/assets/zaytun_favicon.png'
+import logo from '@/assets/z-logo.svg'
 export default {
   name: 'BasicLayout',
   components: {

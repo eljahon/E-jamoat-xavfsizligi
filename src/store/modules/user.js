@@ -10,7 +10,8 @@ const user = {
     welcome: '',
     avatar: '',
     roles: [],
-    info: {}
+    info: {},
+    defalut: ['preventive', 'practice', 'womens', 'YoungPeople', 'public', 'reports', 'analysis', 'settings', 'dashboard']
   },
 
   mutations: {
@@ -36,8 +37,9 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
           login(userInfo).then(response => {
-          const result = response
-          const token = response.mainResult.data.access_token
+            console.log(response)
+          const result = response.mainResult.user
+          const token = response.mainResult.jwt
           storage.set(ACCESS_TOKEN, token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', token)
           resolve(result)
@@ -48,7 +50,7 @@ const user = {
     },
 
 
-    GetInfo ({ commit }) {
+    GetInfo ({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const result = response
@@ -62,9 +64,11 @@ const user = {
                 per.actionList = action
               }
             })
-            role.permissionList = role.permissions.map(permission => { return permission.permissionId })
+          // ...role.permissions.map(permission => { return permission.permissionId })
+            role.permissionList = [...state.defalut]
             commit('SET_ROLES', result.role)
             commit('SET_INFO', result)
+            console.log(role.permissionList, 'role.permissionList')
           } else {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }

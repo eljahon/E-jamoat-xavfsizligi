@@ -7,9 +7,9 @@ export default {
   fixSiderbar: true, // sticky siderbar
   colorWeak: false,
   menu: {
-    locale: true
+    locale: true,
   },
-  title: 'Zaytun',
+  title: 'E-xavfsizlig',
   pwa: false,
   iconfontUrl: '',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'

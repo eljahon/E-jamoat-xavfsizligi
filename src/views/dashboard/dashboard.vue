@@ -1,60 +1,61 @@
 <template>
-  <div>
-    <a-card :title="$t('dashboard')" v-if='topPages && topClients && topData && topPages && charts'>
-      <a-range-picker separator='--->' valueFormat="YYYY-MM-DD" format="YYYY-MM-DD" v-model='rangePicker' slot='extra' @change="onChangeDateFilter" :placeholder="[$t('start_time'), $t('end_time')]" />
-      <div>
-        <a-row type="flex" v-if='topData && topData.length'>
-          <a-col style="margin: 15px 0; margin-right: 21px" :xs='24' :sm='12' :md='6' :lg='3' v-for='item in topData' :key='item.name'>
-            <div class='topData'>
-              <p class='name'>{{ item.name }}</p>
-              <p class='number'>{{ item.data.number }}</p>
-              <p class='percent' :style="item.data.percent < 0 ? 'color: red;' : 'color: green'">{{ item.data.percent > 0 ? '+' : '' }}{{ item.data.percent }}%</p>
-            </div>
-          </a-col>
-        </a-row>
-        <a-row v-if='charts'>
-          <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px'>
-            <a-card>
-<!--              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[0].name' :data='charts.chart_one.chart[0].data' :labels='charts.chart_one.days'></bar-chart>-->
-            </a-card>
-          </a-col>
-          <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px; padding-left: 5px'>
-            <a-card>
-<!--              <line-chart title='Birnima' :head-title='charts.chart_one.chart[1].name' :data='charts.chart_one.chart[1].data' :labels='charts.chart_one.days'></line-chart>-->
-            </a-card>
-          </a-col>
-          <a-col :sm="24" :md="12" :xl="8" style='padding-left: 5px'>
-            <a-card>
-<!--              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[2].name' :data='charts.chart_one.chart[2].data' :labels='charts.chart_one.days'></bar-chart>-->
-            </a-card>
-          </a-col>
+  <div class='iframe-wrapper'>
+    <iframe class='iframe' src="http://139.59.97.183:80/applications/test" title="Tooljet app - test" frameborder="0" allowfullscreen></iframe>
+<!--    <a-card :title="$t('dashboard')" v-if='topPages && topClients && topData && topPages && charts'>-->
+<!--      <a-range-picker separator='-&ndash;&gt;' valueFormat="YYYY-MM-DD" format="YYYY-MM-DD" v-model='rangePicker' slot='extra' @change="onChangeDateFilter" :placeholder="[$t('start_time'), $t('end_time')]" />-->
+<!--      <div>-->
+<!--        <a-row type="flex" v-if='topData && topData.length'>-->
+<!--          <a-col style="margin: 15px 0; margin-right: 21px" :xs='24' :sm='12' :md='6' :lg='3' v-for='item in topData' :key='item.name'>-->
+<!--            <div class='topData'>-->
+<!--              <p class='name'>{{ item.name }}</p>-->
+<!--              <p class='number'>{{ item.data.number }}</p>-->
+<!--              <p class='percent' :style="item.data.percent < 0 ? 'color: red;' : 'color: green'">{{ item.data.percent > 0 ? '+' : '' }}{{ item.data.percent }}%</p>-->
+<!--            </div>-->
+<!--          </a-col>-->
+<!--        </a-row>-->
+<!--        <a-row v-if='charts'>-->
+<!--          <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px'>-->
+<!--            <a-card>-->
+<!--&lt;!&ndash;              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[0].name' :data='charts.chart_one.chart[0].data' :labels='charts.chart_one.days'></bar-chart>&ndash;&gt;-->
+<!--            </a-card>-->
+<!--          </a-col>-->
+<!--          <a-col :sm="24" :md="12" :xl="8" style='padding-right: 5px; padding-left: 5px'>-->
+<!--            <a-card>-->
+<!--&lt;!&ndash;              <line-chart title='Birnima' :head-title='charts.chart_one.chart[1].name' :data='charts.chart_one.chart[1].data' :labels='charts.chart_one.days'></line-chart>&ndash;&gt;-->
+<!--            </a-card>-->
+<!--          </a-col>-->
+<!--          <a-col :sm="24" :md="12" :xl="8" style='padding-left: 5px'>-->
+<!--            <a-card>-->
+<!--&lt;!&ndash;              <bar-chart title='Birnima' :head-title='charts.chart_one.chart[2].name' :data='charts.chart_one.chart[2].data' :labels='charts.chart_one.days'></bar-chart>&ndash;&gt;-->
+<!--            </a-card>-->
+<!--          </a-col>-->
 
-        </a-row>
-        <a-row>
-          <a-col :span='24' style='padding-top: 10px'>
-            <a-card style='box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;'>
-              <a-table size='middle' :columns="columnsClient" :data-source="topClients" :scroll='{ x: 400 }'></a-table>
-            </a-card>
-          </a-col>
-        </a-row>
-        <a-row>
-          <a-col :sm='24' :md='12' :lg='12' style='padding-right: 5px; padding-top: 10px'>
-            <a-card style='box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;'>
-              <a-table size='middle' :columns="columns" :data-source="topProducts"></a-table>
-            </a-card>
-          </a-col>
-          <a-col :sm='24' :md='12' :lg='12' style='padding-left: 5px; padding-top: 10px'>
-            <a-card style='box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;'>
-              <a-table size='middle' :columns="columnsPages" :data-source="topPages"></a-table>
-            </a-card>
-          </a-col>
-        </a-row>
-      </div>
-    </a-card>
-    <a-card v-else>
-      <div style='display: flex'><a-skeleton v-for='n in 5' :key='n' active style='width: 200px; margin: 10px 15px'/></div>
-      <a-skeleton v-for='n in 3' :key='n' active style='margin: 5px 10px'/>
-    </a-card>
+<!--        </a-row>-->
+<!--        <a-row>-->
+<!--          <a-col :span='24' style='padding-top: 10px'>-->
+<!--            <a-card style='box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;'>-->
+<!--              <a-table size='middle' :columns="columnsClient" :data-source="topClients" :scroll='{ x: 400 }'></a-table>-->
+<!--            </a-card>-->
+<!--          </a-col>-->
+<!--        </a-row>-->
+<!--        <a-row>-->
+<!--          <a-col :sm='24' :md='12' :lg='12' style='padding-right: 5px; padding-top: 10px'>-->
+<!--            <a-card style='box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;'>-->
+<!--              <a-table size='middle' :columns="columns" :data-source="topProducts"></a-table>-->
+<!--            </a-card>-->
+<!--          </a-col>-->
+<!--          <a-col :sm='24' :md='12' :lg='12' style='padding-left: 5px; padding-top: 10px'>-->
+<!--            <a-card style='box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;'>-->
+<!--              <a-table size='middle' :columns="columnsPages" :data-source="topPages"></a-table>-->
+<!--            </a-card>-->
+<!--          </a-col>-->
+<!--        </a-row>-->
+<!--      </div>-->
+<!--    </a-card>-->
+<!--    <a-card v-else>-->
+<!--      <div style='display: flex'><a-skeleton v-for='n in 5' :key='n' active style='width: 200px; margin: 10px 15px'/></div>-->
+<!--      <a-skeleton v-for='n in 3' :key='n' active style='margin: 5px 10px'/>-->
+<!--    </a-card>-->
   </div>
 </template>
 
@@ -165,7 +166,7 @@ export default {
      }
    },
    mounted() {
-     this.getData()
+     // this.getData()
    }
 }
 </script>
@@ -202,5 +203,12 @@ export default {
     top: 57%;
     left: 40%;
   }
+}
+.iframe-wrapper {
+  height: 100vh;
+}
+.iframe{
+  width: 100%;
+  height: 100%;
 }
 </style>

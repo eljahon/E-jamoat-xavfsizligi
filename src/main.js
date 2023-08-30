@@ -17,7 +17,7 @@ import { FormModel } from 'ant-design-vue'
 import InputTag from 'vue-input-tag'
 import YmapPlugin from 'vue-yandex-maps'
 import Verte from 'verte'
-import Mask from 'vue-the-mask'
+// import Mask from 'vue-the-mask'
 
 
 // global functions
@@ -37,7 +37,7 @@ Vue.config.productionTip = false
 Vue.use(FormModel)
 Vue.use(VueAxios)
 Vue.use(FlagIcon)
-Vue.use(Mask)
+// Vue.use(Mask)
 Vue.use(VueDebounce, {
   defaultTime: '700ms'
 })

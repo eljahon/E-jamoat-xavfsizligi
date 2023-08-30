@@ -17,7 +17,7 @@ export default {
         })
           .then(res => {
             resolve(res.data)
-            console.log(res)
+            // console.log(res)
           })
           .catch(error => {
             reject(error)

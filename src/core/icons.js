@@ -7,5 +7,11 @@
  * 所有图标均从这里加载，方便管理
  */
 import bxAnaalyse from '@/assets/icons/bx-analyse.svg?inline' // path to your '*.svg?inline' file.
+import women from '@/assets/icons/women.svg?inline' // path to your '*.svg?inline' file.
+import securtiy from '@/assets/icons/securtiy.svg?inline' // path to your '*.svg?inline' file.
 
-export { bxAnaalyse }
+export {
+  bxAnaalyse,
+  women,
+  securtiy
+}

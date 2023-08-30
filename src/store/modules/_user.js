@@ -57,7 +57,7 @@ export default {
         axiosInit.put(`/admin/user/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
-            console.log(res)
+            // console.log(res)
           })
           .catch(err => {
             notification.error({

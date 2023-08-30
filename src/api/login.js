@@ -2,7 +2,7 @@ import request from '@/utils/request'
 import mocky from '../constants/auth-data-mock'
 import axiosInit from '@/utils/axios_init'
 const userApi = {
-  Login: '/auth/login',
+  Login: 'auth/local',
   Logout: '/auth/logout',
   ForgePassword: '/auth/forge-password',
   Register: '/auth/register',
@@ -28,6 +28,7 @@ const userApi = {
 export function login (parameter) {
   return new Promise((resolve, reject) => {
     axiosInit.post(userApi.Login, parameter).then(res => {
+      console.log(res)
       resolve({
         mainResult: res,
         mockData: mocky.authDatare

@@ -2,21 +2,15 @@
 <!--  <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">-->
     <div class='userLayout'>
       <div class='right'>
-        <div class='header'>
-          <img class="logo2" src="../assets/z-logo.svg" alt='logo'>
+        <div class='logo_wrapper'>
+          <img class='logo' src="https://iiv.uz/_nuxt/img/old_logo-top.1f1eb02.png" alt='logo'>
         </div>
-        <div class='login'>
-          <div class='desc'>
-            Добро пожаловать
-          </div>
+        <div class='login'><br>
+<!--          <div class='desc'>-->
+<!--            Добро пожаловать-->
+<!--          </div>-->
           <router-view />
         </div>
-        <div class='copyright'>
-          Inspired Artisans Copyright &copy; 2021
-        </div>
-      </div>
-      <div class='left'>
-        <img class="logo" src="../assets/z-logo.svg" alt='logo'>
       </div>
     </div>
 <!--  </div>-->
@@ -38,6 +32,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.logo_wrapper {
+  width: 60%;
+  .logo {
+    display: block;
+    margin: 0px auto;
+  }
+}
 @media screen {
   @media (max-width: 740px) {
     .left {
@@ -67,30 +68,29 @@ export default {
 }
 .userLayout {
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
   width: 100%;
-  .left {
-    width: 65%;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    align-items: center;
-    .logo {
-      width: 480px;
-      height: 480px;
-    }
-    .logo_text {
-      color: rgba(0, 0, 0, 0.45);
-      font-family: 'Monoton', cursive;
-      font-size: 56px;
-    }
-  }
+  //.left {
+  //  width: 65%;
+  //  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  //  display: flex;
+  //  flex-flow: column;
+  //  justify-content: center;
+  //  align-items: center;
+  //  .logo {
+  //    width: 480px;
+  //    height: 480px;
+  //  }
+  //  .logo_text {
+  //    color: rgba(0, 0, 0, 0.45);
+  //    font-family: 'Monoton', cursive;
+  //    font-size: 56px;
+  //  }
+  //}
   .right {
-    width: 35%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    width: 25%;
     flex-flow: column;
     .logo2 {
       width: 200px;
@@ -99,7 +99,7 @@ export default {
       font-size: 48px;
       color: rgba(0, 0, 0, 0.45);
       font-family: 'Monoton', cursive;
-      opacity: 0;
+      opacity: 1;
       transform: translateY(120px);
     }
     .copyright {

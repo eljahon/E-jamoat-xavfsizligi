@@ -5,9 +5,9 @@
       <a href="https://www.github.com/vueComponent/ant-design-vue-pro" target="_blank">Github</a>
       <a href="https://www.github.com/sendya/" target="_blank">@Sendya</a> -->
     </template>
-    <template v-slot:copyright>
-      <a href="http://zaytun.herokuapp.com/" target="_blank">© Inspired Artisans. Все права защищены.  </a>
-    </template>
+<!--    <template v-slot:copyright>-->
+<!--      <a href="http://zaytun.herokuapp.com/" target="_blank">© Inspired Artisans. Все права защищены.  </a>-->
+<!--    </template>-->
   </global-footer>
 </template>
 

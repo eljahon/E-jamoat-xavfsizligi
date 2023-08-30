@@ -53,7 +53,7 @@ export default {
         axiosInit.put(`/admin/article/${payload.id}`, payload.data)
           .then(res => {
             resolve(res)
-            console.log(res)
+            // console.log(res)
           })
           .catch(error => {
             reject(error)

@@ -12,15 +12,13 @@
             <a-input
               size="large"
               type="text"
-              addon-before="+998"
-              :placeholder="$t('phone')"
-              v-mask="'## ### ## ##'"
+              :placeholder="$t('identifier')"
               v-decorator="[
-                'phone',
-                {rules: [{ required: true, message: 'Phone invalid' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+                'identifier',
+                {rules: [{ required: true, message: 'identifier invalid' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
-              <a-icon slot="prefix" type="phone" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <a-icon slot="prefix" type="identifier" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </a-input>
           </a-form-item>
 
@@ -114,12 +112,12 @@ export default {
         form: { validateFields },
         state,
         customActiveKey,
-        Login
       } = this
 
       state.loginBtn = true
+      this.$router.push({ path: '/' })
 
-      const validateFieldsKey = customActiveKey === 'tab1' ? ['phone', 'password'] : ['mobile', 'captcha']
+      const validateFieldsKey = customActiveKey === 'tab1' ? ['identifier', 'password'] : ['mobile', 'captcha']
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
@@ -127,9 +125,9 @@ export default {
           const loginParams = { ...values }
           // delete loginParams.username
           // eslint-disable-next-line
-          loginParams.phone = values.phone.replace(/\s/g, '')
+          loginParams.identifier = values.identifier.replace(/\s/g, '')
           loginParams.password = values.password
-          Login(loginParams)
+         this.Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
             .finally(() => {
@@ -143,11 +141,10 @@ export default {
       })
     },
     loginSuccess (res) {
-      console.log(res)
       this.$router.push({ path: '/' })
       setTimeout(() => {
         this.$notification.success({
-          message: 'Salom',
+          message: '',
           description: `${timeFix()}，User`
         })
       }, 1000)
@@ -166,6 +163,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.logo {
+  display: block;
+  margin: 0px auto;
+}
 .user-layout-login {
 
   label {
@@ -179,6 +180,9 @@ export default {
   button.login-button {
     padding: 0 20px;
     font-size: 16px;
+    display: block;
+    //float: right;
+    margin: 0px auto;
     //height: 40px;
   }
 

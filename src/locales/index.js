@@ -5,14 +5,18 @@ import moment from 'moment'
 
 // default lang
 import ruRU from './lang/ru-RU'
+import uzUZ from './lang/uz-UZ'
 
 Vue.use(VueI18n)
 
-export const defaultLang = 'ru-RU'
+export const defaultLang = 'uz-UZ'
 
 const messages = {
   'ru-RU': {
     ...ruRU
+  },
+  'uz-UZ': {
+    ...uzUZ
   }
 }
 
